@@ -1,0 +1,10 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "letsGetStarted": "Let's get started!",
+  "@letsGetStarted": {
+    "description": "The conventional newborn programmer greeting"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "412235784464",
+    "project_id": "velocity-37f85",
+    "storage_bucket": "velocity-37f85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412235784464:android:b12f75bc3540e31fba8595",
+        "android_client_info": {
+          "package_name": "com.example.velocity_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcEQBYCHBSGMlsM4jSfHKtweO-MX9qAOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
