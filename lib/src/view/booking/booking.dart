@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BookingScreen extends StatefulWidget {
-  const BookingScreen({super.key});
+class UserBookingScreen extends StatefulWidget {
+  const UserBookingScreen({super.key});
 
   @override
-  State<BookingScreen> createState() => _BookingScreenState();
+  State<UserBookingScreen> createState() => _UserBookingScreenState();
 }
 
-class _BookingScreenState extends State<BookingScreen> {
+class _UserBookingScreenState extends State<UserBookingScreen> {
   int _currentPageIndex = 0;
 
   List<Widget> _pages = const [

@@ -1,5 +1,5 @@
 class Travel {
-  final String name;
+  final String title;
   final String description;
   final List<String> imageUrl;
   final String city;
@@ -7,7 +7,7 @@ class Travel {
   final double rating;
 
   Travel({
-    required this.name,
+    required this.title,
     required this.description,
     required this.imageUrl,
     required this.city,
@@ -16,7 +16,7 @@ class Travel {
   });
 
   Travel copyWith({
-    String? name,
+    String? title,
     String? description,
     List<String>? imageUrl,
     String? city,
@@ -24,7 +24,7 @@ class Travel {
     double? rating,
   }) {
     return Travel(
-      name: name ?? this.name,
+      title: title ?? this.title,
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
       city: city ?? this.city,
@@ -37,9 +37,10 @@ class Travel {
 class Tour extends Travel {
   final String destination;
   final String duration;
+  final int capacity;
 
   Tour({
-    required super.name,
+    required super.title,
     required super.description,
     required super.imageUrl,
     required super.city,
@@ -47,11 +48,12 @@ class Tour extends Travel {
     required super.rating,
     required this.destination,
     required this.duration,
+    this.capacity = 10,
   });
 
   @override
   Tour copyWith({
-    String? name,
+    String? title,
     String? description,
     List<String>? imageUrl,
     String? city,
@@ -59,9 +61,10 @@ class Tour extends Travel {
     double? rating,
     String? destination,
     String? duration,
+    int? capacity,
   }) {
     return Tour(
-      name: name ?? this.name,
+      title: title ?? this.title,
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
       city: city ?? this.city,
@@ -69,6 +72,7 @@ class Tour extends Travel {
       rating: rating ?? this.rating,
       destination: destination ?? this.destination,
       duration: duration ?? this.duration,
+      capacity: capacity ?? this.capacity,
     );
   }
 }
@@ -78,7 +82,7 @@ class Hotel extends Travel {
   final String contact;
 
   Hotel({
-    required super.name,
+    required super.title,
     required super.description,
     required super.imageUrl,
     required super.city,
@@ -90,7 +94,7 @@ class Hotel extends Travel {
 
   @override
   Hotel copyWith({
-    String? name,
+    String? title,
     String? description,
     List<String>? imageUrl,
     String? city,
@@ -100,7 +104,7 @@ class Hotel extends Travel {
     String? contact,
   }) {
     return Hotel(
-      name: name ?? this.name,
+      title: title ?? this.title,
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
       city: city ?? this.city,

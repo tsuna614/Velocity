@@ -4,7 +4,7 @@ import 'package:velocity_app/src/model/tour_model.dart';
 ///////////// Dummy Data /////////////
 List<Tour> tours = [
   Tour(
-    name: 'Paris',
+    title: 'Paris',
     description:
         'Paris is the capital city of France. It is situated on the River Seine, in northern France, at the heart of the Île-de-France region.',
     imageUrl: [
@@ -17,7 +17,7 @@ List<Tour> tours = [
     duration: '3 days 2 nights',
   ),
   Tour(
-    name: 'London',
+    title: 'London',
     description:
         'London is the capital and largest city of England and the United Kingdom. It stands on the River Thames in south-east England at the head of a 50-mile (80 km) estuary down to the North Sea.',
     imageUrl: [
@@ -30,7 +30,7 @@ List<Tour> tours = [
     duration: '4 days 3 nights',
   ),
   Tour(
-    name: 'New York',
+    title: 'New York',
     description:
         'New York City (NYC), often simply called New York, is the most populous city in the United States. With an estimated 2019 population of 8,336,817 distributed over about 302.6 square miles (784 km2), New York is also the most densely populated major city in the United States.',
     imageUrl: [
@@ -43,7 +43,7 @@ List<Tour> tours = [
     duration: '5 days 4 nights',
   ),
   Tour(
-    name: 'Tokyo',
+    title: 'Tokyo',
     description:
         'Tokyo, officially Tokyo Metropolis, is the capital of Japan and one of its 47 prefectures. The Greater Tokyo Area is the most populous metropolitan area in the world.',
     imageUrl: ['https://www.japan-guide.com/g18/3004_01.jpg'],
@@ -57,7 +57,7 @@ List<Tour> tours = [
 
 List<Hotel> hotels = [
   Hotel(
-    name: 'Hilton Hotel',
+    title: 'Hilton Hotel',
     description:
         'Hilton Hotels & Resorts is a global brand of full-service hotels and resorts and the flagship brand of American multinational hospitality company Hilton.',
     imageUrl: [
@@ -70,7 +70,7 @@ List<Hotel> hotels = [
     contact: '+31 20 710 6000',
   ),
   Hotel(
-    name: 'The Ritz-Carlton',
+    title: 'The Ritz-Carlton',
     description:
         'The Ritz-Carlton Hotel Company, LLC is an American multinational company that operates the luxury hotel chain known as The Ritz-Carlton.',
     imageUrl: [

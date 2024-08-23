@@ -49,7 +49,7 @@ class _TourPageState extends State<TourPage> {
   ];
 
   void handlePress(BuildContext context) {
-    print(BlocProvider.of<TravelBloc>(context).state.tours[0].name);
+    print(BlocProvider.of<TravelBloc>(context).state.tours[0].title);
   }
 
   @override

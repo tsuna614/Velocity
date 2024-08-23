@@ -60,7 +60,7 @@ class TourCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            travelData[index].name,
+            travelData[index].title,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

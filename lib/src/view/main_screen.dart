@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_app/src/view/booking/booking.dart';
-import 'package:velocity_app/src/view/home.dart';
+import 'package:velocity_app/src/view/home/home.dart';
 import 'package:velocity_app/src/view/search.dart';
 import 'package:velocity_app/src/view/user.dart';
 
@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = const [
     HomeScreen(),
     SearchScreen(),
-    BookingScreen(),
+    UserBookingScreen(),
     UserScreen(),
   ];
 
