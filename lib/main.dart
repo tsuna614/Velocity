@@ -7,8 +7,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:velocity_app/src/bloc/user_bloc.dart';
 import 'package:velocity_app/src/view/auth/log_in.dart';
 import 'package:velocity_app/src/view/main_screen.dart';
+import 'dart:io';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() async {
+  HttpOverrides.global =
+      MyHttpOverrides(); // this is required to import network images from https
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -35,7 +47,7 @@ class MyApp extends StatelessWidget {
           Locale('en'), // English
           Locale('es'), // Spanish
         ],
-        home: const MyHomePage(),
+        home: MyHomePage(),
       ),
     );
   }

@@ -14,12 +14,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentPageIndex = 0;
-  final List<String> _titles = const [
-    'Home',
-    'Search',
-    'Booking',
-    'Profile',
-  ];
+
   final List<Widget> _pages = const [
     HomeScreen(),
     SearchScreen(),
@@ -35,11 +30,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_titles[_currentPageIndex]),
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
-      ),
+      // appBar: AppBar(
+      //   title: Text(_titles[_currentPageIndex]),
+      //   foregroundColor: Colors.white,
+      //   backgroundColor: Colors.blue,
+      // ),
       body: SafeArea(
         child: _pages[_currentPageIndex],
       ),
