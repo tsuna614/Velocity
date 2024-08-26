@@ -32,7 +32,11 @@ class _SortButtonHorizontalListState extends State<SortButtonHorizontalList> {
                 // } else {
                 //   selectedItems.add(widget.sortOptions[index]);
                 // }
-                selectedItems = widget.sortOptions[index];
+                if (selectedItems != widget.sortOptions[index]) {
+                  selectedItems = widget.sortOptions[index];
+                } else {
+                  selectedItems = '';
+                }
               });
             },
             style: ButtonStyle(
@@ -40,7 +44,7 @@ class _SortButtonHorizontalListState extends State<SortButtonHorizontalList> {
               shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(color: Colors.blue, width: 1),
+                  side: const BorderSide(color: Colors.blue, width: 1),
                 ),
               ),
               backgroundColor: WidgetStateProperty.resolveWith<Color>(

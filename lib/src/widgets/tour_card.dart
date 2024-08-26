@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:velocity_app/src/model/tour_model.dart';
+import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/view/booking/detail_booking.dart';
 
 class TourCard extends StatelessWidget {
@@ -64,11 +64,12 @@ class TourCard extends StatelessWidget {
   Widget buildTourDetails(
       BuildContext context, List<Travel> travelData, int index) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
+            overflow: TextOverflow.ellipsis,
             travelData[index].title,
             style: const TextStyle(
               fontSize: 20,

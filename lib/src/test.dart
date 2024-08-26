@@ -13,7 +13,7 @@ class _TestScreenState extends State<TestScreen> {
   void _scrollToIndex(int index) {
     _scrollController.animateTo(
       index * 200.0, // Each container is 200px in height
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.easeInOut,
     );
   }
@@ -22,7 +22,7 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scroll to Index Example'),
+        title: const Text('Scroll to Index Example'),
       ),
       body: Column(
         children: [
@@ -54,7 +54,7 @@ class _TestScreenState extends State<TestScreen> {
                   child: Center(
                     child: Text(
                       'Item ${index + 1}',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
+                      style: const TextStyle(fontSize: 24, color: Colors.white),
                     ),
                   ),
                 );

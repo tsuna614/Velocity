@@ -14,11 +14,11 @@ class UserScreen extends StatelessWidget {
           onPressed: () {
             BlocProvider.of<UserBloc>(context).add(SignOut());
           },
-          child: Text("Sign Out"),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
           ),
+          child: const Text("Sign Out"),
         ),
       ),
     );

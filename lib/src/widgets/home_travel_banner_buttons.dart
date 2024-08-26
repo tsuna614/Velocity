@@ -49,7 +49,7 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
             },
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 // Icon(_bannerIcons[index]),
@@ -68,7 +68,7 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
                 Text(
                   _bannerDescriptions[index],
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 ),
               ],
             ),

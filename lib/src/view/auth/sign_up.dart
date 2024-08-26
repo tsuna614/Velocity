@@ -41,7 +41,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final result = await BlocProvider.of<UserBloc>(context).stream.firstWhere(
           (state) => state is UserSuccess || state is UserFailure,
         );
-    if (!context.mounted) return;
 
     // Handle result
     if (result is UserSuccess) {

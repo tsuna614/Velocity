@@ -101,8 +101,13 @@ class _TourPageState extends State<TourPage> {
                         top: bannerHeight + bannerSelectionCardHeight / 2),
                     child: Column(
                       children: List.generate(titleList.length, (index) {
-                        final travelData =
-                            index == 0 ? state.tours : state.hotels;
+                        final travelData = index == 0
+                            ? state.tours
+                            : index == 1
+                                ? state.hotels
+                                : index == 2
+                                    ? state.flights
+                                    : state.carRentals;
                         return Column(
                           key: keyList[index],
                           children: [

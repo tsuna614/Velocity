@@ -2,7 +2,6 @@ class Travel {
   final String title;
   final String description;
   final List<String> imageUrl;
-  final String city;
   final double price;
   final double rating;
 
@@ -10,7 +9,6 @@ class Travel {
     required this.title,
     required this.description,
     required this.imageUrl,
-    required this.city,
     required this.price,
     required this.rating,
   });
@@ -19,7 +17,6 @@ class Travel {
     String? title,
     String? description,
     List<String>? imageUrl,
-    String? city,
     double? price,
     double? rating,
   }) {
@@ -27,7 +24,6 @@ class Travel {
       title: title ?? this.title,
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
-      city: city ?? this.city,
       price: price ?? this.price,
       rating: rating ?? this.rating,
     );
@@ -37,17 +33,18 @@ class Travel {
 class Tour extends Travel {
   final String destination;
   final String duration;
+  final String city;
   final int capacity;
 
   Tour({
     required super.title,
     required super.description,
     required super.imageUrl,
-    required super.city,
     required super.price,
     required super.rating,
     required this.destination,
     required this.duration,
+    required this.city,
     this.capacity = 10,
   });
 
@@ -80,16 +77,17 @@ class Tour extends Travel {
 class Hotel extends Travel {
   final String address;
   final String contact;
+  final String city;
 
   Hotel({
     required super.title,
     required super.description,
     required super.imageUrl,
-    required super.city,
     required super.price,
     required super.rating,
     required this.address,
     required this.contact,
+    required this.city,
   });
 
   @override
@@ -112,6 +110,94 @@ class Hotel extends Travel {
       rating: rating ?? this.rating,
       address: address ?? this.address,
       contact: contact ?? this.contact,
+    );
+  }
+}
+
+class Flight extends Travel {
+  final String origin;
+  final String destination;
+  final String departureTime;
+  final String arrivalTime;
+  final String airline;
+
+  Flight({
+    required super.title,
+    required super.description,
+    required super.imageUrl,
+    required super.price,
+    required super.rating,
+    required this.origin,
+    required this.destination,
+    required this.departureTime,
+    required this.arrivalTime,
+    this.airline = '',
+  });
+
+  @override
+  Flight copyWith({
+    String? title,
+    String? description,
+    List<String>? imageUrl,
+    double? price,
+    double? rating,
+    String? origin,
+    String? destination,
+    String? departureTime,
+    String? arrivalTime,
+    String? airline,
+  }) {
+    return Flight(
+      title: title ?? this.title,
+      description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
+      price: price ?? this.price,
+      rating: rating ?? this.rating,
+      origin: origin ?? this.origin,
+      destination: destination ?? this.destination,
+      departureTime: departureTime ?? this.departureTime,
+      arrivalTime: arrivalTime ?? this.arrivalTime,
+      airline: airline ?? this.airline,
+    );
+  }
+}
+
+class CarRental extends Travel {
+  final String location;
+  final String contact;
+  final String carType;
+
+  CarRental({
+    required super.title,
+    required super.description,
+    required super.imageUrl,
+    required super.price,
+    required super.rating,
+    required this.location,
+    required this.contact,
+    required this.carType,
+  });
+
+  @override
+  CarRental copyWith({
+    String? title,
+    String? description,
+    List<String>? imageUrl,
+    double? price,
+    double? rating,
+    String? location,
+    String? contact,
+    String? carType,
+  }) {
+    return CarRental(
+      title: title ?? this.title,
+      description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
+      price: price ?? this.price,
+      rating: rating ?? this.rating,
+      location: location ?? this.location,
+      contact: contact ?? this.contact,
+      carType: carType ?? this.carType,
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:velocity_app/src/model/tour_model.dart';
+import 'package:velocity_app/src/model/travel_model.dart';
 
 class DetailBooking extends StatefulWidget {
   const DetailBooking({super.key, required this.travelData});
@@ -111,13 +111,13 @@ class _DetailBookingState extends State<DetailBooking> {
     return Row(
       children: [
         Icon(icon),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Text(
               value,

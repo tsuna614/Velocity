@@ -10,7 +10,7 @@ class UserBookingScreen extends StatefulWidget {
 class _UserBookingScreenState extends State<UserBookingScreen> {
   int _currentPageIndex = 0;
 
-  List<Widget> _pages = const [
+  final List<Widget> _pages = const [
     BookmarkPage(),
     ActivePage(),
     PastPage(),
