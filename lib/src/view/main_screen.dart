@@ -35,9 +35,8 @@ class _MainScreenState extends State<MainScreen> {
       //   foregroundColor: Colors.white,
       //   backgroundColor: Colors.blue,
       // ),
-      body: SafeArea(
-        child: _pages[_currentPageIndex],
-      ),
+      body: _pages[_currentPageIndex],
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPageIndex,
         onTap: (index) {

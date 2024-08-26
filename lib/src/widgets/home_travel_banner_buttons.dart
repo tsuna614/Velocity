@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeTravelBannerButtons extends StatefulWidget {
-  const HomeTravelBannerButtons({super.key});
+  const HomeTravelBannerButtons({super.key, required this.onPressed});
+
+  final void Function(int index) onPressed;
 
   @override
   State<HomeTravelBannerButtons> createState() =>
@@ -10,19 +12,19 @@ class HomeTravelBannerButtons extends StatefulWidget {
 }
 
 class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
-  List<String> _bannerDescriptions = [
+  final List<String> _bannerDescriptions = [
     'Book a tour',
     'Book a hotel',
     'Book a flight',
     'Book a car',
   ];
-  List<IconData> _bannerIcons = [
+  final List<IconData> _bannerIcons = [
     FontAwesomeIcons.signsPost,
     FontAwesomeIcons.hotel,
     FontAwesomeIcons.plane,
     FontAwesomeIcons.car,
   ];
-  List<Color> _bannerColors = [
+  final List<Color> _bannerColors = [
     Colors.orange,
     Colors.green,
     Colors.lightBlue,
@@ -43,6 +45,7 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
               setState(() {
                 selectedIndex = index;
               });
+              widget.onPressed(index);
             },
             child: Column(
               children: [

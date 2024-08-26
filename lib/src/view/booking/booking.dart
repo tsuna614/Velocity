@@ -11,7 +11,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
   int _currentPageIndex = 0;
 
   List<Widget> _pages = const [
-    PendingPage(),
+    BookmarkPage(),
     ActivePage(),
     PastPage(),
   ];
@@ -30,7 +30,7 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              buildButton('Pending', 0),
+              buildButton('Bookmarks', 0),
               buildButton('Active', 1),
               buildButton('Past', 2),
             ],
@@ -80,10 +80,13 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                   backgroundColor: Colors.blue.withOpacity(0.05),
                   splashFactory: NoSplash.splashFactory,
                 ),
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                    color: Colors.blue,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    text,
+                    style: const TextStyle(
+                      color: Colors.blue,
+                    ),
                   ),
                 ),
               )
@@ -92,10 +95,13 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
                 style: TextButton.styleFrom(
                   splashFactory: NoSplash.splashFactory,
                 ),
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.grey[600],
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                    ),
                   ),
                 ),
               ),
@@ -104,13 +110,13 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
   }
 }
 
-class PendingPage extends StatelessWidget {
-  const PendingPage({super.key});
+class BookmarkPage extends StatelessWidget {
+  const BookmarkPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("Pending Page"),
+      child: Text("Bookmark Page"),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:velocity_app/src/model/tour_model.dart';
+import 'package:velocity_app/src/view/booking/detail_booking.dart';
 
 class TourCard extends StatelessWidget {
   const TourCard({super.key, required this.travelData});
@@ -25,7 +26,15 @@ class TourCard extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               elevation: 2,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return DetailBooking(travelData: travelData[index]);
+                      },
+                    ),
+                  );
+                },
                 child: Column(
                   children: [
                     FadeInImage(

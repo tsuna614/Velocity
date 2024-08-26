@@ -38,8 +38,26 @@ class TourPage extends StatefulWidget {
 }
 
 class _TourPageState extends State<TourPage> {
-  double bannerHeight = 60;
-  double bannerSelectionCardHeight = 80;
+  final double bannerHeight = 60;
+  final double bannerSelectionCardHeight = 80;
+
+  final _scrollController = ScrollController();
+
+  final List<String> titleList = [
+    "Tours",
+    "Hotels",
+    "Flights",
+    "Car Rentals",
+  ];
+
+  final List<IconData> iconList = [
+    FontAwesomeIcons.mapLocationDot,
+    FontAwesomeIcons.hotel,
+    FontAwesomeIcons.plane,
+    FontAwesomeIcons.car,
+  ];
+
+  final List<GlobalKey> keyList = List.generate(4, (index) => GlobalKey());
 
   final List<String> sortOptions = [
     'Price',
@@ -48,8 +66,19 @@ class _TourPageState extends State<TourPage> {
     'Popularity',
   ];
 
-  void handlePress(BuildContext context) {
-    print(BlocProvider.of<TravelBloc>(context).state.tours[0].title);
+  void _scrollToPosition(int index) {
+    final widgetHeight = keyList[index].currentContext!.size!.height;
+
+    _scrollController.animateTo(
+      widgetHeight * index.toDouble(),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -63,28 +92,38 @@ class _TourPageState extends State<TourPage> {
         ),
         body: Stack(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 100,
+            Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: EdgeInsets.only(
+                        top: bannerHeight + bannerSelectionCardHeight / 2),
+                    child: Column(
+                      children: List.generate(titleList.length, (index) {
+                        final travelData =
+                            index == 0 ? state.tours : state.hotels;
+                        return Column(
+                          key: keyList[index],
+                          children: [
+                            buildTitle(
+                              title: titleList[index],
+                              icon: iconList[index],
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: SortButtonHorizontalList(
+                                  sortOptions: sortOptions),
+                            ),
+                            TourCard(travelData: travelData),
+                            const Divider(),
+                          ],
+                        );
+                      }),
+                    ),
                   ),
-                  buildTitle(
-                      title: "Tours", icon: FontAwesomeIcons.mapLocationDot),
-                  SizedBox(
-                    height: 50,
-                    child: SortButtonHorizontalList(sortOptions: sortOptions),
-                  ),
-                  TourCard(travelData: state.tours),
-                  const Divider(),
-                  buildTitle(title: "Hotels", icon: FontAwesomeIcons.hotel),
-                  SizedBox(
-                    height: 50,
-                    child: SortButtonHorizontalList(sortOptions: sortOptions),
-                  ),
-                  TourCard(travelData: state.hotels),
-                ],
-              ),
+                ),
+              ],
             ),
             buildBanner(),
           ],
@@ -149,7 +188,11 @@ class _TourPageState extends State<TourPage> {
                 height: bannerSelectionCardHeight,
                 width: MediaQuery.of(context).size.width * 0.9,
                 color: Colors.white,
-                child: HomeTravelBannerButtons(),
+                child: HomeTravelBannerButtons(
+                  onPressed: (index) {
+                    _scrollToPosition(index);
+                  },
+                ),
               ),
             ),
           ),
