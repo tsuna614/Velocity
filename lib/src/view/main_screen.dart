@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/view/booking/booking.dart';
 import 'package:velocity_app/src/view/home/home.dart';
 import 'package:velocity_app/src/view/search.dart';
@@ -35,7 +38,9 @@ class _MainScreenState extends State<MainScreen> {
       //   foregroundColor: Colors.white,
       //   backgroundColor: Colors.blue,
       // ),
-      body: _pages[_currentPageIndex],
+      body: BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) => _pages[_currentPageIndex],
+      ),
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPageIndex,

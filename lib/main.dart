@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:velocity_app/src/bloc/user_bloc.dart';
-import 'package:velocity_app/src/test.dart';
+import 'package:velocity_app/src/bloc/user/user_events.dart';
+import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/view/auth/log_in.dart';
 import 'package:velocity_app/src/view/main_screen.dart';
 import 'dart:io';
@@ -34,8 +36,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<UserBloc>(
+          // create: (context) => UserBloc()
+          //   ..add(FetchUser(
+          //       userId: "123456")), // NOTE: remove ..add(FetchUser()) later
+          create: (context) {
+            final userBloc = UserBloc();
+
+            userBloc.add(FetchUser(userId: "123"));
+
+            return userBloc;
+          },
+        ),
+        BlocProvider<TravelBloc>(
+          create: (context) {
+            final travelBloc = TravelBloc();
+
+            travelBloc.add(LoadData());
+
+            return travelBloc;
+          },
+        ),
+      ],
       child: const MaterialApp(
         title: 'Flutter Demo',
         localizationsDelegates: [
@@ -62,24 +86,30 @@ class MyHomePage extends StatelessWidget {
     return Localizations.override(
       context: context,
       locale: const Locale('en'),
-      child: Builder(builder: (context) {
-        return StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else if (snapshot.hasData) {
-              return const MainScreen();
-            } else {
-              return const LogInScreen();
-            }
-          },
-        );
-      }),
+      child: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            return BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                if (state is UserLoaded) {
+                  return const MainScreen();
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              },
+            );
+          } else {
+            return const LogInScreen();
+          }
+        },
+      ),
     );
   }
 }

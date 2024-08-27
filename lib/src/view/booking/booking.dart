@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:velocity_app/src/widgets/travel_card_wide.dart';
 
 class UserBookingScreen extends StatefulWidget {
   const UserBookingScreen({super.key});
@@ -20,34 +21,42 @@ class _UserBookingScreenState extends State<UserBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildButton('Bookmarks', 0),
-              buildButton('Active', 1),
-              buildButton('Past', 2),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Bookings'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 10,
           ),
-        ),
-        Expanded(
-          child: PageView(
-            controller: _pageController,
-            children: _pages,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPageIndex = index;
-              });
-            },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildButton('Saved', 0),
+                buildButton('Active', 1),
+                buildButton('Past', 2),
+              ],
+            ),
           ),
-        )
-      ],
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              children: _pages,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPageIndex = index;
+                });
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -115,9 +124,11 @@ class BookmarkPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Bookmark Page"),
+    return Scaffold(
+      body: TravelCardWide(),
     );
+    // return BlocBuilder<TravelBloc, TravelState>(builder: (context, state) {
+    // });
   }
 }
 

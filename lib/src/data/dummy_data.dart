@@ -1,7 +1,11 @@
+import 'package:uuid/uuid.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
+
+var uuid = Uuid();
 
 List<Tour> tours = [
   Tour(
+    id: uuid.v4(),
     title: 'Paris sightseeing tour',
     description:
         'Paris is the capital city of France. It is situated on the River Seine, in northern France, at the heart of the Île-de-France region.',
@@ -15,6 +19,7 @@ List<Tour> tours = [
     duration: '3 days 2 nights',
   ),
   Tour(
+    id: uuid.v4(),
     title: 'London sightseeing tour',
     description:
         'London is the capital and largest city of England and the United Kingdom. It stands on the River Thames in south-east England at the head of a 50-mile (80 km) estuary down to the North Sea.',
@@ -28,6 +33,7 @@ List<Tour> tours = [
     duration: '4 days 3 nights',
   ),
   Tour(
+    id: uuid.v4(),
     title: 'New York sightseeing tour',
     description:
         'New York City (NYC), often simply called New York, is the most populous city in the United States. With an estimated 2019 population of 8,336,817 distributed over about 302.6 square miles (784 km2), New York is also the most densely populated major city in the United States.',
@@ -41,6 +47,7 @@ List<Tour> tours = [
     duration: '5 days 4 nights',
   ),
   Tour(
+    id: uuid.v4(),
     title: 'Tokyo sightseeing tour',
     description:
         'Tokyo, officially Tokyo Metropolis, is the capital of Japan and one of its 47 prefectures. The Greater Tokyo Area is the most populous metropolitan area in the world.',
@@ -55,6 +62,7 @@ List<Tour> tours = [
 
 List<Hotel> hotels = [
   Hotel(
+    id: uuid.v4(),
     title: 'Hilton Hotel',
     description:
         'Hilton Hotels & Resorts is a global brand of full-service hotels and resorts and the flagship brand of American multinational hospitality company Hilton.',
@@ -68,6 +76,7 @@ List<Hotel> hotels = [
     contact: '+31 20 710 6000',
   ),
   Hotel(
+    id: uuid.v4(),
     title: 'The Ritz-Carlton',
     description:
         'The Ritz-Carlton Hotel Company, LLC is an American multinational company that operates the luxury hotel chain known as The Ritz-Carlton.',
@@ -84,6 +93,7 @@ List<Hotel> hotels = [
 
 List<Flight> flights = [
   Flight(
+    id: uuid.v4(),
     title: 'Direct Flight to New York',
     description: 'Enjoy a comfortable direct flight to New York City.',
     imageUrl: [
@@ -98,6 +108,7 @@ List<Flight> flights = [
     airline: 'Delta Airlines',
   ),
   Flight(
+    id: uuid.v4(),
     title: 'Economy Flight to London',
     description: 'Affordable flight to London with excellent services.',
     imageUrl: [
@@ -112,6 +123,7 @@ List<Flight> flights = [
     airline: 'British Airways',
   ),
   Flight(
+    id: uuid.v4(),
     title: 'Luxury Flight to Dubai',
     description: 'Experience luxury travel with our exclusive flight to Dubai.',
     imageUrl: [
@@ -126,6 +138,7 @@ List<Flight> flights = [
     airline: 'Emirates Airlines',
   ),
   Flight(
+    id: uuid.v4(),
     title: 'Red-eye Flight to Tokyo',
     description: 'Convenient overnight flight to Tokyo.',
     imageUrl: [
@@ -140,6 +153,7 @@ List<Flight> flights = [
     airline: 'Japan Airlines',
   ),
   Flight(
+    id: uuid.v4(),
     title: 'Budget Flight to Paris',
     description: 'Affordable travel option for your next trip to Paris.',
     imageUrl: [
@@ -157,6 +171,7 @@ List<Flight> flights = [
 
 List<CarRental> carRentals = [
   CarRental(
+    id: uuid.v4(),
     title: 'Luxury SUV Rental',
     description:
         'Rent a luxurious SUV with top features for your next adventure.',
@@ -170,6 +185,7 @@ List<CarRental> carRentals = [
     carType: 'SUV',
   ),
   CarRental(
+    id: uuid.v4(),
     title: 'Economy Car Rental',
     description: 'Affordable and efficient car for city driving.',
     imageUrl: [
@@ -182,6 +198,7 @@ List<CarRental> carRentals = [
     carType: 'Economy',
   ),
   CarRental(
+    id: uuid.v4(),
     title: 'Convertible Sports Car',
     description: 'Experience the thrill of driving a convertible sports car.',
     imageUrl: [
@@ -194,6 +211,7 @@ List<CarRental> carRentals = [
     carType: 'Convertible',
   ),
   CarRental(
+    id: uuid.v4(),
     title: 'Minivan Rental',
     description: 'Spacious minivan for family trips and group travels.',
     imageUrl: ['https://cdn.jdpower.com/Most%20Reliable%20Minivans.jpg'],
@@ -204,6 +222,7 @@ List<CarRental> carRentals = [
     carType: 'Minivan',
   ),
   CarRental(
+    id: uuid.v4(),
     title: 'Luxury Sedan Rental',
     description: 'Rent a premium sedan for business or pleasure.',
     imageUrl: [

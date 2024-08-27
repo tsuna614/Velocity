@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:velocity_app/src/bloc/events.dart';
-import 'package:velocity_app/src/bloc/user_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_events.dart';
+import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 
 class UserScreen extends StatelessWidget {
   const UserScreen({super.key});

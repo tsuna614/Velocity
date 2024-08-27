@@ -1,3 +1,5 @@
+import 'package:velocity_app/src/model/user_model.dart';
+
 abstract class UserEvent {}
 
 class FetchUser extends UserEvent {
@@ -27,3 +29,27 @@ class SignIn extends UserEvent {
 }
 
 class SignOut extends UserEvent {}
+
+class UpdateUser extends UserEvent {
+  final MyUser user;
+
+  UpdateUser({
+    required this.user,
+  });
+}
+
+class AddBookmark extends UserEvent {
+  final String travelId;
+
+  AddBookmark({
+    required this.travelId,
+  });
+}
+
+class RemoveBookmark extends UserEvent {
+  final String travelId;
+
+  RemoveBookmark({
+    required this.travelId,
+  });
+}

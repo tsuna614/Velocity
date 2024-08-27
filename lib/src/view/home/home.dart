@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:velocity_app/src/bloc/tour_bloc.dart';
+import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
 import 'package:velocity_app/src/widgets/home_travel_banner_buttons.dart';
 import 'package:velocity_app/src/widgets/search_bar.dart';
 import 'package:velocity_app/src/widgets/sort_button_horizontal_list.dart';
@@ -13,18 +13,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final travelBloc = TravelBloc();
-
-        travelBloc.add(LoadData());
-
-        return travelBloc;
-      },
-      child: const Scaffold(
-        body: Center(
-          child: TourPage(),
-        ),
+    return const Scaffold(
+      body: Center(
+        child: TourPage(),
       ),
     );
   }
@@ -57,14 +48,21 @@ class _TourPageState extends State<TourPage> {
     FontAwesomeIcons.car,
   ];
 
-  final List<GlobalKey> keyList = List.generate(4, (index) => GlobalKey());
-
   final List<String> sortOptions = [
     'Price',
     'Rating',
     'Duration',
     'Popularity',
   ];
+
+  final List<TravelType> travelTypeList = [
+    TravelType.tour,
+    TravelType.hotel,
+    TravelType.flight,
+    TravelType.car,
+  ];
+
+  final List<GlobalKey> keyList = List.generate(4, (index) => GlobalKey());
 
   void _scrollToPosition(int index) {
     final widgetHeight = keyList[index].currentContext!.size!.height;
@@ -98,10 +96,10 @@ class _TourPageState extends State<TourPage> {
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     padding: EdgeInsets.only(
-                        top: bannerHeight + bannerSelectionCardHeight / 2),
+                        top: bannerHeight + bannerSelectionCardHeight / 2 + 10),
                     child: Column(
                       children: List.generate(titleList.length, (index) {
-                        final travelData = index == 0
+                        index == 0
                             ? state.tours
                             : index == 1
                                 ? state.hotels
@@ -120,7 +118,9 @@ class _TourPageState extends State<TourPage> {
                               child: SortButtonHorizontalList(
                                   sortOptions: sortOptions),
                             ),
-                            TourCard(travelData: travelData),
+                            TourCard(
+                              dataType: travelTypeList[index],
+                            ),
                             const Divider(),
                           ],
                         );
