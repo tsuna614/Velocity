@@ -165,8 +165,8 @@ class TourCard extends StatelessWidget {
             },
             child: Icon(
               userData.user.bookmarkedTravels.contains(travelData[index].id)
-                  ? FontAwesomeIcons.solidBookmark
-                  : FontAwesomeIcons.bookmark,
+                  ? FontAwesomeIcons.solidHeart
+                  : FontAwesomeIcons.heart,
               color:
                   userData.user.bookmarkedTravels.contains(travelData[index].id)
                       ? Colors.red

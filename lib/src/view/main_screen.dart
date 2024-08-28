@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
-import 'package:velocity_app/src/view/booking/booking.dart';
+import 'package:velocity_app/src/view/booking/my_booking.dart';
 import 'package:velocity_app/src/view/home/home.dart';
 import 'package:velocity_app/src/view/search.dart';
 import 'package:velocity_app/src/view/user.dart';
@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = const [
     HomeScreen(),
     SearchScreen(),
-    UserBookingScreen(),
+    MyBookingScreen(),
     UserScreen(),
   ];
 

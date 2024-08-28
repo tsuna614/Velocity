@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:velocity_app/src/api/travel_api.dart';
+import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 
 class DetailBooking extends StatefulWidget {
@@ -15,49 +19,79 @@ class DetailBooking extends StatefulWidget {
 class _DetailBookingState extends State<DetailBooking> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FadeInImage(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  placeholder: MemoryImage(kTransparentImage),
-                  image: NetworkImage(widget.travelData.imageUrl[0]),
-                  fit: BoxFit.cover,
-                ),
-                buildDescription(),
-                Divider(
-                  color: Colors.black.withOpacity(0.1),
-                  thickness: 4,
-                ),
-                buildDetailInformation(),
-                Divider(
-                  color: Colors.black.withOpacity(0.1),
-                  thickness: 4,
-                ),
-              ],
-            ),
-          ),
-          SafeArea(
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-                size: 30,
-                color: Colors.white,
+    return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+      if (state is! UserLoaded) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      return Scaffold(
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FadeInImage(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    placeholder: MemoryImage(kTransparentImage),
+                    image: NetworkImage(widget.travelData.imageUrl[0]),
+                    fit: BoxFit.cover,
+                  ),
+                  buildDescription(),
+                  Divider(
+                    color: Colors.black.withOpacity(0.1),
+                    thickness: 4,
+                  ),
+                  buildDetailInformation(),
+                  Divider(
+                    color: Colors.black.withOpacity(0.1),
+                    thickness: 4,
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
+            SafeArea(
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      GeneralApi().toggleBookmark(
+                          context: context, travelId: widget.travelData.id);
+                    },
+                    icon: Icon(
+                      state.user.bookmarkedTravels
+                              .contains(widget.travelData.id)
+                          ? FontAwesomeIcons.solidHeart
+                          : FontAwesomeIcons.heart,
+                      size: 30,
+                      color: state.user.bookmarkedTravels
+                              .contains(widget.travelData.id)
+                          ? Colors.red
+                          : Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget buildDescription() {

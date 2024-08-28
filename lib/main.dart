@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
