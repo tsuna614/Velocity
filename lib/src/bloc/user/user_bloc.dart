@@ -1,32 +1,56 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:velocity_app/src/api/user_api.dart';
+import 'package:velocity_app/src/auth/auth_service.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final _firebase = FirebaseAuth.instance;
+  final AuthService _authService = AuthService();
+  final UserApi userApi = UserApi();
 
   UserBloc() : super(UserInitial()) {
-    on<FetchUser>((event, emit) {
-      print("objectaasgasdgsdag");
-      // Call the API to fetch the user
-      final user = MyUser(
-          userId: "123456",
-          name: "Test User",
-          email: "testuser@gmail.com",
-          phone: "1234567890");
+    // this should be called first
+    // on<checkAuthState>((event, emit) async {
+    //   // final isSignedIn = await userApi.isUserSignedIn();
+    //   // if (isSignedIn) {
+    //   //   add(FetchUser());
+    //   // } else {
+    //   //   emit(UserInitial());
+    //   // }
+    //   if (userId.isEmpty) {
+    //     // User is not signed in (no userId in local database)
+    //     emit(UserInitial());
+    //   } else {
+    //     add(FetchUser());
+    //   }
+    // });
 
-      emit(UserLoaded(user: user));
+    on<FetchUser>((event, emit) async {
+      // Call the API to fetch the user
+      emit(UserLoading()); // call this to enter loading screen
+      final userId = await _authService.getUserId();
+      if (userId.isEmpty) {
+        emit(UserInitial());
+      } else {
+        try {
+          final MyUser user = await userApi.fetchUserData(userId: userId);
+          emit(UserLoaded(user: user));
+        } on DioException catch (e) {
+          emit(UserFailure(message: e.message!));
+        }
+      }
     });
 
     on<SignUp>((event, emit) async {
       // Call the API to sign up the user
       try {
-        await _firebase.createUserWithEmailAndPassword(
-            email: event.email, password: event.password);
-        emit(UserSuccess(message: 'User created successfully'));
-      } on FirebaseAuthException catch (e) {
+        // sign up, and if success THEN sign in
+        await userApi.signUp(user: event.user, password: event.password);
+        add(SignIn(email: event.user.email, password: event.password));
+      } on DioException catch (e) {
         emit(UserFailure(message: e.message!));
       }
     });
@@ -34,10 +58,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<SignIn>((event, emit) async {
       // Call the API to sign in the user
       try {
-        await _firebase.signInWithEmailAndPassword(
-            email: event.email, password: event.password);
-        emit(UserSuccess(message: 'User signed in successfully'));
-      } on FirebaseAuthException catch (e) {
+        final MyUser user =
+            await userApi.login(email: event.email, password: event.password);
+        emit(UserLoaded(user: user));
+      } on DioException catch (e) {
         emit(UserFailure(message: e.message!));
       }
     });
@@ -45,7 +69,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<SignOut>((event, emit) async {
       // Call the API to sign out the user
       try {
-        await _firebase.signOut();
+        // await _firebase.signOut();
+        await _authService.clearUserToken();
         emit(UserInitial());
       } on FirebaseAuthException catch (e) {
         emit(UserFailure(message: e.message!));

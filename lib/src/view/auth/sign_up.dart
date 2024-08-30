@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/model/user_model.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -29,21 +30,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
+    final MyUser user = MyUser(
+      userId:
+          "", // set a temporary userId, when post to backend mongodb will automatically generate an _id
+      email: _emailController.text,
+      firstName: "firstName",
+      lastName: "lastName",
+      phone: "phone",
+    );
+
     // Call the API to sign in the user
     BlocProvider.of<UserBloc>(context).add(
       SignUp(
-        email: _emailController.text,
+        user: user,
         password: _passwordController.text,
       ),
     );
 
     // Wait for the result and return the first element of this stream matching UserSuccess or UserFailure
     final result = await BlocProvider.of<UserBloc>(context).stream.firstWhere(
-          (state) => state is UserSuccess || state is UserFailure,
+          (state) => state is UserLoaded || state is UserFailure,
         );
 
     // Handle result
-    if (result is UserSuccess) {
+    if (result is UserLoaded) {
       Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -67,45 +77,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 31, 72, 105),
-        body: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                margin: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  // physics: NeverScrollableScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Row(
                       children: [
-                        buildSignUpForm(),
-                        const SizedBox(height: 60),
-                        if (_isLoading)
-                          const CircularProgressIndicator()
-                        else
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                minimumSize: const Size.fromHeight(40)),
-                            onPressed: _submitForm,
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 28, 112),
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 3,
-                              ),
-                            ),
+                        Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "Sign in",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
                           ),
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  margin: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    // physics: NeverScrollableScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          buildSignUpForm(),
+                          const SizedBox(height: 60),
+                          if (_isLoading)
+                            const CircularProgressIndicator()
+                          else
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  minimumSize: const Size.fromHeight(40)),
+                              onPressed: _submitForm,
+                              child: const Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 28, 112),
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 3,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 

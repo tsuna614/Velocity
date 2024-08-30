@@ -34,12 +34,15 @@ class _DetailBookingState extends State<DetailBooking> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FadeInImage(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    placeholder: MemoryImage(kTransparentImage),
-                    image: NetworkImage(widget.travelData.imageUrl[0]),
-                    fit: BoxFit.cover,
+                  Hero(
+                    tag: widget.travelData.id,
+                    child: FadeInImage(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: NetworkImage(widget.travelData.imageUrl[0]),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   buildDescription(),
                   Divider(

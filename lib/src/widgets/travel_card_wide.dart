@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
@@ -91,11 +92,15 @@ class _TravelCardWideState extends State<TravelCardWide> {
       children: [
         GestureDetector(
           onTap: () => onTravelCardPressed(context, travelData),
-          child: Image.network(
-            travelData.imageUrl[0],
-            height: imageCardHeight,
-            width: double.infinity,
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: travelData.id,
+            child: FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: NetworkImage(travelData.imageUrl[0]),
+              height: imageCardHeight,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Positioned(

@@ -42,7 +42,7 @@ class TourCard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 clipBehavior: Clip.hardEdge,
                 elevation: 2,
@@ -61,12 +61,16 @@ class TourCard extends StatelessWidget {
                       },
                       child: Column(
                         children: [
-                          FadeInImage(
-                            height: 200,
-                            width: 200,
-                            placeholder: MemoryImage(kTransparentImage),
-                            image: NetworkImage(travelData[index].imageUrl[0]),
-                            fit: BoxFit.cover,
+                          Hero(
+                            tag: travelData[index].id,
+                            child: FadeInImage(
+                              height: 200,
+                              width: 200,
+                              placeholder: MemoryImage(kTransparentImage),
+                              image:
+                                  NetworkImage(travelData[index].imageUrl[0]),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           const SizedBox(height: 5),
                           Flexible(

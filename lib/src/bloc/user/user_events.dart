@@ -2,18 +2,16 @@ import 'package:velocity_app/src/model/user_model.dart';
 
 abstract class UserEvent {}
 
-class FetchUser extends UserEvent {
-  final String userId;
+class checkAuthState extends UserEvent {}
 
-  FetchUser({required this.userId});
-}
+class FetchUser extends UserEvent {}
 
 class SignUp extends UserEvent {
-  final String email;
+  final MyUser user;
   final String password;
 
   SignUp({
-    required this.email,
+    required this.user,
     required this.password,
   });
 }

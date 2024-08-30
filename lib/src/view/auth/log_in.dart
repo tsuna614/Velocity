@@ -44,18 +44,18 @@ class _LogInScreenState extends State<LogInScreen> {
 
     // Wait for the result and return the first element of this stream matching UserSuccess or UserFailure
     final result = await BlocProvider.of<UserBloc>(context).stream.firstWhere(
-          (state) => state is UserSuccess || state is UserFailure,
+          (state) => state is UserLoaded || state is UserFailure,
         );
 
     // Show a snackbar with the result
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          result is UserSuccess
+          result is UserLoaded
               ? 'Sign in successful'
               : (result as UserFailure).message,
         ),
-        backgroundColor: result is UserSuccess ? Colors.green : Colors.red,
+        backgroundColor: result is UserLoaded ? Colors.green : Colors.red,
       ),
     );
 
