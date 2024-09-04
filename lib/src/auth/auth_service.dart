@@ -13,6 +13,12 @@ class AuthService {
     await _credentialsBox.put('refreshToken', refreshToken);
   }
 
+  Future<void> updateAccessToken({
+    required String accessToken,
+  }) async {
+    await _credentialsBox.put('accessToken', accessToken);
+  }
+
   Future<void> clearUserToken() async {
     await _credentialsBox.delete('id');
     await _credentialsBox.delete('accessToken');

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/api/user_api.dart';
 import 'package:velocity_app/src/auth/auth_service.dart';
@@ -12,22 +11,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final UserApi userApi = UserApi();
 
   UserBloc() : super(UserInitial()) {
-    // this should be called first
-    // on<checkAuthState>((event, emit) async {
-    //   // final isSignedIn = await userApi.isUserSignedIn();
-    //   // if (isSignedIn) {
-    //   //   add(FetchUser());
-    //   // } else {
-    //   //   emit(UserInitial());
-    //   // }
-    //   if (userId.isEmpty) {
-    //     // User is not signed in (no userId in local database)
-    //     emit(UserInitial());
-    //   } else {
-    //     add(FetchUser());
-    //   }
-    // });
-
     on<FetchUser>((event, emit) async {
       // Call the API to fetch the user
       emit(UserLoading()); // call this to enter loading screen
@@ -39,7 +22,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           final MyUser user = await userApi.fetchUserData(userId: userId);
           emit(UserLoaded(user: user));
         } on DioException catch (e) {
-          emit(UserFailure(message: e.message!));
+          emit(UserFailure(message: e.response!.data!));
         }
       }
     });
@@ -51,7 +34,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await userApi.signUp(user: event.user, password: event.password);
         add(SignIn(email: event.user.email, password: event.password));
       } on DioException catch (e) {
-        emit(UserFailure(message: e.message!));
+        emit(UserFailure(message: e.response!.data!));
       }
     });
 
@@ -62,18 +45,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             await userApi.login(email: event.email, password: event.password);
         emit(UserLoaded(user: user));
       } on DioException catch (e) {
-        emit(UserFailure(message: e.message!));
+        emit(UserFailure(message: e.response!.data!));
       }
     });
 
     on<SignOut>((event, emit) async {
       // Call the API to sign out the user
       try {
-        // await _firebase.signOut();
         await _authService.clearUserToken();
         emit(UserInitial());
-      } on FirebaseAuthException catch (e) {
-        emit(UserFailure(message: e.message!));
+      } on DioException catch (e) {
+        emit(UserFailure(message: e.response!.statusMessage!));
       }
     });
 

@@ -80,36 +80,6 @@ class MyHomePage extends StatelessWidget {
     return Localizations.override(
       context: context,
       locale: const Locale('en'),
-      // child: StreamBuilder(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (context, snapshot) {
-      //     // Dispatch the FetchUser event when the user is authenticated
-      //     final userId = FirebaseAuth.instance.currentUser?.uid;
-      //     if (userId != null) {
-      //       context.read<UserBloc>().add(FetchUser(userId: userId));
-      //     }
-
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const Scaffold(
-      //         body: Center(
-      //           child: CircularProgressIndicator(),
-      //         ),
-      //       );
-      //     } else if (snapshot.hasData) {
-      //       return BlocBuilder<UserBloc, UserState>(
-      //         builder: (context, state) {
-      //           if (state is UserLoaded) {
-      //             return const MainScreen();
-      //           } else {
-      //             return const LoadingScreen();
-      //           }
-      //         },
-      //       );
-      //     } else {
-      //       return const LogInScreen();
-      //     }
-      //   },
-      // ),
       child: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
           if (state is UserLoading) {
@@ -124,3 +94,54 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(title: Text('Get Height of Child Widget')),
+//         body: MyWidget(),
+//       ),
+//     );
+//   }
+// }
+
+// class MyWidget extends StatefulWidget {
+//   @override
+//   _MyWidgetState createState() => _MyWidgetState();
+// }
+
+// class _MyWidgetState extends State<MyWidget> {
+//   final GlobalKey _key = GlobalKey();
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       final RenderBox renderBox =
+//           _key.currentContext?.findRenderObject() as RenderBox;
+//       final size = renderBox.size;
+//       print('Height: ${size.height}');
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Container(
+//         key: _key,
+//         color: Colors.blue,
+//         width: 100,
+//         height: 150,
+//         child: Center(child: Text('Hello World')),
+//       ),
+//     );
+//   }
+// }

@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/api/user_api.dart';
-import 'package:velocity_app/src/view/auth/detail_sign_up.dart';
+import 'package:velocity_app/src/bloc/user/user_events.dart';
+import 'package:velocity_app/src/bloc/user/user_states.dart';
+import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/model/user_model.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class DetailSignUpScreen extends StatefulWidget {
+  const DetailSignUpScreen(
+      {super.key, required this.enteredEmail, required this.enteredPassword});
+
+  final String enteredEmail;
+  final String enteredPassword;
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<DetailSignUpScreen> createState() => _DetailSignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
   final _loginForm = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
   var _isLoading = false;
 
   final UserApi userApi = UserApi();
@@ -29,21 +37,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    // Check for existing email, then either show error or navigate to detail sign up screen
-    if (await userApi.checkIfEmailExists(email: _emailController.text)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email already exists. Please try again.'),
-          backgroundColor: Colors.red,
-        ),
-      );
+    final MyUser user = MyUser(
+      userId:
+          "", // set a temporary userId, when post to backend mongodb will automatically generate an _id
+      email: widget.enteredEmail,
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      phone: _phoneNumberController.text,
+      profileImageUrl: "",
+    );
+
+    // Call the API to sign in the user
+    BlocProvider.of<UserBloc>(context).add(
+      SignUp(
+        user: user,
+        password: widget.enteredPassword,
+      ),
+    );
+
+    // Wait for the result and return the first element of this stream matching UserSuccess or UserFailure
+    final result = await BlocProvider.of<UserBloc>(context).stream.firstWhere(
+          (state) => state is UserLoaded || state is UserFailure,
+        );
+
+    // Handle result
+    if (result is UserLoaded) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => DetailSignUpScreen(
-            enteredEmail: _emailController.text,
-            enteredPassword: _passwordController.text,
-          ),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text((result as UserFailure).message),
+          backgroundColor: Colors.red,
         ),
       );
     }
@@ -55,9 +79,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -83,6 +107,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          const Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Last step.',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          const Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Tell us more about yourself.',
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.white),
+                            ),
+                          ),
+                          const SizedBox(height: 60),
                           buildSignUpForm(),
                           const SizedBox(height: 60),
                           if (_isLoading)
@@ -94,7 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   minimumSize: const Size.fromHeight(40)),
                               onPressed: _submitForm,
                               child: const Text(
-                                'Sign Up',
+                                'Confirm',
                                 style: TextStyle(
                                   color: Color.fromARGB(255, 0, 28, 112),
                                   fontWeight: FontWeight.bold,
@@ -147,13 +192,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Email address',
+              'First Name',
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
           const SizedBox(height: 6),
           TextFormField(
-            controller: _emailController,
+            controller: _firstNameController,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -161,21 +206,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   borderRadius: BorderRadius.circular(10)),
               filled: true,
               fillColor: Colors.white.withOpacity(0.1),
-              prefixIcon: const Icon(
-                Icons.mail_outline,
-                color: Colors.white,
-              ),
-              hintText: 'Enter your email address',
+              hintText: 'Enter your first name',
               hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
             ),
-            keyboardType: TextInputType.emailAddress,
-            autocorrect: false,
-            textCapitalization: TextCapitalization.none,
+            textCapitalization: TextCapitalization.words,
             validator: (value) {
-              if (value == null ||
-                  value.trim().isEmpty ||
-                  !value.contains('@')) {
-                return 'Please enter a valid email';
+              if (value == null || value.trim().isEmpty) {
+                return 'Invalid first name';
               }
               return null;
             },
@@ -184,13 +221,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Password',
+              'Last Name',
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
           const SizedBox(height: 6),
           TextFormField(
-            controller: _passwordController,
+            controller: _lastNameController,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -198,19 +235,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   borderRadius: BorderRadius.circular(10)),
               filled: true,
               fillColor: Colors.white.withOpacity(0.1),
-              prefixIcon: const Icon(
-                Icons.key,
-                color: Colors.white,
-              ),
-              hintText: 'Enter your password',
+              hintText: 'Enter your last name',
               hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
             ),
-            obscureText: true,
+            textCapitalization: TextCapitalization.words,
             validator: (value) {
-              if (value == null ||
-                  value.trim().isEmpty ||
-                  value.trim().length < 6) {
-                return 'Please enter a valid password';
+              if (value == null || value.trim().isEmpty) {
+                return 'Invalid last name';
               }
               return null;
             },
@@ -219,13 +250,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Confirm Password',
+              'Phone Number',
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
           const SizedBox(height: 6),
           TextFormField(
-            controller: _confirmPasswordController,
+            controller: _phoneNumberController,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -233,17 +264,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   borderRadius: BorderRadius.circular(10)),
               filled: true,
               fillColor: Colors.white.withOpacity(0.1),
-              prefixIcon: const Icon(
-                Icons.key,
-                color: Colors.white,
-              ),
-              hintText: 'Confirm your password',
+              hintText: 'Enter your phone number',
               hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
             ),
-            obscureText: true,
+            keyboardType: TextInputType.number,
             validator: (value) {
-              if (value != _passwordController.text) {
-                return 'Passwords do not match';
+              if (value == null || value.trim().isEmpty) {
+                return 'Invalid phone number';
               }
               return null;
             },

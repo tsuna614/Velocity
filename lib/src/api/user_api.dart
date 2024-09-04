@@ -32,6 +32,7 @@ class UserApi {
         firstName: userData['firstName'],
         lastName: userData['lastName'],
         phone: userData['number'],
+        profileImageUrl: userData['profileImageUrl'] ?? "",
       );
 
       await _authService.storeUserToken(
@@ -129,13 +130,17 @@ class UserApi {
         firstName: response.data[0]["firstName"],
         lastName: response.data[0]["lastName"],
         phone: response.data[0]["number"],
+        profileImageUrl: response.data[0]["profileImageUrl"] ?? "",
       );
 
       return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         try {
-          await refreshAccessToken(refreshToken: refreshToken);
+          await refreshAccessToken(
+            refreshToken: refreshToken,
+            accessToken: accessToken,
+          );
           return await fetchUserData(userId: userId);
         } on DioException catch (e) {
           printError(e);
@@ -160,9 +165,46 @@ class UserApi {
     return true;
   }
 
-  Future<void> refreshAccessToken({required String refreshToken}) async {
-    try {} on DioException {
-      rethrow;
+  Future<bool> checkIfEmailExists({required String email}) async {
+    try {
+      final Response response = await dio.get(
+        "$baseUrl/auth/getUserByEmail/$email",
+      );
+
+      return response.data.length != 0;
+    } on DioException catch (e) {
+      printError(e);
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
+
+  Future<void> refreshAccessToken(
+      {required String accessToken, required String refreshToken}) async {
+    try {
+      print("TOKEN EXPIRED");
+      final Response response = await dio.post(
+        "$baseUrl/auth/refresh",
+        options: Options(
+          headers: {
+            "x_authorization": accessToken,
+          },
+        ),
+        data: {
+          "refreshToken": refreshToken,
+        },
+      );
+      await _authService.updateAccessToken(
+          accessToken: response.data["accessToken"]);
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
     }
   }
 

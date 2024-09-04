@@ -5,6 +5,7 @@ class MyUser {
   final String lastName;
   final String phone;
   final List<String> bookmarkedTravels;
+  final String profileImageUrl;
 
   MyUser({
     required this.userId,
@@ -13,6 +14,7 @@ class MyUser {
     required this.lastName,
     required this.phone,
     this.bookmarkedTravels = const [],
+    required this.profileImageUrl,
   });
 
   MyUser copyWith({
@@ -22,6 +24,7 @@ class MyUser {
     String? lastName,
     String? phone,
     List<String>? bookmarkedTravels,
+    String? profileImageUrl,
   }) {
     return MyUser(
       // double question mark means if the first is null, use the second instead
@@ -31,6 +34,7 @@ class MyUser {
       lastName: lastName ?? this.lastName,
       phone: phone ?? this.phone,
       bookmarkedTravels: bookmarkedTravels ?? this.bookmarkedTravels,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     );
   }
 }

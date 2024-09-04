@@ -90,45 +90,39 @@ class _TourPageState extends State<TourPage> {
         ),
         body: Stack(
           children: [
-            Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    padding: EdgeInsets.only(
-                        top: bannerHeight + bannerSelectionCardHeight / 2 + 10),
-                    child: Column(
-                      children: List.generate(titleList.length, (index) {
-                        index == 0
-                            ? state.tours
-                            : index == 1
-                                ? state.hotels
-                                : index == 2
-                                    ? state.flights
-                                    : state.carRentals;
-                        return Column(
-                          key: keyList[index],
-                          children: [
-                            buildTitle(
-                              title: titleList[index],
-                              icon: iconList[index],
-                            ),
-                            SizedBox(
-                              height: 50,
-                              child: SortButtonHorizontalList(
-                                  sortOptions: sortOptions),
-                            ),
-                            TourCard(
-                              dataType: travelTypeList[index],
-                            ),
-                            const Divider(),
-                          ],
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-              ],
+            SingleChildScrollView(
+              controller: _scrollController,
+              padding: EdgeInsets.only(
+                  top: bannerHeight + bannerSelectionCardHeight / 2 + 10),
+              child: Column(
+                children: List.generate(titleList.length, (index) {
+                  index == 0
+                      ? state.tours
+                      : index == 1
+                          ? state.hotels
+                          : index == 2
+                              ? state.flights
+                              : state.carRentals;
+                  return Column(
+                    key: keyList[index],
+                    children: [
+                      buildTitle(
+                        title: titleList[index],
+                        icon: iconList[index],
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child:
+                            SortButtonHorizontalList(sortOptions: sortOptions),
+                      ),
+                      TourCard(
+                        dataType: travelTypeList[index],
+                      ),
+                      const Divider(),
+                    ],
+                  );
+                }),
+              ),
             ),
             buildBanner(),
           ],
