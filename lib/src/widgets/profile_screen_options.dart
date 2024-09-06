@@ -33,6 +33,17 @@ class _ProfileScreenOptionsState extends State<ProfileScreenOptions> {
             ),
           ],
         ),
+        buildTitle(title: "My Receipts"),
+        buildButtonsCard(
+          buttons: [
+            buildListTileButton(
+              title: "My Receipts",
+              subtitle: "View your booking receipts and history",
+              icon: FontAwesomeIcons.clockRotateLeft,
+              position: ButtonPosition.only,
+            ),
+          ],
+        ),
         buildTitle(title: "My Rewards"),
         buildButtonsCard(
           buttons: [

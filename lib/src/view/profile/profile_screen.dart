@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/user_model.dart';
+import 'package:velocity_app/src/view/profile/edit_profile.dart';
 import 'package:velocity_app/src/widgets/profile_screen_options.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,37 +16,37 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final MyUser userData =
-        (BlocProvider.of<UserBloc>(context).state as UserLoaded).user;
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-      ),
-      backgroundColor: Colors.grey.shade200,
-      body: ListView(
-        padding: const EdgeInsets.only(bottom: 20),
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 100,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  // borderRadius: BorderRadius.only(
-                  //   bottomLeft: Radius.circular(30),
-                  //   bottomRight: Radius.circular(30),
-                  // ),
+    return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          // scrolledUnderElevation: 0,
+        ),
+        backgroundColor: Colors.grey.shade200,
+        body: ListView(
+          padding: const EdgeInsets.only(bottom: 20),
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: 100,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    // borderRadius: BorderRadius.only(
+                    //   bottomLeft: Radius.circular(30),
+                    //   bottomRight: Radius.circular(30),
+                    // ),
+                  ),
                 ),
-              ),
-              buildUserProfileCard(userData),
-            ],
-          ),
-          ProfileScreenOptions(),
-        ],
-      ),
-    );
+                buildUserProfileCard((state as UserLoaded).user),
+              ],
+            ),
+            ProfileScreenOptions(),
+          ],
+        ),
+      );
+    });
   }
 
   Widget buildUserProfileCard(MyUser userData) {
@@ -100,7 +101,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return EditProfileScreen(originalUserData: userData);
+                        }));
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 0, 117, 212),
                         shape: RoundedRectangleBorder(
@@ -108,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       child: const Text(
-                        "View my profile",
+                        "Edit profile",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

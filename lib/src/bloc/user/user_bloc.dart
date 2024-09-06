@@ -59,10 +59,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
-    on<UpdateUser>((event, emit) {
+    on<UpdateUser>((event, emit) async {
       // Call the API to update the user
-      MyUser updatedUser = event.user;
-      emit(UserLoaded(user: updatedUser));
+      try {
+        MyUser updatedUser = event.user;
+        await userApi.updateUserData(user: updatedUser);
+        emit(UserLoaded(user: updatedUser));
+      } on DioException {
+        // don't emit UserFailure here, because we don't want to log out the user
+      }
     });
 
     on<AddBookmark>((event, emit) {

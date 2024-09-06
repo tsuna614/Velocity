@@ -7,7 +7,7 @@ import 'package:velocity_app/src/view/booking/my_booking.dart';
 import 'package:velocity_app/src/view/home/home.dart';
 import 'package:velocity_app/src/view/profile/profile_screen.dart';
 import 'package:velocity_app/src/view/search.dart';
-
+  
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -53,15 +53,15 @@ class _MainScreenState extends State<MainScreen> {
         unselectedItemColor: Colors.grey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(FontAwesomeIcons.asymmetrik),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.play_circle),
+            label: 'Explore',
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.briefcase),
+            icon: Icon(FontAwesomeIcons.calendarDays),
             label: 'My Booking',
           ),
           BottomNavigationBarItem(

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:velocity_app/src/auth/auth_service.dart';
 import 'package:velocity_app/src/model/user_model.dart';
@@ -185,7 +187,7 @@ class UserApi {
   Future<void> refreshAccessToken(
       {required String accessToken, required String refreshToken}) async {
     try {
-      print("TOKEN EXPIRED");
+      print("TOKEN REFRESHED");
       final Response response = await dio.post(
         "$baseUrl/auth/refresh",
         options: Options(
@@ -200,6 +202,53 @@ class UserApi {
       await _authService.updateAccessToken(
           accessToken: response.data["accessToken"]);
     } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
+
+  Future<String> uploadAvatar({required File image}) async {
+    try {
+      final Response response = await dio.post(
+        "$baseUrl/user/uploadAvatar/${await _authService.getUserId()}",
+        data: FormData.fromMap({
+          "image": await MultipartFile.fromFile(image.path),
+        }),
+      );
+      return response.data["profileImageUrl"];
+    } on DioException catch (e) {
+      printError(e);
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
+
+  Future<void> updateUserData({required MyUser user}) async {
+    try {
+      print(user.userId);
+      await dio.put(
+        "$baseUrl/user/updateUserById/${user.userId}",
+        data: {
+          "firstName": user.firstName,
+          "lastName": user.lastName,
+          "email": user.email,
+          "number": user.phone,
+          "profileImageUrl": user.profileImageUrl,
+        },
+        options: Options(
+          headers: {
+            "x_authorization": await _authService.getUserAccessToken(),
+          },
+        ),
+      );
+    } on DioException catch (e) {
+      printError(e);
       throw DioException(
         requestOptions: e.requestOptions,
         response: e.response,

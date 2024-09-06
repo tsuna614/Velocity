@@ -160,3 +160,94 @@
 //     );
 //   }
 // }
+
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+class TestScreen extends StatefulWidget {
+  const TestScreen({super.key});
+
+  @override
+  State<TestScreen> createState() => _TestScreenState();
+}
+
+class _TestScreenState extends State<TestScreen> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isPanelVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      // User is scrolling down, hide the panel
+      if (_isPanelVisible) {
+        setState(() {
+          _isPanelVisible = false;
+        });
+      }
+    } else if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      // User is scrolling up, show the panel
+      if (!_isPanelVisible) {
+        setState(() {
+          _isPanelVisible = true;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Scroll Panel Example")),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: List.generate(30, (index) {
+                return Container(
+                  height: 100,
+                  margin: EdgeInsets.all(8),
+                  color: Colors.blue[100 * (index % 9)],
+                  child: Center(child: Text("Item $index")),
+                );
+              }),
+            ),
+          ),
+          // Panel that appears/disappears at the bottom
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            left: 0,
+            right: 0,
+            bottom: _isPanelVisible ? 0 : -60, // Slide up and down
+            child: Container(
+              color: Colors.red,
+              height: 60,
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Add to cart logic
+                  },
+                  child: Text("Add to Cart"),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

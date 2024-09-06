@@ -10,7 +10,7 @@ class LoadingScreen extends StatelessWidget {
       backgroundColor: Colors.lightBlue,
       body: Center(
         child: Icon(
-          FontAwesomeIcons.accusoft,
+          FontAwesomeIcons.asymmetrik,
           size: 100,
           color: Colors.white,
         ),
