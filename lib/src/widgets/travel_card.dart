@@ -15,8 +15,8 @@ enum TravelType {
   car,
 }
 
-class TourCard extends StatelessWidget {
-  const TourCard({super.key, required this.dataType});
+class TravelCard extends StatelessWidget {
+  const TravelCard({super.key, required this.dataType});
 
   final TravelType dataType;
 
@@ -163,19 +163,22 @@ class TourCard extends StatelessWidget {
       right: 0,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-            onTap: () {
-              onBookmarkTap(context, travelData[index].id);
-            },
-            child: Icon(
-              userData.user.bookmarkedTravels.contains(travelData[index].id)
-                  ? FontAwesomeIcons.solidHeart
-                  : FontAwesomeIcons.heart,
-              color:
-                  userData.user.bookmarkedTravels.contains(travelData[index].id)
-                      ? Colors.red
-                      : Colors.white,
-            )),
+        child: Hero(
+          tag: "${travelData[index].id}-bookmark",
+          child: GestureDetector(
+              onTap: () {
+                onBookmarkTap(context, travelData[index].id);
+              },
+              child: Icon(
+                userData.user.bookmarkedTravels.contains(travelData[index].id)
+                    ? FontAwesomeIcons.solidHeart
+                    : FontAwesomeIcons.heart,
+                color: userData.user.bookmarkedTravels
+                        .contains(travelData[index].id)
+                    ? Colors.red
+                    : Colors.white,
+              )),
+        ),
       ),
     );
   }

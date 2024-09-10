@@ -259,19 +259,23 @@ class _DetailBookingState extends State<DetailBooking> {
             ),
           ),
           const Spacer(),
-          IconButton(
-            onPressed: () {
-              GeneralApi().toggleBookmark(
-                  context: context, travelId: widget.travelData.id);
-            },
-            icon: Icon(
-              state.user.bookmarkedTravels.contains(widget.travelData.id)
-                  ? FontAwesomeIcons.solidHeart
-                  : FontAwesomeIcons.heart,
-              size: 30,
-              color: state.user.bookmarkedTravels.contains(widget.travelData.id)
-                  ? Colors.red
-                  : Colors.white,
+          Hero(
+            tag: "${widget.travelData.id}-bookmark",
+            child: IconButton(
+              onPressed: () {
+                GeneralApi().toggleBookmark(
+                    context: context, travelId: widget.travelData.id);
+              },
+              icon: Icon(
+                state.user.bookmarkedTravels.contains(widget.travelData.id)
+                    ? FontAwesomeIcons.solidHeart
+                    : FontAwesomeIcons.heart,
+                size: 30,
+                color:
+                    state.user.bookmarkedTravels.contains(widget.travelData.id)
+                        ? Colors.red
+                        : Colors.white,
+              ),
             ),
           ),
         ],

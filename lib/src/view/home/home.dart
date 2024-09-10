@@ -6,7 +6,7 @@ import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
 import 'package:velocity_app/src/widgets/home_travel_banner_buttons.dart';
 import 'package:velocity_app/src/widgets/search_bar.dart';
 import 'package:velocity_app/src/widgets/sort_button_horizontal_list.dart';
-import 'package:velocity_app/src/widgets/tour_card.dart';
+import 'package:velocity_app/src/widgets/travel_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -115,7 +115,7 @@ class _TourPageState extends State<TourPage> {
                         child:
                             SortButtonHorizontalList(sortOptions: sortOptions),
                       ),
-                      TourCard(
+                      TravelCard(
                         dataType: travelTypeList[index],
                       ),
                       const Divider(),
