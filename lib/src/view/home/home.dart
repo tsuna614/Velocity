@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
+import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/widgets/home_travel_banner_buttons.dart';
 import 'package:velocity_app/src/widgets/search_bar.dart';
-import 'package:velocity_app/src/widgets/sort_button_horizontal_list.dart';
 import 'package:velocity_app/src/widgets/travel_card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -53,6 +54,7 @@ class _TourPageState extends State<TourPage> {
     'Rating',
     'Duration',
     'Popularity',
+    'Newest',
   ];
 
   final List<TravelType> travelTypeList = [
@@ -96,13 +98,10 @@ class _TourPageState extends State<TourPage> {
                   top: bannerHeight + bannerSelectionCardHeight / 2 + 10),
               child: Column(
                 children: List.generate(titleList.length, (index) {
-                  index == 0
-                      ? state.tours
-                      : index == 1
-                          ? state.hotels
-                          : index == 2
-                              ? state.flights
-                              : state.carRentals;
+                  List<Travel> travelData = List.from(GeneralApi()
+                      .getTravelDataOfType(
+                          context: context, dataType: travelTypeList[index]));
+
                   return Column(
                     key: keyList[index],
                     children: [
@@ -110,13 +109,9 @@ class _TourPageState extends State<TourPage> {
                         title: titleList[index],
                         icon: iconList[index],
                       ),
-                      SizedBox(
-                        height: 50,
-                        child:
-                            SortButtonHorizontalList(sortOptions: sortOptions),
-                      ),
                       TravelCard(
-                        dataType: travelTypeList[index],
+                        sortOptions: sortOptions,
+                        travelData: travelData,
                       ),
                       const Divider(),
                     ],

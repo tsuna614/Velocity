@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
           Locale('es'), // Spanish
         ],
         home: MyHomePage(),
+        // home: DatePickerExample(),
         // home: CameraTest(),
         // home: TestScreen(),
       ),

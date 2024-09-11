@@ -7,6 +7,7 @@ import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/view/home/detail_booking.dart';
+import 'package:velocity_app/src/widgets/sort_button_horizontal_list.dart';
 
 enum TravelType {
   tour,
@@ -15,81 +16,124 @@ enum TravelType {
   car,
 }
 
-class TravelCard extends StatelessWidget {
-  const TravelCard({super.key, required this.dataType});
+class TravelCard extends StatefulWidget {
+  const TravelCard(
+      {super.key, required this.sortOptions, required this.travelData});
 
-  final TravelType dataType;
+  final List<String> sortOptions;
+  final List<Travel> travelData;
+
+  @override
+  State<TravelCard> createState() => _TravelCardState();
+}
+
+class _TravelCardState extends State<TravelCard> {
+  String selectedSortOption = "";
 
   void onBookmarkTap(BuildContext context, String id) {
     GeneralApi().toggleBookmark(context: context, travelId: id);
   }
 
+  void onSortOptionTap(String sortOption) {
+    setState(() {
+      selectedSortOption = sortOption;
+    });
+    print(selectedSortOption);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final travelData =
-        GeneralApi().getTravelDataOfType(context: context, dataType: dataType);
+    // // I used List.from here so that the original list is not modified
+    // List<Travel> travelData = List.from(GeneralApi()
+    //     .getTravelDataOfType(context: context, dataType: widget.dataType));
+    // List<Travel> originalTravelData = List.from(travelData);
+    List<Travel> travelData = List.from(widget.travelData);
+
+    switch (selectedSortOption) {
+      case 'Price':
+        travelData.sort((a, b) => a.price.compareTo(b.price));
+        break;
+      case 'Rating':
+        travelData.sort((a, b) => a.rating.compareTo(b.rating));
+        break;
+      default:
+        travelData = widget.travelData;
+        break;
+    }
 
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
       final userData = state as UserLoaded;
 
-      return SizedBox(
-        height: 350,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: travelData.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                clipBehavior: Clip.hardEdge,
-                elevation: 2,
-                child: Stack(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return DetailBooking(
-                                  travelData: travelData[index]);
-                            },
-                          ),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Hero(
-                            tag: travelData[index].id,
-                            child: FadeInImage(
-                              height: 200,
-                              width: 200,
-                              placeholder: MemoryImage(kTransparentImage),
-                              image:
-                                  NetworkImage(travelData[index].imageUrl[0]),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Flexible(
-                            child: Container(
-                              width: 200,
-                              child:
-                                  buildTourDetails(context, travelData, index),
-                            ),
-                          ),
-                        ],
-                      ),
+      return Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: SortButtonHorizontalList(
+              sortOptions: widget.sortOptions,
+              onSortOptionTap: onSortOptionTap,
+            ),
+          ),
+          SizedBox(
+            height: 350,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: travelData.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    buildBookmarkButton(context, travelData, userData, index),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+                    clipBehavior: Clip.hardEdge,
+                    elevation: 2,
+                    child: Stack(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return DetailBooking(
+                                      travelData: travelData[index]);
+                                },
+                              ),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              Hero(
+                                tag: travelData[index].id,
+                                child: FadeInImage(
+                                  height: 200,
+                                  width: 200,
+                                  placeholder: MemoryImage(kTransparentImage),
+                                  image: NetworkImage(
+                                      travelData[index].imageUrl[0]),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Flexible(
+                                child: Container(
+                                  width: 200,
+                                  child: buildTourDetails(
+                                      context, travelData, index),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        buildBookmarkButton(
+                            context, travelData, userData, index),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       );
     });
   }

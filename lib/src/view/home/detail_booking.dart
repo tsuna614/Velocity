@@ -7,6 +7,8 @@ import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
+import 'package:velocity_app/src/widgets/amount_picker.dart';
+import 'package:velocity_app/src/widgets/custom_date_picker.dart';
 
 class DetailBooking extends StatefulWidget {
   const DetailBooking({super.key, required this.travelData});
@@ -20,6 +22,22 @@ class DetailBooking extends StatefulWidget {
 class _DetailBookingState extends State<DetailBooking> {
   final ScrollController _scrollController = ScrollController();
   bool _showBottomPanel = true;
+  final double _bottomPanelHeight = 80;
+
+  int _amountCounter = 0;
+  DateTime _selectedDate = DateTime.now();
+
+  void onDateSelected(DateTime date) {
+    setState(() {
+      _selectedDate = date;
+    });
+  }
+
+  void onAmountSelected(int amount) {
+    setState(() {
+      _amountCounter = amount;
+    });
+  }
 
   void _scrollListener() {
     if (_scrollController.position.userScrollDirection ==
@@ -34,6 +52,15 @@ class _DetailBookingState extends State<DetailBooking> {
         ScrollDirection.forward) {
       // User is scrolling up, show the panel
       if (!_showBottomPanel) {
+        setState(() {
+          _showBottomPanel = true;
+        });
+      }
+    }
+
+    // If user scrolls to the bottom of the screen, show the panel
+    if (_scrollController.position.atEdge) {
+      if (_scrollController.position.pixels != 0) {
         setState(() {
           _showBottomPanel = true;
         });
@@ -57,57 +84,94 @@ class _DetailBookingState extends State<DetailBooking> {
       }
 
       return Scaffold(
-        body: Stack(
+        body: Column(
           children: [
-            SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: Stack(
                 children: [
-                  Hero(
-                    tag: widget.travelData.id,
-                    child: FadeInImage(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      placeholder: MemoryImage(kTransparentImage),
-                      image: NetworkImage(widget.travelData.imageUrl[0]),
-                      fit: BoxFit.cover,
+                  SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: _bottomPanelHeight + 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildDetailedImage(state),
+                          buildDescription(),
+                          Divider(
+                            color: Colors.black.withOpacity(0.1),
+                            thickness: 2,
+                          ),
+                          buildDetailInformation(),
+                          Divider(
+                            color: Colors.black.withOpacity(0.1),
+                            thickness: 2,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: CustomDatePicker(
+                              onDateSelected: onDateSelected,
+                              selectedDate: _selectedDate,
+                            ),
+                          ),
+                          Divider(
+                            color: Colors.black.withOpacity(0.1),
+                            thickness: 2,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: AmountPicker(
+                                money: widget.travelData.price,
+                                description: "per ticket",
+                                onAmountSelected: onAmountSelected,
+                                amount: _amountCounter),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  buildDescription(),
-                  Divider(
-                    color: Colors.black.withOpacity(0.1),
-                    thickness: 2,
-                  ),
-                  buildDetailInformation(),
-                  Divider(
-                    color: Colors.black.withOpacity(0.1),
-                    thickness: 2,
-                  ),
-                  buildDetailInformation(),
-                  Divider(
-                    color: Colors.black.withOpacity(0.1),
-                    thickness: 2,
-                  ),
+                  // the reason I wrap the stack with expanded wrapped with column
+                  // is because I want this panel to appear at the bottom of the screen
+                  showBottomPanel(),
                 ],
               ),
             ),
-            buildBookmarkButton(state),
-            showBottomPanel(),
           ],
         ),
       );
     });
   }
 
+  Widget buildDetailedImage(UserLoaded state) {
+    return SizedBox(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.4,
+      child: Stack(
+        children: [
+          Hero(
+            tag: widget.travelData.id,
+            child: FadeInImage(
+              height: double.infinity,
+              width: double.infinity,
+              placeholder: MemoryImage(kTransparentImage),
+              image: NetworkImage(widget.travelData.imageUrl[0]),
+              fit: BoxFit.cover,
+            ),
+          ),
+          buildTopButtons(state),
+        ],
+      ),
+    );
+  }
+
   Widget showBottomPanel() {
     return AnimatedPositioned(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
       left: 0,
       right: 0,
       bottom: _showBottomPanel ? 0 : -80, // Slide up and down
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -118,7 +182,7 @@ class _DetailBookingState extends State<DetailBooking> {
           ],
           color: Colors.white,
         ),
-        height: 80,
+        height: _bottomPanelHeight,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
@@ -128,7 +192,7 @@ class _DetailBookingState extends State<DetailBooking> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "\$${widget.travelData.price}",
+                    "\$${(_amountCounter * widget.travelData.price).toStringAsFixed(2)}",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -191,6 +255,7 @@ class _DetailBookingState extends State<DetailBooking> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Overview",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -244,7 +309,7 @@ class _DetailBookingState extends State<DetailBooking> {
     );
   }
 
-  Widget buildBookmarkButton(UserLoaded state) {
+  Widget buildTopButtons(UserLoaded state) {
     return SafeArea(
       child: Row(
         children: [

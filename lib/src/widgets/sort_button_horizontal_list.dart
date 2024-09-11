@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SortButtonHorizontalList extends StatefulWidget {
-  const SortButtonHorizontalList({super.key, required this.sortOptions});
+  const SortButtonHorizontalList({
+    super.key,
+    required this.sortOptions,
+    required this.onSortOptionTap,
+  });
 
   final List<String> sortOptions;
+  final Function(String) onSortOptionTap;
 
   @override
   State<SortButtonHorizontalList> createState() =>
@@ -37,6 +42,7 @@ class _SortButtonHorizontalListState extends State<SortButtonHorizontalList> {
                 } else {
                   selectedItems = '';
                 }
+                widget.onSortOptionTap(selectedItems);
               });
             },
             style: ButtonStyle(
