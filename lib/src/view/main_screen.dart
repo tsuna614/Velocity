@@ -6,8 +6,8 @@ import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/view/booking/my_booking.dart';
 import 'package:velocity_app/src/view/home/home.dart';
 import 'package:velocity_app/src/view/profile/profile_screen.dart';
-import 'package:velocity_app/src/view/search.dart';
-  
+import 'package:velocity_app/src/view/explore/explore_screen.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = const [
     HomeScreen(),
-    SearchScreen(),
+    ExploreScreen(),
     MyBookingScreen(),
     ProfileScreen(),
   ];

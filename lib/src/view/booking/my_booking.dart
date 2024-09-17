@@ -25,7 +25,10 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Bookings'),
+        title: const Text(
+          'My Bookings',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         elevation: 0,

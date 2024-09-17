@@ -44,36 +44,6 @@ class UserApi {
       );
 
       return user;
-
-      // // Check if the response data is a map
-      // if (response.data is Map<String, dynamic>) {
-      //   final Map<String, dynamic> responseData = response.data;
-
-      //   // Extract specific fields
-      //   final String? accessToken = responseData['accessToken'];
-      //   final String? refreshToken = responseData['refreshToken'];
-      //   final String? message = responseData['msg'];
-
-      //   // Print the extracted data
-      //   print('Message: $message');
-      //   print('Access Token: $accessToken');
-      //   print('Refresh Token: $refreshToken');
-
-      //   // You can also extract user details if needed
-      // if (responseData['user'] is List) {
-      //   final List<dynamic> userList = responseData['user'];
-      //   if (userList.isNotEmpty) {
-      //     final Map<String, dynamic> user = userList[0];
-      //     final String? email = user['email'];
-      //     final String? firstName = user['firstName'];
-      //     final String? lastName = user['lastName'];
-      //     print('User Email: $email');
-      //     print('User Name: $firstName $lastName');
-      //   }
-      // }
-      // } else {
-      //   print('Unexpected response format');
-      // }
     } on DioException catch (e) {
       printError(e);
       throw DioException(
@@ -110,57 +80,6 @@ class UserApi {
 
   Future<void> signOut() async {
     await _authService.clearUserToken();
-  }
-
-  Future<MyUser> fetchUserData({required String userId}) async {
-    final accessToken = await _authService.getUserAccessToken();
-    final refreshToken = await _authService.getUserRefreshToken();
-
-    try {
-      final Response response = await dio.get(
-        "$baseUrl/user/getUserById/$userId",
-        options: Options(
-          headers: {
-            "x_authorization": accessToken,
-          },
-        ),
-      );
-
-      MyUser user = MyUser(
-        userId: userId,
-        email: response.data[0]["email"],
-        firstName: response.data[0]["firstName"],
-        lastName: response.data[0]["lastName"],
-        phone: response.data[0]["number"],
-        profileImageUrl: response.data[0]["profileImageUrl"] ?? "",
-      );
-
-      return user;
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        try {
-          await refreshAccessToken(
-            refreshToken: refreshToken,
-            accessToken: accessToken,
-          );
-          return await fetchUserData(userId: userId);
-        } on DioException catch (e) {
-          printError(e);
-          throw DioException(
-            requestOptions: e.requestOptions,
-            response: e.response,
-            message: e.message,
-          );
-        }
-      } else {
-        printError(e);
-        throw DioException(
-          requestOptions: e.requestOptions,
-          response: e.response,
-          message: e.message,
-        );
-      }
-    }
   }
 
   Future<bool> isUserSignedIn() async {
@@ -263,6 +182,58 @@ class UserApi {
       print('Status code: ${e.response?.statusCode}');
     } else {
       print('Error message: ${e.message}');
+    }
+  }
+
+  // User Rest API
+  Future<MyUser> fetchUserDataById({required String userId}) async {
+    final accessToken = await _authService.getUserAccessToken();
+    final refreshToken = await _authService.getUserRefreshToken();
+
+    try {
+      final Response response = await dio.get(
+        "$baseUrl/user/getUserById/$userId",
+        options: Options(
+          headers: {
+            "x_authorization": accessToken,
+          },
+        ),
+      );
+
+      MyUser user = MyUser(
+        userId: userId,
+        email: response.data[0]["email"],
+        firstName: response.data[0]["firstName"],
+        lastName: response.data[0]["lastName"],
+        phone: response.data[0]["number"],
+        profileImageUrl: response.data[0]["profileImageUrl"] ?? "",
+      );
+
+      return user;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        try {
+          await refreshAccessToken(
+            refreshToken: refreshToken,
+            accessToken: accessToken,
+          );
+          return await fetchUserDataById(userId: userId);
+        } on DioException catch (e) {
+          printError(e);
+          throw DioException(
+            requestOptions: e.requestOptions,
+            response: e.response,
+            message: e.message,
+          );
+        }
+      } else {
+        printError(e);
+        throw DioException(
+          requestOptions: e.requestOptions,
+          response: e.response,
+          message: e.message,
+        );
+      }
     }
   }
 }

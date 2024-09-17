@@ -80,6 +80,8 @@ class _TravelCardState extends State<TravelCard> {
               itemCount: travelData.length,
               itemBuilder: (context, index) {
                 return Padding(
+                  key: ValueKey(travelData[index]
+                      .id), // remove this key to see the image (state) getting mixed up when sorting the list
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     shape: RoundedRectangleBorder(

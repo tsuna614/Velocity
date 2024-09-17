@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:velocity_app/src/bloc/post/post_bloc.dart';
+import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
@@ -40,8 +42,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserBloc>(
-          create: (context) => UserBloc()
-            ..add(FetchUser()), // NOTE: remove ..add(FetchUser()) later
+          create: (context) => UserBloc()..add(FetchUser()),
+        ),
+        BlocProvider<PostBloc>(
+          create: (context) => PostBloc()..add(FetchPosts()),
         ),
         BlocProvider<TravelBloc>(
           create: (context) {
@@ -67,9 +71,7 @@ class MyApp extends StatelessWidget {
           Locale('es'), // Spanish
         ],
         home: MyHomePage(),
-        // home: DatePickerExample(),
-        // home: CameraTest(),
-        // home: TestScreen(),
+        // home: NestedScrollViewExample(),
       ),
     );
   }
@@ -97,54 +99,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(title: Text('Get Height of Child Widget')),
-//         body: MyWidget(),
-//       ),
-//     );
-//   }
-// }
-
-// class MyWidget extends StatefulWidget {
-//   @override
-//   _MyWidgetState createState() => _MyWidgetState();
-// }
-
-// class _MyWidgetState extends State<MyWidget> {
-//   final GlobalKey _key = GlobalKey();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       final RenderBox renderBox =
-//           _key.currentContext?.findRenderObject() as RenderBox;
-//       final size = renderBox.size;
-//       print('Height: ${size.height}');
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Container(
-//         key: _key,
-//         color: Colors.blue,
-//         width: 100,
-//         height: 150,
-//         child: Center(child: Text('Hello World')),
-//       ),
-//     );
-//   }
-// }

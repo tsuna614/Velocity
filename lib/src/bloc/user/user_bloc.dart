@@ -5,6 +5,7 @@ import 'package:velocity_app/src/auth/auth_service.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/user_model.dart';
+import 'package:velocity_app/src/data/global_data.dart' as global_data;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final AuthService _authService = AuthService();
@@ -19,7 +20,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         emit(UserInitial());
       } else {
         try {
-          final MyUser user = await userApi.fetchUserData(userId: userId);
+          final MyUser user = await userApi.fetchUserDataById(userId: userId);
+          global_data.userId = userId; // set the global user id for easy access
           emit(UserLoaded(user: user));
         } on DioException catch (e) {
           emit(UserFailure(message: e.response!.data!));

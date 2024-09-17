@@ -1,4 +1,5 @@
 import 'package:uuid/uuid.dart';
+import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 
 var uuid = Uuid();
@@ -233,5 +234,29 @@ List<CarRental> carRentals = [
     location: 'San Francisco, CA',
     contact: '555-3456',
     carType: 'Sedan',
+  ),
+];
+
+List<MyPost> dummyPosts = [
+  MyPost(
+    postId: uuid.v4(),
+    userId: '66d81aa5592d9cbcdfe445b4',
+    content: "I'm going to Paris next week!",
+    imageUrl:
+        'https://cimg3.ibsrv.net/ibimg/hgm/1600x900-1/100/561/cadillac-escala-concept_100561247.jpg',
+  ),
+  MyPost(
+    postId: uuid.v4(),
+    userId: '66d81aa5592d9cbcdfe445b4',
+    content: "I'm going to Paris next week!",
+    imageUrl:
+        'https://cimg3.ibsrv.net/ibimg/hgm/1600x900-1/100/561/cadillac-escala-concept_100561247.jpg',
+  ),
+  MyPost(
+    postId: uuid.v4(),
+    userId: '66d81aa5592d9cbcdfe445b4',
+    content: "I'm going to Paris next week!",
+    imageUrl:
+        'https://cimg3.ibsrv.net/ibimg/hgm/1600x900-1/100/561/cadillac-escala-concept_100561247.jpg',
   ),
 ];
