@@ -22,7 +22,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final UserApi userApi = UserApi();
   bool _isLoading = false;
 
   File? _image;
@@ -131,7 +130,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     // check if user have uploaded a new image first, then upload it, returning the url from the server
     String newProfileImageUrl =
-        _image != null ? await userApi.uploadAvatar(image: _image!) : "";
+        _image != null ? await UserApi.uploadAvatar(image: _image!) : "";
 
     // update the user data where changed
     MyUser newUser = widget.originalUserData;

@@ -5,7 +5,7 @@ import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
-import 'package:velocity_app/src/widgets/travel_card.dart';
+import 'package:velocity_app/src/widgets/traveling/travel_card.dart';
 
 class TravelApi {}
 

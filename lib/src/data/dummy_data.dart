@@ -242,21 +242,23 @@ List<MyPost> dummyPosts = [
     postId: uuid.v4(),
     userId: '66d81aa5592d9cbcdfe445b4',
     content: "I'm going to Paris next week!",
+    imageUrl: 'https://cdn.jdpower.com/Most%20Reliable%20Minivans.jpg',
+    dateCreated: DateTime.now(),
+  ),
+  MyPost(
+    postId: uuid.v4(),
+    userId: '66d81aa5592d9cbcdfe445b4',
+    // content: "I'm going to Paris next week!",
     imageUrl:
         'https://cimg3.ibsrv.net/ibimg/hgm/1600x900-1/100/561/cadillac-escala-concept_100561247.jpg',
+    dateCreated: DateTime.now(),
   ),
   MyPost(
     postId: uuid.v4(),
     userId: '66d81aa5592d9cbcdfe445b4',
     content: "I'm going to Paris next week!",
-    imageUrl:
-        'https://cimg3.ibsrv.net/ibimg/hgm/1600x900-1/100/561/cadillac-escala-concept_100561247.jpg',
-  ),
-  MyPost(
-    postId: uuid.v4(),
-    userId: '66d81aa5592d9cbcdfe445b4',
-    content: "I'm going to Paris next week!",
-    imageUrl:
-        'https://cimg3.ibsrv.net/ibimg/hgm/1600x900-1/100/561/cadillac-escala-concept_100561247.jpg',
+    // imageUrl:
+    //     'https://www.autocar.co.uk/sites/autocar.co.uk/files/mercedes-amg-sl-top-10_0_0.jpg',
+    dateCreated: DateTime.now(),
   ),
 ];

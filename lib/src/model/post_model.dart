@@ -1,8 +1,9 @@
 class MyPost {
   final String postId;
   final String userId;
-  final String content;
-  final String imageUrl;
+  final DateTime dateCreated;
+  final String? content;
+  final String? imageUrl;
   final List<String>? likes;
   final List<String>? comments;
   final List<String>? shares;
@@ -11,12 +12,12 @@ class MyPost {
   MyPost({
     required this.postId,
     required this.userId,
-    required this.content,
-    required this.imageUrl,
+    this.content = "",
+    this.imageUrl = "",
+    required this.dateCreated,
     this.likes = const [],
     this.comments = const [],
     this.shares = const [],
-    // required this.dateCreated,
   });
 
   MyPost copyWith({
@@ -27,7 +28,7 @@ class MyPost {
     List<String>? likes,
     List<String>? comments,
     List<String>? shares,
-    // DateTime? dateCreated,
+    DateTime? dateCreated,
   }) {
     return MyPost(
       postId: postId ?? this.postId,
@@ -37,7 +38,7 @@ class MyPost {
       likes: likes ?? this.likes,
       comments: comments ?? this.comments,
       shares: shares ?? this.shares,
-      // dateCreated: dateCreated ?? this.dateCreated,
+      dateCreated: dateCreated ?? this.dateCreated,
     );
   }
 }

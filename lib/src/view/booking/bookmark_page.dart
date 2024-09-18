@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
-import 'package:velocity_app/src/widgets/travel_card_wide.dart';
+import 'package:velocity_app/src/widgets/traveling/travel_card_wide.dart';
 
 // NOTE TO SELF: The bookmarked travel's id is stored in the user's bookmarkedTravels list.
 // The TravelCardWide widget display all travel datas that are passed into it

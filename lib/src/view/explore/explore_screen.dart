@@ -10,15 +10,12 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
-    final List<Widget> tabs = [
-      const CommunityTab(),
-      const PersonalTab(),
-    ];
-
     return DefaultTabController(
-      length: tabs.length,
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.grey.shade200,
         body: NestedScrollView(
@@ -27,8 +24,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
               SliverOverlapAbsorber(
                 handle:
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                sliver: const SliverAppBar(
-                  title: Text(
+                sliver: SliverAppBar(
+                  title: const Text(
                     'Velocity',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -36,7 +33,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   // expandedHeight: 150.0,
                   // forceElevated: innerBoxIsScrolled,
                   bottom: TabBar(
-                    tabs: [
+                    tabs: const [
                       Tab(
                         icon: Icon(Icons.group),
                       ),
@@ -46,6 +43,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ],
                     labelColor: Colors.blue,
                     indicatorColor: Colors.blue,
+                    onTap: (value) {
+                      _scrollController.animateTo(
+                        0.0,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
                   ),
                   floating: true,
                   backgroundColor: Colors.white,
@@ -54,10 +58,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
             ];
           },
-          body: Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: TabBarView(
-              children: tabs,
+          // note to future self: for some reason, without SafeArea, the padding of ONLY PersonalTab doesn't work
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50.0),
+              child: TabBarView(
+                children: <Widget>[
+                  CommunityTab(scrollController: _scrollController),
+                  PersonalTab(scrollController: _scrollController),
+                ],
+              ),
             ),
           ),
         ),

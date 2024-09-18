@@ -5,9 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
-import 'package:velocity_app/src/widgets/home_travel_banner_buttons.dart';
+import 'package:velocity_app/src/widgets/traveling/home_travel_banner_buttons.dart';
 import 'package:velocity_app/src/widgets/search_bar.dart';
-import 'package:velocity_app/src/widgets/travel_card.dart';
+import 'package:velocity_app/src/widgets/traveling/travel_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

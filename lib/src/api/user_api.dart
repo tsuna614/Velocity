@@ -1,16 +1,16 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:velocity_app/src/auth/auth_service.dart';
+import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 
-class UserApi {
+abstract class UserApi {
   // String baseUrl = "http://localhost:3000";
-  String baseUrl = "http://10.0.2.2:3000";
-  final dio = Dio();
-  final AuthService _authService = AuthService();
+  static String baseUrl = "http://10.0.2.2:3000";
+  static final dio = Dio();
+  // final AuthService HiveService = AuthService();
 
-  Future<MyUser> login(
+  static Future<MyUser> login(
       {required String email, required String password}) async {
     try {
       final Response response = await dio.post(
@@ -37,7 +37,7 @@ class UserApi {
         profileImageUrl: userData['profileImageUrl'] ?? "",
       );
 
-      await _authService.storeUserToken(
+      await HiveService.storeUserToken(
         id: userData['_id'],
         accessToken: response.data['accessToken'],
         refreshToken: response.data['refreshToken'],
@@ -54,7 +54,7 @@ class UserApi {
     }
   }
 
-  Future<MyUser> signUp(
+  static Future<MyUser> signUp(
       {required MyUser user, required String password}) async {
     try {
       final Response response = await dio.post("$baseUrl/auth/register", data: {
@@ -78,15 +78,15 @@ class UserApi {
     }
   }
 
-  Future<void> signOut() async {
-    await _authService.clearUserToken();
+  static Future<void> signOut() async {
+    await HiveService.clearUserToken();
   }
 
-  Future<bool> isUserSignedIn() async {
+  static Future<bool> isUserSignedIn() async {
     return true;
   }
 
-  Future<bool> checkIfEmailExists({required String email}) async {
+  static Future<bool> checkIfEmailExists({required String email}) async {
     try {
       final Response response = await dio.get(
         "$baseUrl/auth/getUserByEmail/$email",
@@ -103,7 +103,7 @@ class UserApi {
     }
   }
 
-  Future<void> refreshAccessToken(
+  static Future<void> refreshAccessToken(
       {required String accessToken, required String refreshToken}) async {
     try {
       print("TOKEN REFRESHED");
@@ -118,7 +118,7 @@ class UserApi {
           "refreshToken": refreshToken,
         },
       );
-      await _authService.updateAccessToken(
+      await HiveService.updateAccessToken(
           accessToken: response.data["accessToken"]);
     } on DioException catch (e) {
       throw DioException(
@@ -129,10 +129,10 @@ class UserApi {
     }
   }
 
-  Future<String> uploadAvatar({required File image}) async {
+  static Future<String> uploadAvatar({required File image}) async {
     try {
       final Response response = await dio.post(
-        "$baseUrl/user/uploadAvatar/${await _authService.getUserId()}",
+        "$baseUrl/user/uploadAvatar/${await HiveService.getUserId()}",
         data: FormData.fromMap({
           "image": await MultipartFile.fromFile(image.path),
         }),
@@ -148,7 +148,7 @@ class UserApi {
     }
   }
 
-  Future<void> updateUserData({required MyUser user}) async {
+  static Future<void> updateUserData({required MyUser user}) async {
     try {
       print(user.userId);
       await dio.put(
@@ -162,7 +162,7 @@ class UserApi {
         },
         options: Options(
           headers: {
-            "x_authorization": await _authService.getUserAccessToken(),
+            "x_authorization": await HiveService.getUserAccessToken(),
           },
         ),
       );
@@ -176,7 +176,7 @@ class UserApi {
     }
   }
 
-  void printError(DioException e) {
+  static void printError(DioException e) {
     if (e.response != null) {
       print('Error response: ${e.response?.data}');
       print('Status code: ${e.response?.statusCode}');
@@ -186,9 +186,9 @@ class UserApi {
   }
 
   // User Rest API
-  Future<MyUser> fetchUserDataById({required String userId}) async {
-    final accessToken = await _authService.getUserAccessToken();
-    final refreshToken = await _authService.getUserRefreshToken();
+  static Future<MyUser> fetchUserDataById({required String userId}) async {
+    final accessToken = await HiveService.getUserAccessToken();
+    final refreshToken = await HiveService.getUserRefreshToken();
 
     try {
       final Response response = await dio.get(

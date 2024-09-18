@@ -18,7 +18,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       // Call the API to add a post
       if (state is PostLoaded) {
         MyPost newPost = event.post;
-        List<MyPost> updatedPosts = [...(state as PostLoaded).posts, newPost];
+        // add new post to the top of the list (newest -> oldest)
+        List<MyPost> updatedPosts = [newPost, ...(state as PostLoaded).posts];
         emit(PostLoaded(posts: updatedPosts));
       }
     });

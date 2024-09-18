@@ -7,7 +7,7 @@ import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/view/home/detail_booking.dart';
-import 'package:velocity_app/src/widgets/sort_button_horizontal_list.dart';
+import 'package:velocity_app/src/widgets/traveling/sort_button_horizontal_list.dart';
 
 enum TravelType {
   tour,

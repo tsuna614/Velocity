@@ -16,8 +16,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _confirmPasswordController = TextEditingController();
   var _isLoading = false;
 
-  final UserApi userApi = UserApi();
-
   void _submitForm() async {
     // Validate the form
     final isValid = _loginForm.currentState!.validate();
@@ -30,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     // Check for existing email, then either show error or navigate to detail sign up screen
-    if (await userApi.checkIfEmailExists(email: _emailController.text)) {
+    if (await UserApi.checkIfEmailExists(email: _emailController.text)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Email already exists. Please try again.'),

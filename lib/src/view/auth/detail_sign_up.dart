@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:velocity_app/src/api/user_api.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
@@ -23,8 +22,6 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
   final _lastNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   var _isLoading = false;
-
-  final UserApi userApi = UserApi();
 
   void _submitForm() async {
     // Validate the form

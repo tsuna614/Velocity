@@ -2,7 +2,6 @@ import 'package:velocity_app/src/model/user_model.dart';
 
 abstract class UserEvent {}
 
-class checkAuthState extends UserEvent {}
 
 class FetchUser extends UserEvent {}
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:velocity_app/src/api/user_api.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
@@ -28,7 +29,7 @@ class _PostState extends State<Post> {
 
   Future<void> _fetchUserData() async {
     final fetchedUser =
-        await UserApi().fetchUserDataById(userId: widget.post.userId);
+        await UserApi.fetchUserDataById(userId: widget.post.userId);
     setState(() {
       userData = fetchedUser;
       _isLoading = false;
@@ -45,6 +46,10 @@ class _PostState extends State<Post> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const PostSkeleton();
+    }
+
     return Card(
       color: Colors.white,
       child: Padding(
@@ -52,23 +57,10 @@ class _PostState extends State<Post> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _isLoading
-                ? const CircularProgressIndicator()
-                : buildUserAvatarAndName(userData!),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 20.0,
-                left: 8.0,
-                right: 8.0,
-                bottom: 8.0,
-              ),
-              child: Text(
-                widget.post.content,
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ),
+            buildUserAvatarAndName(userData!),
+            const SizedBox(height: 10),
+            buildPostContent(),
+            const SizedBox(height: 8),
             buildPostImage(),
             buildPostActionsRow(),
           ],
@@ -115,15 +107,63 @@ class _PostState extends State<Post> {
     );
   }
 
+  Widget buildPostContent() {
+    if (widget.post.content!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        right: 8.0,
+      ),
+      child: Text(
+        widget.post.content!,
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+
   Widget buildPostImage() {
+    if (widget.post.imageUrl!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return SizedBox(
       width: double.infinity,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
         child: Image.network(
-          widget.post.imageUrl,
+          widget.post.imageUrl!,
           fit: BoxFit.cover,
+          // loading builder is to show a shimmer effect while the image is loading
+          // but because of loadingProgress, the shimmer doesn't show immediately when buildPostImage is called
+          // you can try commenting the if statement block to see the difference
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+
+            return Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                height: 200,
+                color: Colors.grey.shade300,
+              ),
+            );
+          },
         ),
+        // child: Shimmer.fromColors(
+        //   baseColor: Colors.grey.shade300,
+        //   highlightColor: Colors.grey.shade100,
+        //   child: Container(
+        //     height: 200,
+        //     color: Colors.grey.shade300,
+        //   ),
+        // ),
       ),
     );
   }
@@ -184,6 +224,82 @@ class PostActionButton extends StatelessWidget {
           ),
           Text(amount.toString()),
         ],
+      ),
+    );
+  }
+}
+
+class PostSkeleton extends StatelessWidget {
+  const PostSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const CircleAvatar(
+                    radius: 20,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 150,
+                        height: 20,
+                        color: Colors.grey.shade300,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 100,
+                        height: 20,
+                        color: Colors.grey.shade300,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Row(
+            //   children: [
+            //     const SkeletonActionButton(),
+            //     const SkeletonActionButton(),
+            //     const SkeletonActionButton(),
+            //   ],
+            // ),
+          ],
+        ),
       ),
     );
   }
