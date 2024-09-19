@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 
 abstract class UserApi {
-  // String baseUrl = "http://localhost:3000";
-  static String baseUrl = "http://10.0.2.2:3000";
   static final dio = Dio();
+  static final baseUrl = GlobalData.baseUrl;
   // final AuthService HiveService = AuthService();
 
   static Future<MyUser> login(

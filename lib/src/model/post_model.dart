@@ -12,9 +12,9 @@ class MyPost {
   MyPost({
     required this.postId,
     required this.userId,
+    required this.dateCreated,
     this.content = "",
     this.imageUrl = "",
-    required this.dateCreated,
     this.likes = const [],
     this.comments = const [],
     this.shares = const [],

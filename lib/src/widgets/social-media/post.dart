@@ -6,7 +6,7 @@ import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
-import 'package:velocity_app/src/data/global_data.dart' as global_data;
+import 'package:velocity_app/src/data/global_data.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key, required this.post});
@@ -39,9 +39,13 @@ class _PostState extends State<Post> {
   Future<void> _handleLikePressed() async {
     setState(() {
       // call the like post event of PostBloc
-      BlocProvider.of<PostBloc>(context).add(
-          LikePost(postId: widget.post.postId, userId: global_data.userId));
+      BlocProvider.of<PostBloc>(context)
+          .add(LikePost(postId: widget.post.postId, userId: GlobalData.userId));
     });
+  }
+
+  String formattedDate(DateTime date) {
+    return "${date.day}/${date.month}/${date.year}";
   }
 
   @override
@@ -86,15 +90,16 @@ class _PostState extends State<Post> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${userData.firstName} ${userData.lastName}",
+                "${userData.firstName} ${userData.lastName} ",
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
               Text(
-                userData.email,
+                "${formattedDate(widget.post.dateCreated)} - ${userData.email}",
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 14,
@@ -156,14 +161,6 @@ class _PostState extends State<Post> {
             );
           },
         ),
-        // child: Shimmer.fromColors(
-        //   baseColor: Colors.grey.shade300,
-        //   highlightColor: Colors.grey.shade100,
-        //   child: Container(
-        //     height: 200,
-        //     color: Colors.grey.shade300,
-        //   ),
-        // ),
       ),
     );
   }
@@ -177,7 +174,7 @@ class _PostState extends State<Post> {
             icon: Icons.favorite,
             onPressed: _handleLikePressed,
             amount: widget.post.likes?.length ?? 0,
-            isActive: widget.post.likes?.contains(global_data.userId) ?? false,
+            isActive: widget.post.likes?.contains(GlobalData.userId) ?? false,
           ),
           PostActionButton(
             icon: Icons.comment,

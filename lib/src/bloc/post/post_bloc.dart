@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:velocity_app/src/api/post_api.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/bloc/post/post_states.dart';
 import 'package:velocity_app/src/model/post_model.dart';
-import '../../data/dummy_data.dart' as dummy_data;
+// import '../../data/dummy_data.dart' as dummy_data;
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc() : super(PostInitial()) {
@@ -11,15 +12,22 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       // Call the API to fetch the posts
       // final List<MyPost> posts = await GeneralApi().fetchPosts();
       // emit(PostLoaded(posts: posts));
-      emit(PostLoaded(posts: dummy_data.dummyPosts));
+      final posts = await PostApi.fetchPosts();
+      // emit(PostLoaded(posts: dummy_data.dummyPosts));
+      emit(PostLoaded(posts: posts));
     });
 
     on<AddPost>((event, emit) async {
       // Call the API to add a post
       if (state is PostLoaded) {
         MyPost newPost = event.post;
+
+        // send post request to server and get back the _id
+        String postId = await PostApi.addPost(post: newPost);
+        newPost = newPost.copyWith(postId: postId);
         // add new post to the top of the list (newest -> oldest)
         List<MyPost> updatedPosts = [newPost, ...(state as PostLoaded).posts];
+
         emit(PostLoaded(posts: updatedPosts));
       }
     });
@@ -54,6 +62,12 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         List<MyPost> updatedPosts = (state as PostLoaded).posts.map((post) {
           return post.postId == event.postId ? targetPost : post;
         }).toList();
+
+        // send api request to server
+        await PostApi.likePost(
+          postId: event.postId,
+          userId: event.userId,
+        );
 
         // emit the updated list
         emit(PostLoaded(posts: updatedPosts));

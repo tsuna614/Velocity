@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:velocity_app/src/api/post_api.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
@@ -63,18 +64,20 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
     }
   }
 
-  void _submitPost(BuildContext context) {
+  Future<void> _submitPost(BuildContext context) async {
     final post = MyPost(
       userId: widget.userData.userId,
-      postId: "123",
+      postId: "",
       dateCreated: DateTime.now(),
       content: _postTextController.text.trim().isEmpty
           ? ""
           : _postTextController.text,
-      imageUrl: _image == null ? "" : _image!.path,
+      imageUrl: _image == null ? "" : await PostApi.uploadImage(image: _image!),
     );
-    BlocProvider.of<PostBloc>(context).add(AddPost(post: post));
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      BlocProvider.of<PostBloc>(context).add(AddPost(post: post));
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -126,7 +129,11 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage: NetworkImage(widget.userData.profileImageUrl),
+          backgroundImage: NetworkImage(
+            widget.userData.profileImageUrl.isNotEmpty
+                ? widget.userData.profileImageUrl
+                : "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
+          ),
         ),
         const SizedBox(width: 10),
         Column(

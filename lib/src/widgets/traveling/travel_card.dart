@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
@@ -106,13 +106,32 @@ class _TravelCardState extends State<TravelCard> {
                             children: [
                               Hero(
                                 tag: travelData[index].id,
-                                child: FadeInImage(
-                                  height: 200,
-                                  width: 200,
-                                  placeholder: MemoryImage(kTransparentImage),
-                                  image: NetworkImage(
-                                      travelData[index].imageUrl[0]),
-                                  fit: BoxFit.cover,
+                                // child: FadeInImage(
+                                //   height: 200,
+                                //   width: 200,
+                                //   placeholder: MemoryImage(kTransparentImage),
+                                //   image: NetworkImage(
+                                //       travelData[index].imageUrl[0]),
+                                //   fit: BoxFit.cover,
+                                // ),
+                                child: Stack(
+                                  children: [
+                                    Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 200,
+                                        width: 200,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                    ),
+                                    Image.network(
+                                      travelData[index].imageUrl[0],
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 5),

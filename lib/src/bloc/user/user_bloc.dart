@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/api/user_api.dart';
+import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/user_model.dart';
-import 'package:velocity_app/src/data/global_data.dart' as global_data;
+// import 'package:velocity_app/src/data/global_data.dart' as global_data;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
@@ -18,7 +19,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       } else {
         try {
           final MyUser user = await UserApi.fetchUserDataById(userId: userId);
-          global_data.userId = userId; // set the global user id for easy access
+          GlobalData.userId = userId; // set the global user id for easy access
+          print(userId);
           emit(UserLoaded(user: user));
         } on DioException catch (e) {
           emit(UserFailure(message: e.response!.data!));
@@ -40,9 +42,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<SignIn>((event, emit) async {
       // Call the API to sign in the user
       try {
-        final MyUser user =
-            await UserApi.login(email: event.email, password: event.password);
-        emit(UserLoaded(user: user));
+        await UserApi.login(email: event.email, password: event.password);
+        add(FetchUser());
       } on DioException catch (e) {
         emit(UserFailure(message: e.response!.data!));
       }
