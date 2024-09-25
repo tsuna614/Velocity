@@ -38,7 +38,6 @@ class _TravelCardState extends State<TravelCard> {
     setState(() {
       selectedSortOption = sortOption;
     });
-    print(selectedSortOption);
   }
 
   @override
@@ -106,14 +105,6 @@ class _TravelCardState extends State<TravelCard> {
                             children: [
                               Hero(
                                 tag: travelData[index].id,
-                                // child: FadeInImage(
-                                //   height: 200,
-                                //   width: 200,
-                                //   placeholder: MemoryImage(kTransparentImage),
-                                //   image: NetworkImage(
-                                //       travelData[index].imageUrl[0]),
-                                //   fit: BoxFit.cover,
-                                // ),
                                 child: Stack(
                                   children: [
                                     Shimmer.fromColors(
@@ -136,7 +127,7 @@ class _TravelCardState extends State<TravelCard> {
                               ),
                               const SizedBox(height: 5),
                               Flexible(
-                                child: Container(
+                                child: SizedBox(
                                   width: 200,
                                   child: buildTourDetails(
                                       context, travelData, index),
@@ -177,7 +168,11 @@ class _TravelCardState extends State<TravelCard> {
           Text(
             travelData[index] is Tour
                 ? (travelData[index] as Tour).duration
-                : "null",
+                : travelData[index] is Hotel
+                    ? (travelData[index] as Hotel).city
+                    : travelData[index] is Flight
+                        ? "To ${(travelData[index] as Flight).destination}"
+                        : (travelData[index] as CarRental).carType,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 14,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
+import 'package:velocity_app/src/bloc/travel/travel_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/widgets/traveling/home_travel_banner_buttons.dart';
 import 'package:velocity_app/src/widgets/search_bar.dart';
@@ -98,9 +98,26 @@ class _TourPageState extends State<TourPage> {
                   top: bannerHeight + bannerSelectionCardHeight / 2 + 10),
               child: Column(
                 children: List.generate(titleList.length, (index) {
-                  List<Travel> travelData = List.from(GeneralApi()
-                      .getTravelDataOfType(
-                          context: context, dataType: travelTypeList[index]));
+                  List<Travel> travelData = [];
+
+                  if (state is TravelLoaded) {
+                    switch (titleList[index]) {
+                      case "Tours":
+                        travelData = state.travels.whereType<Tour>().toList();
+                        break;
+                      case "Hotels":
+                        travelData = state.travels.whereType<Hotel>().toList();
+                        break;
+                      case "Flights":
+                        travelData = state.travels.whereType<Flight>().toList();
+                        break;
+                      case "Car Rentals":
+                        travelData =
+                            state.travels.whereType<CarRental>().toList();
+                        break;
+                      default:
+                    }
+                  }
 
                   return Column(
                     key: keyList[index],

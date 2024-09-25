@@ -20,14 +20,14 @@ abstract class Travel {
   //   String? description,
   //   List<String>? imageUrl,
   //   double? price,
-  //   double? rating,
+  //   double? ratingPostsIds,
   // }) {
   //   return Travel(
   //     title: title ?? this.title,
   //     description: description ?? this.description,
   //     imageUrl: imageUrl ?? this.imageUrl,
   //     price: price ?? this.price,
-  //     rating: rating ?? this.rating,
+  //     ratingPostsIds: ratingPostsIds ?? this.ratingPostsIds,
   //   );
   // }
 }
@@ -75,6 +75,20 @@ class Tour extends Travel {
       capacity: capacity ?? this.capacity,
     );
   }
+
+  Tour.fromJson(Map<String, dynamic> json)
+      : destination = json['destination'],
+        duration = json['duration'],
+        city = json['city'],
+        capacity = json['capacity'] ?? 0,
+        super(
+          id: json['_id'],
+          title: json['title'],
+          description: json['description'],
+          imageUrl: List<String>.from(json['imageUrl']),
+          rating: double.parse(json['rating'].toString()),
+          price: double.parse(json['price'].toString()),
+        );
 }
 
 class Hotel extends Travel {
@@ -100,6 +114,7 @@ class Hotel extends Travel {
     List<String>? imageUrl,
     String? city,
     double? price,
+    List<String>? ratingPostsIds,
     double? rating,
     String? address,
     String? contact,
@@ -116,6 +131,19 @@ class Hotel extends Travel {
       contact: contact ?? this.contact,
     );
   }
+
+  Hotel.fromJson(Map<String, dynamic> json)
+      : address = json['address'],
+        contact = json['contact'],
+        city = json['city'],
+        super(
+          id: json['_id'],
+          title: json['title'],
+          description: json['description'],
+          imageUrl: List<String>.from(json['imageUrl']),
+          rating: double.parse(json['rating'].toString()),
+          price: double.parse(json['price'].toString()),
+        );
 }
 
 class Flight extends Travel {
@@ -144,6 +172,7 @@ class Flight extends Travel {
     String? description,
     List<String>? imageUrl,
     double? price,
+    List<String>? ratingPostsIds,
     double? rating,
     String? origin,
     String? destination,
@@ -165,6 +194,21 @@ class Flight extends Travel {
       airline: airline ?? this.airline,
     );
   }
+
+  Flight.fromJson(Map<String, dynamic> json)
+      : origin = json['origin'],
+        destination = json['destination'],
+        departureTime = json['departureTime'],
+        arrivalTime = json['arrivalTime'],
+        airline = json['airline'],
+        super(
+          id: json['_id'],
+          title: json['title'],
+          description: json['description'],
+          imageUrl: List<String>.from(json['imageUrl']),
+          rating: double.parse(json['rating'].toString()),
+          price: double.parse(json['price'].toString()),
+        );
 }
 
 class CarRental extends Travel {
@@ -189,6 +233,7 @@ class CarRental extends Travel {
     String? description,
     List<String>? imageUrl,
     double? price,
+    List<String>? ratingPostsIds,
     double? rating,
     String? location,
     String? contact,
@@ -206,4 +251,17 @@ class CarRental extends Travel {
       carType: carType ?? this.carType,
     );
   }
+
+  CarRental.fromJson(Map<String, dynamic> json)
+      : location = json['location'],
+        contact = json['contact'],
+        carType = json['carType'],
+        super(
+          id: json['_id'],
+          title: json['title'],
+          description: json['description'],
+          imageUrl: List<String>.from(json['imageUrl']),
+          rating: double.parse(json['rating'].toString()),
+          price: double.parse(json['price'].toString()),
+        );
 }

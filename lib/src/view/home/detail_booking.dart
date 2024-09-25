@@ -92,7 +92,7 @@ class _DetailBookingState extends State<DetailBooking> {
                   SingleChildScrollView(
                     controller: _scrollController,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: _bottomPanelHeight + 20),
+                      padding: EdgeInsets.only(bottom: _bottomPanelHeight + 10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,8 +131,8 @@ class _DetailBookingState extends State<DetailBooking> {
                       ),
                     ),
                   ),
-                  // the reason I wrap the stack with expanded wrapped with column
-                  // is because I want this panel to appear at the bottom of the screen
+                  // the reason I wrap the stack with (expanded wrapped with column)
+                  // is for this panel to appear at the bottom of the screen
                   showBottomPanel(),
                 ],
               ),
@@ -259,53 +259,134 @@ class _DetailBookingState extends State<DetailBooking> {
         children: [
           const Text("Overview",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          buildOverviewNode(
-              FontAwesomeIcons.locationDot,
-              "Destination",
-              widget.travelData is Tour
-                  ? (widget.travelData as Tour).city
-                  : "null"),
-          const SizedBox(height: 10),
-          buildOverviewNode(
-              FontAwesomeIcons.clock,
-              "Duration",
-              widget.travelData is Tour
-                  ? (widget.travelData as Tour).duration
-                  : "null"),
-          const SizedBox(height: 10),
+          if (widget.travelData is Tour)
+            Column(
+              children: [
+                buildOverviewNode(
+                  FontAwesomeIcons.locationDot,
+                  "Destination",
+                  (widget.travelData as Tour).destination,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.clock,
+                  "Duration",
+                  (widget.travelData as Tour).duration,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.building,
+                  "City",
+                  (widget.travelData as Tour).city,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.users,
+                  "Capacity",
+                  (widget.travelData as Tour).capacity.toString(),
+                ),
+              ],
+            ),
+          if (widget.travelData is Hotel)
+            Column(
+              children: [
+                buildOverviewNode(
+                  FontAwesomeIcons.building,
+                  "Address",
+                  (widget.travelData as Hotel).address,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.phone,
+                  "Contact",
+                  (widget.travelData as Hotel).contact,
+                ),
+              ],
+            ),
+          if (widget.travelData is Flight)
+            Column(
+              children: [
+                buildOverviewNode(
+                  FontAwesomeIcons.planeDeparture,
+                  "Origin",
+                  (widget.travelData as Flight).origin,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.planeArrival,
+                  "Destination",
+                  (widget.travelData as Flight).destination,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.clock,
+                  "Departure Time",
+                  (widget.travelData as Flight).departureTime,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.clock,
+                  "Arrival Time",
+                  (widget.travelData as Flight).arrivalTime,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.plane,
+                  "Airline",
+                  (widget.travelData as Flight).airline,
+                ),
+              ],
+            ),
+          if (widget.travelData is CarRental)
+            Column(
+              children: [
+                buildOverviewNode(
+                  FontAwesomeIcons.locationDot,
+                  "Location",
+                  (widget.travelData as CarRental).location,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.phone,
+                  "Contact",
+                  (widget.travelData as CarRental).contact,
+                ),
+                buildOverviewNode(
+                  FontAwesomeIcons.car,
+                  "Car Type",
+                  (widget.travelData as CarRental).carType,
+                ),
+              ],
+            ),
           buildOverviewNode(FontAwesomeIcons.dollarSign, "Price",
               "\$${widget.travelData.price}"),
-          const SizedBox(height: 10),
-          buildOverviewNode(FontAwesomeIcons.solidStar, "Rating",
-              "${widget.travelData.rating}/5.0"),
+          buildOverviewNode(FontAwesomeIcons.solidStar, "Rating", "5.0/5.0"),
         ],
       ),
     );
   }
 
   Widget buildOverviewNode(IconData icon, String title, String value) {
-    return Row(
-      children: [
-        Icon(icon),
-        const SizedBox(width: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Icon(icon),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(255, 104, 104, 104),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color.fromARGB(255, 104, 104, 104),
-              ),
-            ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 

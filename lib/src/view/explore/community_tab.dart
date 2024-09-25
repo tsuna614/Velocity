@@ -28,6 +28,10 @@ class _CommunityTabState extends State<CommunityTab> {
         );
       }
 
+      state.posts.forEach((post) {
+        post.printPost();
+      });
+
       return ListView.builder(
         controller: widget.scrollController,
         itemCount: state.posts.length,

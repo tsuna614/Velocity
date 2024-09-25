@@ -7,6 +7,8 @@ class MyPost {
   final List<String>? likes;
   final List<String>? comments;
   final List<String>? shares;
+  final double? rating;
+  final String? travelId;
   // final DateTime dateCreated;
 
   MyPost({
@@ -18,6 +20,8 @@ class MyPost {
     this.likes = const [],
     this.comments = const [],
     this.shares = const [],
+    this.rating,
+    this.travelId,
   });
 
   MyPost copyWith({
@@ -29,6 +33,8 @@ class MyPost {
     List<String>? comments,
     List<String>? shares,
     DateTime? dateCreated,
+    double? rating,
+    String? travelId,
   }) {
     return MyPost(
       postId: postId ?? this.postId,
@@ -39,6 +45,14 @@ class MyPost {
       comments: comments ?? this.comments,
       shares: shares ?? this.shares,
       dateCreated: dateCreated ?? this.dateCreated,
+      rating: rating ?? this.rating,
+      travelId: travelId ?? this.travelId,
+    );
+  }
+
+  void printPost() {
+    print(
+      "rating: $rating, travelId: $travelId",
     );
   }
 }

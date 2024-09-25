@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:velocity_app/src/api/travel_api.dart';
+import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
+import 'package:velocity_app/src/bloc/travel/travel_states.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/widgets/traveling/travel_card_wide.dart';
@@ -17,23 +18,35 @@ class BookmarkPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final travelDatas = GeneralApi()
-        .getAllTraveldata(context: context)
-        .where((e) => (BlocProvider.of<UserBloc>(context).state as UserLoaded)
-            .user
-            .bookmarkedTravels
-            .contains(e.id))
-        .toList();
+    // final travelDatas = GeneralApi()
+    //     .getAllTraveldata(context: context)
+    //     .where((e) => (BlocProvider.of<UserBloc>(context).state as UserLoaded)
+    //         .user
+    //         .bookmarkedTravels
+    //         .contains(e.id))
+    //     .toList();
 
-    return Scaffold(
-      body: travelDatas.isEmpty
-          ? const Center(child: Text("No bookmark found"))
-          : ListView.builder(
-              itemCount: travelDatas.length,
-              itemBuilder: (context, index) {
-                return TravelCardWide(data: travelDatas[index]);
-              },
-            ),
-    );
+    return BlocBuilder<TravelBloc, TravelState>(builder: (context, state) {
+      if (state is! TravelLoaded) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      final travelDatas = state.travels
+          .where((e) => (BlocProvider.of<UserBloc>(context).state as UserLoaded)
+              .user
+              .bookmarkedTravels
+              .contains(e.id))
+          .toList();
+      return Scaffold(
+        body: travelDatas.isEmpty
+            ? const Center(child: Text("No bookmark found"))
+            : ListView.builder(
+                itemCount: travelDatas.length,
+                itemBuilder: (context, index) {
+                  return TravelCardWide(data: travelDatas[index]);
+                },
+              ),
+      );
+    });
   }
 }

@@ -12,9 +12,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       // Call the API to fetch the posts
       // final List<MyPost> posts = await GeneralApi().fetchPosts();
       // emit(PostLoaded(posts: posts));
-      final posts = await PostApi.fetchPosts();
+      final posts = await PostApi.fetchPosts(isReviewPost: true);
       // emit(PostLoaded(posts: dummy_data.dummyPosts));
-      emit(PostLoaded(posts: posts));
+      emit(PostLoaded(
+        posts: posts,
+      ));
     });
 
     on<AddPost>((event, emit) async {
@@ -28,7 +30,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         // add new post to the top of the list (newest -> oldest)
         List<MyPost> updatedPosts = [newPost, ...(state as PostLoaded).posts];
 
-        emit(PostLoaded(posts: updatedPosts));
+        emit(PostLoaded(
+          posts: updatedPosts,
+        ));
       }
     });
 
@@ -70,7 +74,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         );
 
         // emit the updated list
-        emit(PostLoaded(posts: updatedPosts));
+        emit(PostLoaded(
+          posts: updatedPosts,
+        ));
       }
     });
   }

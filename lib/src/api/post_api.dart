@@ -9,10 +9,12 @@ abstract class PostApi {
   static final baseUrl = GlobalData.baseUrl;
   static final dio = Dio();
 
-  static Future<List<MyPost>> fetchPosts() async {
+  static Future<List<MyPost>> fetchPosts({required bool isReviewPost}) async {
     try {
       final Response response = await dio.get(
-        "$baseUrl/post/getAllPosts",
+        isReviewPost
+            ? "$baseUrl/post/getAllReviewPosts"
+            : "$baseUrl/post/getAllNormalPosts",
         options: Options(
           headers: {
             "x_authorization": await HiveService.getUserAccessToken(),
@@ -30,15 +32,14 @@ abstract class PostApi {
           dateCreated: DateTime.parse(postData['createdAt']),
           content: postData['content'] ?? "",
           imageUrl: postData['imageUrl'] ?? "",
-          likes: response.data[i]['likes']
-              .map<String>((e) => e.toString())
-              .toList(),
-          comments: response.data[i]['comments']
-              .map<String>((e) => e.toString())
-              .toList(),
-          shares: response.data[i]['shares']
-              .map<String>((e) => e.toString())
-              .toList(),
+          likes: postData['likes'].map<String>((e) => e.toString()).toList(),
+          comments:
+              postData['comments'].map<String>((e) => e.toString()).toList(),
+          shares: postData['shares'].map<String>((e) => e.toString()).toList(),
+          rating: postData["rating"] == null
+              ? null
+              : double.parse(postData['rating'].toString()),
+          travelId: postData['travelId'],
         ));
       }
 
