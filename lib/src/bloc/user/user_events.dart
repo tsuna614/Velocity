@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 
 abstract class UserEvent {}
-
 
 class FetchUser extends UserEvent {}
 
@@ -35,18 +35,12 @@ class UpdateUser extends UserEvent {
   });
 }
 
-class AddBookmark extends UserEvent {
+class ToggleBookmark extends UserEvent {
   final String travelId;
+  final BuildContext context;
 
-  AddBookmark({
+  ToggleBookmark({
     required this.travelId,
-  });
-}
-
-class RemoveBookmark extends UserEvent {
-  final String travelId;
-
-  RemoveBookmark({
-    required this.travelId,
+    required this.context,
   });
 }

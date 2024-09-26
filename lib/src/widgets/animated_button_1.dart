@@ -44,16 +44,16 @@ class _AnimatedButton1State extends State<AnimatedButton1> {
         margin: EdgeInsets.only(top: -(_padding - 6)),
         decoration: BoxDecoration(
           // color: Theme.of(context).primaryColor,
-          color: Colors.blue[800],
+          color: Colors.blue,
           borderRadius: BorderRadius.circular(10),
         ),
-        duration: Duration(milliseconds: 50),
+        duration: const Duration(milliseconds: 50),
         child: Container(
           width: double.infinity,
           height: widget.height,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.blue.shade800),
+            border: Border.all(color: Colors.blue),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Center(
@@ -61,10 +61,10 @@ class _AnimatedButton1State extends State<AnimatedButton1> {
               fit: BoxFit.scaleDown,
               child: Text(
                 widget.buttonText,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue[800],
+                  color: Colors.blue,
                 ),
               ),
             ),

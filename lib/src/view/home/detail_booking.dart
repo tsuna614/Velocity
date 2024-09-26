@@ -3,10 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
+import 'package:velocity_app/src/view/booking/payment-flow/booking_screen.dart';
 import 'package:velocity_app/src/widgets/traveling/amount_picker.dart';
 import 'package:velocity_app/src/widgets/traveling/custom_date_picker.dart';
 
@@ -66,6 +67,20 @@ class _DetailBookingState extends State<DetailBooking> {
         });
       }
     }
+  }
+
+  void _pushBookingScreen(BuildContext context) {
+    if (_amountCounter == 0) {
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BookingScreen(
+          travelData: widget.travelData,
+          amount: _amountCounter,
+        ),
+      ),
+    );
   }
 
   @override
@@ -208,7 +223,7 @@ class _DetailBookingState extends State<DetailBooking> {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  // Add to cart logic
+                  _pushBookingScreen(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -409,8 +424,12 @@ class _DetailBookingState extends State<DetailBooking> {
             tag: "${widget.travelData.id}-bookmark",
             child: IconButton(
               onPressed: () {
-                GeneralApi().toggleBookmark(
-                    context: context, travelId: widget.travelData.id);
+                BlocProvider.of<UserBloc>(context).add(
+                  ToggleBookmark(
+                    travelId: widget.travelData.id,
+                    context: context,
+                  ),
+                );
               },
               icon: Icon(
                 state.user.bookmarkedTravels.contains(widget.travelData.id)

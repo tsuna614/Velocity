@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:velocity_app/src/api/travel_api.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/view/home/detail_booking.dart';
@@ -31,7 +31,8 @@ class _TravelCardState extends State<TravelCard> {
   String selectedSortOption = "";
 
   void onBookmarkTap(BuildContext context, String id) {
-    GeneralApi().toggleBookmark(context: context, travelId: id);
+    BlocProvider.of<UserBloc>(context)
+        .add(ToggleBookmark(travelId: id, context: context));
   }
 
   void onSortOptionTap(String sortOption) {

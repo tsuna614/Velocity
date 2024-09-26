@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/api/user_api.dart';
 import 'package:velocity_app/src/data/global_data.dart';
@@ -70,30 +71,63 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
-    on<AddBookmark>((event, emit) {
+    on<ToggleBookmark>((event, emit) async {
       // Call the API to add a bookmark
       if (state is UserLoaded) {
-        MyUser user = (state as UserLoaded).user.copyWith(
-          bookmarkedTravels: [
-            ...((state as UserLoaded).user.bookmarkedTravels),
-            event.travelId
-          ],
+        // doesn't await here because we don't need to wait for the response
+        UserApi.toggleBookmark(
+          travelId: event.travelId,
         );
+        MyUser user;
+        if (!(state as UserLoaded)
+            .user
+            .bookmarkedTravels
+            .contains(event.travelId)) {
+          // Bookmark isn't added yet. Add it
+          user = (state as UserLoaded).user.copyWith(
+            bookmarkedTravels: [
+              ...((state as UserLoaded).user.bookmarkedTravels),
+              event.travelId
+            ],
+          );
+          // show snackbar
+          ScaffoldMessenger.of(event.context).showSnackBar(
+            const SnackBar(
+              content: Text('Bookmark added'),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        } else {
+          // Bookmark is already added. Remove it
+          user = (state as UserLoaded).user.copyWith(
+            bookmarkedTravels: [
+              ...((state as UserLoaded).user.bookmarkedTravels)
+                ..remove(event.travelId)
+            ],
+          );
+          // show snackbar
+          ScaffoldMessenger.of(event.context).showSnackBar(
+            const SnackBar(
+              content: Text('Bookmark removed'),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
         emit(UserLoaded(user: user));
       }
     });
 
-    on<RemoveBookmark>((event, emit) {
-      // Call the API to remove a bookmark
-      if (state is UserLoaded) {
-        MyUser user = (state as UserLoaded).user.copyWith(
-          bookmarkedTravels: [
-            ...((state as UserLoaded).user.bookmarkedTravels)
-              ..remove(event.travelId)
-          ],
-        );
-        emit(UserLoaded(user: user));
-      }
-    });
+    // on<RemoveBookmark>((event, emit) {
+    //   // Call the API to remove a bookmark
+    //   if (state is UserLoaded) {
+    //     MyUser user = (state as UserLoaded).user.copyWith(
+    //       bookmarkedTravels: [
+    //         ...((state as UserLoaded).user.bookmarkedTravels)
+    //           ..remove(event.travelId)
+    //       ],
+    //     );
+    //     emit(UserLoaded(user: user));
+    //   }
+    // });
   }
 }

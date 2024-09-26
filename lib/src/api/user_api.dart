@@ -207,6 +207,8 @@ abstract class UserApi {
         lastName: response.data[0]["lastName"],
         phone: response.data[0]["number"],
         profileImageUrl: response.data[0]["profileImageUrl"] ?? "",
+        bookmarkedTravels:
+            List<String>.from(response.data[0]["bookmarkedTravels"]),
       );
 
       return user;
@@ -234,6 +236,21 @@ abstract class UserApi {
           message: e.message,
         );
       }
+    }
+  }
+
+  static Future<void> toggleBookmark({required String travelId}) async {
+    try {
+      await dio.put("$baseUrl/user/toggleBookmark", data: {
+        "userId": GlobalData.userId,
+        "travelId": travelId,
+      });
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
     }
   }
 }
