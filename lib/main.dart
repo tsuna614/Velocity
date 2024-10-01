@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:velocity_app/src/services/post_api.dart';
+import 'package:velocity_app/src/services/travel_api.dart';
+import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/bloc/travel/travel_events.dart';
@@ -24,10 +28,22 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
+final getIt = GetIt.instance;
+
+void setupLocator() {
+  // getIt.registerLazySingleton(() => UserBloc());
+  // getIt.registerLazySingleton(() => PostBloc());
+  // getIt.registerLazySingleton(() => TravelBloc());
+  getIt.registerLazySingleton(() => UserApi());
+  getIt.registerLazySingleton(() => PostApi());
+  getIt.registerLazySingleton(() => TravelApi());
+}
+
 void main() async {
   HttpOverrides.global =
       MyHttpOverrides(); // this is required to import network images from https
   WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
   await Hive.initFlutter(); // Initialize Hive with Flutter
   await Hive.openBox('credentialsBox'); // Open a box
 
@@ -43,14 +59,14 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserBloc>(
-          create: (context) => UserBloc()..add(FetchUser()),
+          create: (context) => UserBloc(getIt<UserApi>())..add(FetchUser()),
         ),
         BlocProvider<PostBloc>(
-          create: (context) => PostBloc()..add(FetchPosts()),
+          create: (context) => PostBloc(getIt<PostApi>())..add(FetchPosts()),
         ),
         BlocProvider<TravelBloc>(
           create: (context) {
-            final travelBloc = TravelBloc();
+            final travelBloc = TravelBloc(getIt<TravelApi>());
 
             travelBloc.add(LoadData());
 

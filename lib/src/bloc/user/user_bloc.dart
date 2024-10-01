@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:velocity_app/src/api/user_api.dart';
+import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
@@ -10,7 +10,9 @@ import 'package:velocity_app/src/model/user_model.dart';
 // import 'package:velocity_app/src/data/global_data.dart' as global_data;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  UserBloc() : super(UserInitial()) {
+  final UserApi userApi;
+
+  UserBloc(this.userApi) : super(UserInitial()) {
     on<FetchUser>((event, emit) async {
       // Call the API to fetch the user
       emit(UserLoading()); // call this to enter loading screen
@@ -19,7 +21,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         emit(UserInitial());
       } else {
         try {
-          final MyUser user = await UserApi.fetchUserDataById(userId: userId);
+          final MyUser user = await userApi.fetchUserDataById(userId: userId);
           GlobalData.userId = userId; // set the global user id for easy access
           print(userId);
           emit(UserLoaded(user: user));
@@ -33,7 +35,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // Call the API to sign up the user
       try {
         // sign up, and if success THEN sign in
-        await UserApi.signUp(user: event.user, password: event.password);
+        await userApi.signUp(user: event.user, password: event.password);
         add(SignIn(email: event.user.email, password: event.password));
       } on DioException catch (e) {
         emit(UserFailure(message: e.response!.data!));
@@ -43,7 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<SignIn>((event, emit) async {
       // Call the API to sign in the user
       try {
-        await UserApi.login(email: event.email, password: event.password);
+        await userApi.login(email: event.email, password: event.password);
         add(FetchUser());
       } on DioException catch (e) {
         emit(UserFailure(message: e.response!.data!));
@@ -64,7 +66,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // Call the API to update the user
       try {
         MyUser updatedUser = event.user;
-        await UserApi.updateUserData(user: updatedUser);
+        await userApi.updateUserData(user: updatedUser);
         emit(UserLoaded(user: updatedUser));
       } on DioException {
         // don't emit UserFailure here, because we don't want to log out the user
@@ -75,7 +77,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // Call the API to add a bookmark
       if (state is UserLoaded) {
         // doesn't await here because we don't need to wait for the response
-        UserApi.toggleBookmark(
+        userApi.toggleBookmark(
           travelId: event.travelId,
         );
         MyUser user;

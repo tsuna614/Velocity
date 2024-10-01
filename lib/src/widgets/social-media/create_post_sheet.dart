@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:velocity_app/src/api/post_api.dart';
+import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
@@ -72,7 +73,9 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
       content: _postTextController.text.trim().isEmpty
           ? ""
           : _postTextController.text,
-      imageUrl: _image == null ? "" : await PostApi.uploadImage(image: _image!),
+      imageUrl: _image == null
+          ? ""
+          : await GetIt.I<PostApi>().uploadImage(image: _image!),
     );
     if (context.mounted) {
       BlocProvider.of<PostBloc>(context).add(AddPost(post: post));

@@ -222,9 +222,11 @@ class _DetailBookingState extends State<DetailBooking> {
               ),
               const Spacer(),
               ElevatedButton(
-                onPressed: () {
-                  _pushBookingScreen(context);
-                },
+                onPressed: _amountCounter == 0
+                    ? null
+                    : () {
+                        _pushBookingScreen(context);
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(

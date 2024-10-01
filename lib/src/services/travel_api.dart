@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 
-abstract class TravelApi {
-  static final baseUrl = GlobalData.baseUrl;
-  static final dio = Dio();
+class TravelApi {
+  final baseUrl = GlobalData.baseUrl;
+  final dio = Dio();
 
-  static Future<List<Travel>> fetchTravelData() async {
+  Future<List<Travel>> fetchTravelData() async {
     try {
       final response = await dio.get('$baseUrl/travel/getAllTravels');
 

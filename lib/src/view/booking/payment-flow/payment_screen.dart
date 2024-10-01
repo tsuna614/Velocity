@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:velocity_app/src/model/travel_model.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+  const PaymentScreen(
+      {super.key, required this.travelData, required this.amount});
+
+  final Travel travelData;
+  final int amount;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -13,7 +18,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Spacer(),
+        const Spacer(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 64.0),
           child: Image.network(
@@ -30,7 +35,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Padding(
           padding: const EdgeInsets.all(32.0),
           child: ElevatedButton(

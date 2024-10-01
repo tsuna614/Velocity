@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:velocity_app/src/api/user_api.dart';
+import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/model/user_model.dart';
@@ -129,8 +130,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
 
     // check if user have uploaded a new image first, then upload it, returning the url from the server
-    String newProfileImageUrl =
-        _image != null ? await UserApi.uploadAvatar(image: _image!) : "";
+    String newProfileImageUrl = _image != null
+        ? await GetIt.I<UserApi>().uploadAvatar(image: _image!)
+        : "";
 
     // update the user data where changed
     MyUser newUser = widget.originalUserData;

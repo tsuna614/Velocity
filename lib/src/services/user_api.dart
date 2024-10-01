@@ -5,12 +5,11 @@ import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 
-abstract class UserApi {
-  static final dio = Dio();
-  static final baseUrl = GlobalData.baseUrl;
-  // final AuthService HiveService = AuthService();
+class UserApi {
+  final dio = Dio();
+  final baseUrl = GlobalData.baseUrl;
 
-  static Future<MyUser> login(
+  Future<MyUser> login(
       {required String email, required String password}) async {
     try {
       final Response response = await dio.post(
@@ -54,7 +53,7 @@ abstract class UserApi {
     }
   }
 
-  static Future<MyUser> signUp(
+  Future<MyUser> signUp(
       {required MyUser user, required String password}) async {
     try {
       final Response response = await dio.post("$baseUrl/auth/register", data: {
@@ -78,15 +77,15 @@ abstract class UserApi {
     }
   }
 
-  static Future<void> signOut() async {
+  Future<void> signOut() async {
     await HiveService.clearUserToken();
   }
 
-  static Future<bool> isUserSignedIn() async {
+  Future<bool> isUserSignedIn() async {
     return true;
   }
 
-  static Future<bool> checkIfEmailExists({required String email}) async {
+  Future<bool> checkIfEmailExists({required String email}) async {
     try {
       final Response response = await dio.get(
         "$baseUrl/auth/getUserByEmail/$email",
@@ -103,7 +102,7 @@ abstract class UserApi {
     }
   }
 
-  static Future<void> refreshAccessToken(
+  Future<void> refreshAccessToken(
       {required String accessToken, required String refreshToken}) async {
     try {
       print("TOKEN REFRESHED");
@@ -129,7 +128,7 @@ abstract class UserApi {
     }
   }
 
-  static Future<String> uploadAvatar({required File image}) async {
+  Future<String> uploadAvatar({required File image}) async {
     try {
       final Response response = await dio.post(
         "$baseUrl/user/uploadAvatar/${await HiveService.getUserId()}",
@@ -148,7 +147,7 @@ abstract class UserApi {
     }
   }
 
-  static Future<void> updateUserData({required MyUser user}) async {
+  Future<void> updateUserData({required MyUser user}) async {
     try {
       print(user.userId);
       await dio.put(
@@ -176,7 +175,7 @@ abstract class UserApi {
     }
   }
 
-  static void printError(DioException e) {
+  void printError(DioException e) {
     if (e.response != null) {
       print('Error response: ${e.response?.data}');
       print('Status code: ${e.response?.statusCode}');
@@ -186,7 +185,7 @@ abstract class UserApi {
   }
 
   // User Rest API
-  static Future<MyUser> fetchUserDataById({required String userId}) async {
+  Future<MyUser> fetchUserDataById({required String userId}) async {
     final accessToken = await HiveService.getUserAccessToken();
     final refreshToken = await HiveService.getUserRefreshToken();
 
@@ -239,7 +238,7 @@ abstract class UserApi {
     }
   }
 
-  static Future<void> toggleBookmark({required String travelId}) async {
+  Future<void> toggleBookmark({required String travelId}) async {
     try {
       await dio.put("$baseUrl/user/toggleBookmark", data: {
         "userId": GlobalData.userId,

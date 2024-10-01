@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:velocity_app/src/api/user_api.dart';
+import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
@@ -29,7 +30,7 @@ class _PostState extends State<Post> {
 
   Future<void> _fetchUserData() async {
     final fetchedUser =
-        await UserApi.fetchUserDataById(userId: widget.post.userId);
+        await GetIt.I<UserApi>().fetchUserDataById(userId: widget.post.userId);
     setState(() {
       userData = fetchedUser;
       _isLoading = false;

@@ -5,11 +5,11 @@ import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 
-abstract class PostApi {
-  static final baseUrl = GlobalData.baseUrl;
-  static final dio = Dio();
+class PostApi {
+  final baseUrl = GlobalData.baseUrl;
+  final dio = Dio();
 
-  static Future<List<MyPost>> fetchPosts({required bool isReviewPost}) async {
+  Future<List<MyPost>> fetchPosts({required bool isReviewPost}) async {
     try {
       final Response response = await dio.get(
         isReviewPost
@@ -55,7 +55,7 @@ abstract class PostApi {
     }
   }
 
-  static Future<String> addPost({required MyPost post}) async {
+  Future<String> addPost({required MyPost post}) async {
     try {
       Response response = await dio.post(
         "$baseUrl/post/createPost",
@@ -81,7 +81,7 @@ abstract class PostApi {
     }
   }
 
-  static Future<String> uploadImage({required File image}) async {
+  Future<String> uploadImage({required File image}) async {
     try {
       print("UPLOADING IMAGE");
       final Response response = await dio.post(
@@ -105,7 +105,7 @@ abstract class PostApi {
     }
   }
 
-  static Future<void> likePost(
+  Future<void> likePost(
       {required String postId, required String userId}) async {
     try {
       await dio.post(

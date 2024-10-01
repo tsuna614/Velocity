@@ -77,7 +77,10 @@ class _BookingScreenState extends State<BookingScreen> {
             amount: widget.amount,
             navigateToPayment: pushToPaymentScreen,
           ),
-          PaymentScreen(),
+          PaymentScreen(
+            travelData: widget.travelData,
+            amount: widget.amount,
+          ),
         ],
       ),
     );
