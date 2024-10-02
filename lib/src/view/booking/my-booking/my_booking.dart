@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:velocity_app/src/view/booking/receipt_page.dart';
-import 'package:velocity_app/src/view/booking/bookmark_page.dart';
+import 'package:velocity_app/src/view/booking/my-booking/receipt_page.dart';
+import 'package:velocity_app/src/view/booking/my-booking/bookmark_page.dart';
 
 class MyBookingScreen extends StatefulWidget {
   const MyBookingScreen({super.key});

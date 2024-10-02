@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
-import 'package:velocity_app/src/view/booking/my_booking.dart';
+import 'package:velocity_app/src/view/booking/my-booking/my_booking.dart';
 import 'package:velocity_app/src/view/home/home.dart';
 import 'package:velocity_app/src/view/profile/profile_screen.dart';
 import 'package:velocity_app/src/view/explore/explore_screen.dart';
