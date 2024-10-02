@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:velocity_app/src/model/travel_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:velocity_app/src/bloc/book/book.events.dart';
+import 'package:velocity_app/src/bloc/book/book_bloc.dart';
+import 'package:velocity_app/src/model/book_model.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen(
-      {super.key, required this.travelData, required this.amount});
-
-  final Travel travelData;
-  final int amount;
+  final Book bookData;
+  const PaymentScreen({super.key, required this.bookData});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  Future<void> _processPayment(BuildContext context) async {
+    BlocProvider.of<BookBloc>(context).add(AddBook(widget.bookData));
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Booking successful!"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,7 +49,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         Padding(
           padding: const EdgeInsets.all(32.0),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              _processPayment(context);
+            },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),
               backgroundColor: Colors.blue,

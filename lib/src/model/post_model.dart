@@ -7,6 +7,7 @@ class MyPost {
   final List<String>? likes;
   final List<String>? comments;
   final List<String>? shares;
+  // these two fields are for the rating posts
   final double? rating;
   final String? travelId;
   // final DateTime dateCreated;

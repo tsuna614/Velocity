@@ -4,6 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:velocity_app/src/bloc/book/book.events.dart';
+import 'package:velocity_app/src/bloc/book/book_bloc.dart';
+import 'package:velocity_app/src/services/book_api.dart';
 import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/services/travel_api.dart';
 import 'package:velocity_app/src/services/user_api.dart';
@@ -37,6 +40,7 @@ void setupLocator() {
   getIt.registerLazySingleton(() => UserApi());
   getIt.registerLazySingleton(() => PostApi());
   getIt.registerLazySingleton(() => TravelApi());
+  getIt.registerLazySingleton(() => BookApi());
 }
 
 void main() async {
@@ -63,6 +67,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<PostBloc>(
           create: (context) => PostBloc(getIt<PostApi>())..add(FetchPosts()),
+        ),
+        BlocProvider<BookBloc>(
+          create: (context) => (BookBloc(getIt<BookApi>())..add(FetchBooks())),
         ),
         BlocProvider<TravelBloc>(
           create: (context) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
@@ -53,26 +54,6 @@ class _TravelCardWideState extends State<TravelCardWide> {
           height: travelCardHeight,
           child: Stack(
             children: [
-              Positioned(
-                bottom: 10,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.red,
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        widget.data.title,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -94,12 +75,25 @@ class _TravelCardWideState extends State<TravelCardWide> {
           onTap: () => onTravelCardPressed(context, travelData),
           child: Hero(
             tag: travelData.id,
-            child: FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(travelData.imageUrl[0]),
-              height: imageCardHeight,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    height: imageCardHeight,
+                    width: double.infinity,
+                    color: Colors.grey.shade300,
+                  ),
+                ),
+                FadeInImage(
+                  placeholder: MemoryImage(kTransparentImage),
+                  image: NetworkImage(travelData.imageUrl[0]),
+                  height: imageCardHeight,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ],
             ),
           ),
         ),

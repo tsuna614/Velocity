@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
+import 'package:velocity_app/src/model/book_model.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/detail_filling_screen.dart';
@@ -9,9 +10,13 @@ import 'package:velocity_app/src/view/booking/payment-flow/payment_screen.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen(
-      {super.key, required this.travelData, required this.amount});
+      {super.key,
+      required this.travelData,
+      required this.dateOfTravel,
+      required this.amount});
 
   final Travel travelData;
+  final DateTime dateOfTravel;
   final int amount;
 
   @override
@@ -78,8 +83,15 @@ class _BookingScreenState extends State<BookingScreen> {
             navigateToPayment: pushToPaymentScreen,
           ),
           PaymentScreen(
-            travelData: widget.travelData,
-            amount: widget.amount,
+            bookData: Book(
+              id: "id",
+              travelId: widget.travelData.id,
+              userId: "userId",
+              dateOfTravel: widget.dateOfTravel,
+              dateOfBooking: widget
+                  .dateOfTravel, // this is just a placeholder, because the date of booking will be automatically create as "createAt"
+              amount: widget.amount,
+            ),
           ),
         ],
       ),

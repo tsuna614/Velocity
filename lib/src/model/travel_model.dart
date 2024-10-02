@@ -76,19 +76,20 @@ class Tour extends Travel {
     );
   }
 
-  Tour.fromJson(Map<String, dynamic> json)
-      : destination = json['destination'],
-        duration = json['duration'],
-        city = json['city'],
-        capacity = json['capacity'] ?? 0,
-        super(
-          id: json['_id'],
-          title: json['title'],
-          description: json['description'],
-          imageUrl: List<String>.from(json['imageUrl']),
-          rating: double.parse(json['rating'].toString()),
-          price: double.parse(json['price'].toString()),
-        );
+  factory Tour.fromJson(Map<String, dynamic> json) {
+    return Tour(
+      id: json['_id'],
+      title: json['title'],
+      description: json['description'],
+      imageUrl: List<String>.from(json['imageUrl']),
+      rating: double.parse(json['rating'].toString()),
+      price: double.parse(json['price'].toString()),
+      destination: json['destination'],
+      duration: json['duration'],
+      city: json['city'],
+      capacity: json['capacity'] ?? 0,
+    );
+  }
 }
 
 class Hotel extends Travel {
@@ -132,18 +133,19 @@ class Hotel extends Travel {
     );
   }
 
-  Hotel.fromJson(Map<String, dynamic> json)
-      : address = json['address'],
-        contact = json['contact'],
-        city = json['city'],
-        super(
-          id: json['_id'],
-          title: json['title'],
-          description: json['description'],
-          imageUrl: List<String>.from(json['imageUrl']),
-          rating: double.parse(json['rating'].toString()),
-          price: double.parse(json['price'].toString()),
-        );
+  factory Hotel.fromJson(Map<String, dynamic> json) {
+    return Hotel(
+      id: json['_id'],
+      title: json['title'],
+      description: json['description'],
+      imageUrl: List<String>.from(json['imageUrl']),
+      rating: double.parse(json['rating'].toString()),
+      price: double.parse(json['price'].toString()),
+      address: json['address'],
+      contact: json['contact'],
+      city: json['city'],
+    );
+  }
 }
 
 class Flight extends Travel {
@@ -195,20 +197,21 @@ class Flight extends Travel {
     );
   }
 
-  Flight.fromJson(Map<String, dynamic> json)
-      : origin = json['origin'],
-        destination = json['destination'],
-        departureTime = json['departureTime'],
-        arrivalTime = json['arrivalTime'],
-        airline = json['airline'],
-        super(
-          id: json['_id'],
-          title: json['title'],
-          description: json['description'],
-          imageUrl: List<String>.from(json['imageUrl']),
-          rating: double.parse(json['rating'].toString()),
-          price: double.parse(json['price'].toString()),
-        );
+  factory Flight.fromJson(Map<String, dynamic> json) {
+    return Flight(
+      id: json['_id'],
+      title: json['title'],
+      description: json['description'],
+      imageUrl: List<String>.from(json['imageUrl']),
+      rating: double.parse(json['rating'].toString()),
+      price: double.parse(json['price'].toString()),
+      origin: json['origin'],
+      destination: json['destination'],
+      departureTime: json['departureTime'],
+      arrivalTime: json['arrivalTime'],
+      airline: json['airline'],
+    );
+  }
 }
 
 class CarRental extends Travel {
@@ -252,16 +255,17 @@ class CarRental extends Travel {
     );
   }
 
-  CarRental.fromJson(Map<String, dynamic> json)
-      : location = json['location'],
-        contact = json['contact'],
-        carType = json['carType'],
-        super(
-          id: json['_id'],
-          title: json['title'],
-          description: json['description'],
-          imageUrl: List<String>.from(json['imageUrl']),
-          rating: double.parse(json['rating'].toString()),
-          price: double.parse(json['price'].toString()),
-        );
+  factory CarRental.fromJson(Map<String, dynamic> json) {
+    return CarRental(
+      id: json['_id'],
+      title: json['title'],
+      description: json['description'],
+      imageUrl: List<String>.from(json['imageUrl']),
+      rating: double.parse(json['rating'].toString()),
+      price: double.parse(json['price'].toString()),
+      location: json['location'],
+      contact: json['contact'],
+      carType: json['carType'],
+    );
+  }
 }

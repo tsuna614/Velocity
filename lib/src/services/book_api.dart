@@ -1,43 +1,51 @@
 import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
+import 'package:velocity_app/src/model/book_model.dart';
 
-abstract class BookApi {
-  static final baseUrl = GlobalData.baseUrl;
-  static final dio = Dio();
+class BookApi {
+  final baseUrl = GlobalData.baseUrl;
+  Dio dio = Dio();
 
-  // static Future<List<Book>> fetchBookData() async {
-  //   try {
-  //     final response = await dio.get('$baseUrl/book/getAllBooks');
+  Future<List<Book>> fetchBookData() async {
+    try {
+      final response = await dio
+          .get('$baseUrl/book/getAllBooksByUserId/${GlobalData.userId}');
 
-  //     List<Book> books = [];
+      List<Book> books = [];
 
-  //     response.data.forEach((book) {
-  //       switch (book['bookType']) {
-  //         case "fiction":
-  //           books.add(Fiction.fromJson(book));
-  //           break;
-  //         case "nonFiction":
-  //           books.add(NonFiction.fromJson(book));
-  //           break;
-  //         case "biography":
-  //           books.add(Biography.fromJson(book));
-  //           break;
-  //         case "selfHelp":
-  //           books.add(SelfHelp.fromJson(book));
-  //           break;
-  //         default:
-  //       }
-  //     });
+      response.data.forEach((book) {
+        books.add(Book.fromJson(book));
+      });
 
-  //     return books;
-  //   } on DioException catch (e) {
-  //     throw DioException(
-  //       requestOptions: e.requestOptions,
-  //       response: e.response,
-  //       message: e.message,
-  //     );
-  //   }
-  // }
+      return books;
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
 
-  // static Future<void> createBook()
+  Future<Book> createBook({required Book book}) async {
+    try {
+      final response = await dio.post(
+        '$baseUrl/book/createBook',
+        data: {
+          "userId": GlobalData.userId,
+          "travelId": book.travelId,
+          "bookedDate": book.dateOfTravel.toString(),
+          "amount": book.amount,
+        },
+      );
+
+      return Book.fromJson(response.data);
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
 }

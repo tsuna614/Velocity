@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:velocity_app/src/view/booking/active_page.dart';
+import 'package:velocity_app/src/view/booking/receipt_page.dart';
 import 'package:velocity_app/src/view/booking/bookmark_page.dart';
-import 'package:velocity_app/src/view/booking/past_page.dart';
 
 class MyBookingScreen extends StatefulWidget {
   const MyBookingScreen({super.key});
@@ -12,12 +11,6 @@ class MyBookingScreen extends StatefulWidget {
 
 class _MyBookingScreenState extends State<MyBookingScreen> {
   int _currentPageIndex = 0;
-
-  final List<Widget> _pages = const [
-    ActivePage(),
-    PastPage(),
-    BookmarkPage(),
-  ];
 
   final _pageController = PageController();
 
@@ -57,7 +50,15 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
           Expanded(
             child: PageView(
               controller: _pageController,
-              children: _pages,
+              children: const [
+                ReceiptPage(
+                  status: ReceiptStatus.active,
+                ),
+                ReceiptPage(
+                  status: ReceiptStatus.past,
+                ),
+                BookmarkPage(),
+              ],
               onPageChanged: (index) {
                 setState(() {
                   _currentPageIndex = index;

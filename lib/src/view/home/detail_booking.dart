@@ -78,6 +78,7 @@ class _DetailBookingState extends State<DetailBooking> {
         builder: (context) => BookingScreen(
           travelData: widget.travelData,
           amount: _amountCounter,
+          dateOfTravel: _selectedDate,
         ),
       ),
     );
