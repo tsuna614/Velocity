@@ -8,8 +8,8 @@ import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/booking_screen.dart';
-import 'package:velocity_app/src/widgets/traveling/amount_picker.dart';
-import 'package:velocity_app/src/widgets/traveling/custom_date_picker.dart';
+import 'package:velocity_app/src/widgets/booking/amount_picker.dart';
+import 'package:velocity_app/src/widgets/booking/custom_date_picker.dart';
 
 class DetailBooking extends StatefulWidget {
   const DetailBooking({super.key, required this.travelData});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/widgets/animated_button_1.dart';
-import 'package:velocity_app/src/widgets/traveling/receipt_details.dart';
+import 'package:velocity_app/src/widgets/booking/receipt_details.dart';
 
 class DetailFillingScreen extends StatefulWidget {
   const DetailFillingScreen(

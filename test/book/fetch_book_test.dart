@@ -81,4 +81,45 @@ void main() {
       );
     });
   });
+
+  group('createBook', () {
+    test("should", () async {
+      // Arrange
+      final book = Book(
+        id: '1',
+        travelId: '100',
+        userId: 'user_1',
+        dateOfTravel: DateTime.parse('2023-10-01T12:00:00Z'),
+        dateOfBooking: DateTime.now(),
+        amount: 200,
+      );
+
+      final mockResponse = Response(
+        data: {
+          '_id': '1',
+          'travelId': '100',
+          'userId': 'user_1',
+          'bookedDate': '2023-10-01T12:00:00Z',
+          'amount': 200,
+        },
+        requestOptions: RequestOptions(path: '/book/createBook'),
+        statusCode: 201,
+      );
+
+      when(mockDio.post(any, data: anyNamed('data')))
+          .thenAnswer((_) async => mockResponse);
+
+      // Act
+      final createdBook = await bookApi.createBook(book: book);
+
+      // Assert
+      expect(createdBook, isA<Book>());
+      expect(createdBook.id, '1');
+      expect(createdBook.travelId, '100');
+      expect(createdBook.userId, 'user_1');
+      expect(createdBook.dateOfBooking, DateTime.parse('2023-10-01T12:00:00Z'));
+      expect(createdBook.dateOfTravel, DateTime.parse('2023-10-01T12:00:00Z'));
+      expect(createdBook.amount, 200);
+    });
+  });
 }

@@ -6,7 +6,7 @@ import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/book_model.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/view/booking/receipt_page.dart';
-import 'package:velocity_app/src/widgets/traveling/receipt_details.dart';
+import 'package:velocity_app/src/widgets/booking/receipt_details.dart';
 
 String formattedDate(DateTime date) {
   return "${date.day}/${date.month}/${date.year} ${date.hour < 10 ? '0${date.hour}' : date.hour}:${date.minute < 10 ? '0${date.minute}' : date.minute}";

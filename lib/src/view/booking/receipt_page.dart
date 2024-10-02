@@ -5,7 +5,7 @@ import 'package:velocity_app/src/bloc/book/book.states.dart';
 import 'package:velocity_app/src/bloc/book/book_bloc.dart';
 import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
 import 'package:velocity_app/src/bloc/travel/travel_states.dart';
-import 'package:velocity_app/src/widgets/traveling/travel_booking_receipt.dart';
+import 'package:velocity_app/src/widgets/booking/travel_booking_receipt.dart';
 
 enum ReceiptStatus {
   active,
