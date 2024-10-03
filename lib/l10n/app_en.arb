@@ -6,5 +6,53 @@
   "letsGetStarted": "Let's get started!",
   "@letsGetStarted": {
     "description": "The conventional newborn programmer greeting"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home"
+  },
+  "explore": "Explore",
+  "@explore": {
+    "description": "Home"
+  },
+  "myBooking": "My Booking",
+  "@myBooking": {
+    "description": "Home"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Home"
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Home"
+  },
+  "myPaymentOptions": "My Payment Options",
+  "@myPaymentOptions": {
+    "description": "Home"
+  },
+  "myCards": "My Cards",
+  "@myCards": {
+    "description": "Home"
+  },
+  "payYourBookingInOneSingleTap": "Pay Your Booking In One Single Tap",
+  "@payYourBookingInOneSingleTap": {
+    "description": "Home"
+  },
+  "myReceipts": "My Receipts",
+  "@myReceipts": {
+    "description": "Home"
+  },
+  "viewYourBookingReceiptsAndHistory": "View Your Booking Receipts And History",
+  "@viewYourBookingReceiptsAndHistory": {
+    "description": "Home"
+  },
+  "myRewards": "My Rewards",
+  "@myRewards": {
+    "description": "Home"
+  },
+  "myMissions": "My Missions",
+  "@myMissions": {
+    "description": "Home"
   }
 }

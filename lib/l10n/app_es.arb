@@ -1,4 +1,16 @@
 {
     "helloWorld": "¡Hola Mundo!",
-    "letsGetStarted": "¡Empecemos!"
+    "letsGetStarted": "¡Empecemos!",
+    "home": "Hogar",
+    "explore": "Explorar",
+    "myBooking": "Mi reserva",
+    "profile": "Perfil",
+    "editProfile": "Editar perfil",
+    "myPaymentOptions": "Mis opciones de pago",
+    "myCards": "Mis tarjetas",
+    "payYourBookingInOneSingleTap": "Pague su reserva con un solo toque",
+    "myReceipts": "Mis recibos",
+    "viewYourBookingReceiptsAndHistory": "Ver sus recibos e historial de reservas",
+    "myRewards": "Mis recompensas",
+    "myMissions": "Mis misiones"
 }

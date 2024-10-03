@@ -51,17 +51,21 @@ class _RatingPageState extends State<RatingPage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Rating'),
+          scrolledUnderElevation: 0,
+          elevation: 0,
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-                if (state is! UserLoaded) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return buildPostContainer(context, state);
-              }),
-              BlocBuilder<PostBloc, PostState>(
+        body: Column(
+          children: [
+            BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+              if (state is! UserLoaded) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return buildPostContainer(context, state);
+            }),
+            Expanded(
+              child: BlocBuilder<PostBloc, PostState>(
                 builder: (context, state) {
                   if (state is! PostLoaded) {
                     return ListView(
@@ -93,8 +97,8 @@ class _RatingPageState extends State<RatingPage> {
                   );
                 },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -176,6 +176,7 @@ class _TourPageState extends State<TourPage> {
           ),
           const SizedBox(width: 10),
           Text(
+            // AppLocalizations.of(context)!.helloWorld,
             title,
             style: const TextStyle(
                 fontSize: 26, fontWeight: FontWeight.bold, color: Colors.blue),

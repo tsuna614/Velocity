@@ -7,6 +7,7 @@ import 'package:velocity_app/src/view/booking/my-booking/my_booking.dart';
 import 'package:velocity_app/src/view/home/home.dart';
 import 'package:velocity_app/src/view/profile/profile_screen.dart';
 import 'package:velocity_app/src/view/explore/explore_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -51,22 +52,22 @@ class _MainScreenState extends State<MainScreen> {
         },
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.asymmetrik),
-            label: 'Home',
+            icon: const Icon(FontAwesomeIcons.asymmetrik),
+            label: AppLocalizations.of(context)!.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.play_circle),
-            label: 'Explore',
+            icon: const Icon(Icons.play_circle),
+            label: AppLocalizations.of(context)!.explore,
           ),
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.calendarDays),
-            label: 'My Booking',
+            icon: const Icon(FontAwesomeIcons.calendarDays),
+            label: AppLocalizations.of(context)!.myBooking,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: const Icon(Icons.person),
+            label: AppLocalizations.of(context)!.profile,
           ),
         ],
       ),

@@ -39,6 +39,7 @@ class _CommunityTabState extends State<CommunityTab> {
               .add(FetchPosts(isReviewPost: false));
         },
         child: ListView.builder(
+          shrinkWrap: true,
           controller: widget.scrollController,
           itemCount: state.posts.length,
           itemBuilder: (context, index) {
