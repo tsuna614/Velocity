@@ -9,12 +9,16 @@ class PostApi {
   final baseUrl = GlobalData.baseUrl;
   final dio = Dio();
 
-  Future<List<MyPost>> fetchPosts({required bool isReviewPost}) async {
+  Future<List<MyPost>> fetchPosts(
+      {required bool isReviewPost, String? travelId}) async {
     try {
       final Response response = await dio.get(
         isReviewPost
             ? "$baseUrl/post/getAllReviewPosts"
             : "$baseUrl/post/getAllNormalPosts",
+        data: {
+          "travelId": travelId,
+        },
         options: Options(
           headers: {
             "x_authorization": await HiveService.getUserAccessToken(),
@@ -63,6 +67,8 @@ class PostApi {
           "userId": post.userId,
           "content": post.content,
           "imageUrl": post.imageUrl,
+          "travelId": post.travelId,
+          "rating": post.rating,
         },
         options: Options(
           headers: {

@@ -193,6 +193,7 @@ class _TravelCardState extends State<TravelCard> {
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 for (var i = 0; i < 5; i++)
                   travelData[index].rating - i <= 0
@@ -241,6 +242,125 @@ class _TravelCardState extends State<TravelCard> {
               )),
         ),
       ),
+    );
+  }
+}
+
+class TravelCardSkeleton extends StatefulWidget {
+  const TravelCardSkeleton({super.key});
+
+  @override
+  State<TravelCardSkeleton> createState() => _TravelCardSkeletonState();
+}
+
+class _TravelCardSkeletonState extends State<TravelCardSkeleton> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: SortButtonHorizontalList(
+            sortOptions: [],
+            onSortOptionTap: (sortOption) {},
+          ),
+        ),
+        SizedBox(
+          height: 350,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  elevation: 2,
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 200,
+                              width: 200,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Flexible(
+                            child: SizedBox(
+                              width: 200,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 20,
+                                        width: double.infinity,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 20,
+                                        width: 100,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
+                                      child: Container(
+                                        height: 20,
+                                        width: 60,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 20,
+                              width: 100,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

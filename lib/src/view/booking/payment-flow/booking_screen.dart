@@ -70,7 +70,7 @@ class _BookingScreenState extends State<BookingScreen> {
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(_currentPageIndex == 0 ? "Booking" : "Paying & Finalizing"),
-        bottom: buildAppBarBottom(),
+        bottom: buildStageIndicator(),
       ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
@@ -98,11 +98,11 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  PreferredSize buildAppBarBottom() {
+  PreferredSize buildStageIndicator() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(40),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
         color: Colors.blue, // AppBar bottom background color
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -116,10 +116,23 @@ class _BookingScreenState extends State<BookingScreen> {
                   horizontal: _currentPageIndex == 0 ? 50 : 0,
                 ),
               ),
-              buildPageTag(
-                  index: 0,
-                  title: "Fill in details",
-                  isActive: _currentPageIndex == 0),
+              GestureDetector(
+                onTap: () {
+                  if (_pageController.page == 0) return;
+                  setState(() {
+                    _currentPageIndex = 0;
+                    _pageController.animateToPage(
+                      0,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  });
+                },
+                child: buildPageTag(
+                    index: 0,
+                    title: "Fill in details",
+                    isActive: _currentPageIndex == 0),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(

@@ -66,7 +66,8 @@ class MyApp extends StatelessWidget {
           create: (context) => UserBloc(getIt<UserApi>())..add(FetchUser()),
         ),
         BlocProvider<PostBloc>(
-          create: (context) => PostBloc(getIt<PostApi>())..add(FetchPosts()),
+          create: (context) =>
+              PostBloc(getIt<PostApi>())..add(FetchPosts(isReviewPost: false)),
         ),
         BlocProvider<BookBloc>(
           create: (context) => (BookBloc(getIt<BookApi>())..add(FetchBooks())),

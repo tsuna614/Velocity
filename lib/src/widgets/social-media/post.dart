@@ -63,6 +63,7 @@ class _PostState extends State<Post> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildUserAvatarAndName(userData!),
+            if (widget.post.rating != null) buildRatingRow(),
             const SizedBox(height: 10),
             buildPostContent(),
             const SizedBox(height: 8),
@@ -70,6 +71,41 @@ class _PostState extends State<Post> {
             buildPostActionsRow(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildRatingRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          for (var i = 0; i < 5; i++)
+            widget.post.rating! - i <= 0
+                ? const Icon(
+                    Icons.star_border,
+                    color: Colors.orange,
+                    size: 18,
+                  )
+                : widget.post.rating! - i < 1
+                    ? const Icon(
+                        Icons.star_half,
+                        color: Colors.orange,
+                        size: 18,
+                      )
+                    : const Icon(
+                        Icons.star,
+                        color: Colors.orange,
+                        size: 18,
+                      ),
+          const SizedBox(width: 5),
+          Text(
+            "(${widget.post.rating})",
+            style: const TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+        ],
       ),
     );
   }

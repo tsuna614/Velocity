@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
+import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/bloc/post/post_states.dart';
 import 'package:velocity_app/src/widgets/social-media/post.dart';
 
@@ -32,12 +33,18 @@ class _CommunityTabState extends State<CommunityTab> {
         post.printPost();
       });
 
-      return ListView.builder(
-        controller: widget.scrollController,
-        itemCount: state.posts.length,
-        itemBuilder: (context, index) {
-          return Post(post: state.posts[index]);
+      return RefreshIndicator(
+        onRefresh: () async {
+          BlocProvider.of<PostBloc>(context)
+              .add(FetchPosts(isReviewPost: false));
         },
+        child: ListView.builder(
+          controller: widget.scrollController,
+          itemCount: state.posts.length,
+          itemBuilder: (context, index) {
+            return Post(post: state.posts[index]);
+          },
+        ),
       );
     });
   }

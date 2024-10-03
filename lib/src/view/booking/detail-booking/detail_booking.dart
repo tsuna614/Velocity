@@ -7,6 +7,7 @@ import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
+import 'package:velocity_app/src/view/booking/detail-booking/rating_page.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/booking_screen.dart';
 import 'package:velocity_app/src/widgets/booking/amount_picker.dart';
 import 'package:velocity_app/src/widgets/booking/custom_date_picker.dart';
@@ -369,41 +370,55 @@ class _DetailBookingState extends State<DetailBooking> {
             ),
           buildOverviewNode(FontAwesomeIcons.dollarSign, "Price",
               "\$${widget.travelData.price}"),
-          buildOverviewNode(FontAwesomeIcons.solidStar, "Rating", "5.0/5.0"),
+          buildOverviewNode(FontAwesomeIcons.solidStar, "Rating",
+              "${widget.travelData.rating.toStringAsFixed(1)}/5.0"),
         ],
       ),
     );
   }
 
   Widget buildOverviewNode(IconData icon, String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Icon(icon),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color.fromARGB(255, 104, 104, 104),
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+    return InkWell(
+      onTap: () {
+        if (title == "Rating") {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => RatingPage(
+                travelData: widget.travelData,
+              ),
             ),
-          ),
-        ],
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: [
+            Icon(icon),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color.fromARGB(255, 104, 104, 104),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -11,6 +11,7 @@ class TravelBloc extends Bloc<TravelEvent, TravelState> {
 
   TravelBloc(this.travelApi) : super(TravelInitial()) {
     on<LoadData>((event, emit) async {
+      emit(TravelLoading());
       final List<Travel> travels = await travelApi.fetchTravelData();
       emit(TravelLoaded(
         travels: travels,

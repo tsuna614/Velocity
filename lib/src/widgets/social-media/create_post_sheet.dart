@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:velocity_app/src/bloc/post/post_states.dart';
 import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
@@ -14,7 +15,15 @@ import 'package:velocity_app/src/widgets/social-media/create_post_options.dart';
 
 class CreatePostSheet extends StatefulWidget {
   final MyUser userData;
-  const CreatePostSheet({super.key, required this.userData});
+  final PostBloc? postBloc;
+  final String? travelId;
+
+  const CreatePostSheet({
+    super.key,
+    required this.userData,
+    this.postBloc,
+    this.travelId,
+  });
 
   @override
   State<CreatePostSheet> createState() => _CreatePostSheetState();
@@ -24,6 +33,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
   final TextEditingController _postTextController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _image;
+  double rating = 0;
 
   @override
   void dispose() {
@@ -66,6 +76,15 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
   }
 
   Future<void> _submitPost(BuildContext context) async {
+    if (widget.travelId != null && rating == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please put a rating first.'),
+        ),
+      );
+      return;
+    }
+
     final post = MyPost(
       userId: widget.userData.userId,
       postId: "",
@@ -76,6 +95,8 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
       imageUrl: _image == null
           ? ""
           : await GetIt.I<PostApi>().uploadImage(image: _image!),
+      travelId: widget.travelId,
+      rating: widget.travelId == null ? null : rating,
     );
     if (context.mounted) {
       BlocProvider.of<PostBloc>(context).add(AddPost(post: post));
@@ -85,46 +106,56 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Post'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed:
-                  _postTextController.text.trim().isEmpty && _image == null
-                      ? null
-                      : () => _submitPost(context),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-              ),
-              child: const Text('Post'),
-            ),
-          ),
-        ],
-        scrolledUnderElevation: 0,
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildUserProfileRow(),
-              const SizedBox(height: 20),
-              buildPostTextField(),
-              const SizedBox(height: 20),
-              buildPostImage(),
-              const SizedBox(height: 20),
-              CreatePostOptions(
-                onFunctionCallback: _handlePostOptions,
+    return BlocProvider.value(
+      // if postBloc is passed in (which means its rating bloc, created in rating_page.dart)
+      // use that instead of the default post bloc created in main.dart
+      value: widget.postBloc == null
+          ? BlocProvider.of<PostBloc>(context)
+          : widget.postBloc!,
+      child: BlocBuilder<PostBloc, PostState>(builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Create Post'),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed:
+                      _postTextController.text.trim().isEmpty && _image == null
+                          ? null
+                          : () => _submitPost(context),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: const Text('Post'),
+                ),
               ),
             ],
+            scrolledUnderElevation: 0,
+            elevation: 0,
           ),
-        ),
-      ),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildUserProfileRow(),
+                  if (widget.travelId != null) buildRatingButtons(),
+                  const SizedBox(height: 20),
+                  buildPostTextField(),
+                  const SizedBox(height: 20),
+                  buildPostImage(),
+                  const SizedBox(height: 20),
+                  CreatePostOptions(
+                    onFunctionCallback: _handlePostOptions,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
     );
   }
 
@@ -147,6 +178,74 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
+        ),
+      ],
+    );
+  }
+
+  Widget buildRatingButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconButton(
+          icon: Icon(
+            rating >= 1 ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+            size: 30,
+          ),
+          onPressed: () {
+            setState(() {
+              rating = 1;
+            });
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            rating >= 2 ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+            size: 30,
+          ),
+          onPressed: () {
+            setState(() {
+              rating = 2;
+            });
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            rating >= 3 ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+            size: 30,
+          ),
+          onPressed: () {
+            setState(() {
+              rating = 3;
+            });
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            rating >= 4 ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+            size: 30,
+          ),
+          onPressed: () {
+            setState(() {
+              rating = 4;
+            });
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            rating >= 5 ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+            size: 30,
+          ),
+          onPressed: () {
+            setState(() {
+              rating = 5;
+            });
+          },
         ),
       ],
     );

@@ -14,7 +14,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       // Call the API to fetch the posts
       // final List<MyPost> posts = await GeneralApi().fetchPosts();
       // emit(PostLoaded(posts: posts));
-      final posts = await postApi.fetchPosts(isReviewPost: false);
+      final posts = await postApi.fetchPosts(
+        isReviewPost: event.isReviewPost,
+        travelId: event.travelId,
+      );
       // emit(PostLoaded(posts: dummy_data.dummyPosts));
       emit(PostLoaded(
         posts: posts,
