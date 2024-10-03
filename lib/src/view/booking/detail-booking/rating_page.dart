@@ -42,7 +42,7 @@ class _RatingPageState extends State<RatingPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostBloc(getIt<PostApi>())
+      create: (context) => PostBloc(getIt<PostApiImpl>())
         ..add(FetchPosts(
           isReviewPost: true,
           travelId: widget.travelData.id,

@@ -12,12 +12,12 @@ import 'package:velocity_app/src/services/book_api.dart';
 import 'fetch_book_test.mocks.dart'; // Import the generated mocks
 
 void main() {
-  late BookApi bookApi;
+  late BookApiImpl bookApi;
   late MockDio mockDio;
 
   setUp(() {
     mockDio = MockDio();
-    bookApi = BookApi();
+    bookApi = BookApiImpl();
     bookApi.dio = mockDio; // Override the Dio instance with the mock
   });
 

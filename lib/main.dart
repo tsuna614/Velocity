@@ -37,10 +37,10 @@ void setupLocator() {
   // getIt.registerLazySingleton(() => UserBloc());
   // getIt.registerLazySingleton(() => PostBloc());
   // getIt.registerLazySingleton(() => TravelBloc());
-  getIt.registerLazySingleton(() => UserApi());
-  getIt.registerLazySingleton(() => PostApi());
-  getIt.registerLazySingleton(() => TravelApi());
-  getIt.registerLazySingleton(() => BookApi());
+  getIt.registerLazySingleton(() => UserApiImpl());
+  getIt.registerLazySingleton(() => PostApiImpl());
+  getIt.registerLazySingleton(() => TravelApiImpl());
+  getIt.registerLazySingleton(() => BookApiImpl());
 }
 
 void main() async {
@@ -63,18 +63,19 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<UserBloc>(
-          create: (context) => UserBloc(getIt<UserApi>())..add(FetchUser()),
+          create: (context) => UserBloc(getIt<UserApiImpl>())..add(FetchUser()),
         ),
         BlocProvider<PostBloc>(
-          create: (context) =>
-              PostBloc(getIt<PostApi>())..add(FetchPosts(isReviewPost: false)),
+          create: (context) => PostBloc(getIt<PostApiImpl>())
+            ..add(FetchPosts(isReviewPost: false)),
         ),
         BlocProvider<BookBloc>(
-          create: (context) => (BookBloc(getIt<BookApi>())..add(FetchBooks())),
+          create: (context) =>
+              (BookBloc(getIt<BookApiImpl>())..add(FetchBooks())),
         ),
         BlocProvider<TravelBloc>(
           create: (context) {
-            final travelBloc = TravelBloc(getIt<TravelApi>());
+            final travelBloc = TravelBloc(getIt<TravelApiImpl>());
 
             travelBloc.add(LoadData());
 

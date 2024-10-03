@@ -2,10 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/book_model.dart';
 
-class BookApi {
+abstract class BookApi {
+  Future<List<Book>> fetchBookData();
+  Future<Book> createBook({required Book book});
+}
+
+class BookApiImpl extends BookApi {
   final baseUrl = GlobalData.baseUrl;
   Dio dio = Dio();
 
+  @override
   Future<List<Book>> fetchBookData() async {
     try {
       final response = await dio
@@ -27,6 +33,7 @@ class BookApi {
     }
   }
 
+  @override
   Future<Book> createBook({required Book book}) async {
     try {
       final response = await dio.post(

@@ -1,6 +1,6 @@
 import 'package:velocity_app/src/model/travel_model.dart';
 
-class TravelState {}
+abstract class TravelState {}
 
 class TravelInitial extends TravelState {}
 

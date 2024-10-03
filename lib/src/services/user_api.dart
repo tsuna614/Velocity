@@ -5,10 +5,43 @@ import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 
-class UserApi {
+abstract class UserApi {
+  Future<MyUser> login({required String email, required String password});
+
+  Future<MyUser> signUp({required MyUser user, required String password});
+
+  Future<void> signOut();
+
+  Future<bool> isUserSignedIn();
+
+  Future<bool> checkIfEmailExists({required String email});
+
+  Future<void> refreshAccessToken(
+      {required String accessToken, required String refreshToken});
+
+  Future<String> uploadAvatar({required File image});
+
+  Future<void> updateUserData({required MyUser user});
+
+  Future<MyUser> fetchUserDataById({required String userId});
+
+  Future<void> toggleBookmark({required String travelId});
+}
+
+class UserApiImpl extends UserApi {
   final dio = Dio();
   final baseUrl = GlobalData.baseUrl;
 
+  void printError(DioException e) {
+    if (e.response != null) {
+      print('Error response: ${e.response?.data}');
+      print('Status code: ${e.response?.statusCode}');
+    } else {
+      print('Error message: ${e.message}');
+    }
+  }
+
+  @override
   Future<MyUser> login(
       {required String email, required String password}) async {
     try {
@@ -53,6 +86,7 @@ class UserApi {
     }
   }
 
+  @override
   Future<MyUser> signUp(
       {required MyUser user, required String password}) async {
     try {
@@ -77,14 +111,17 @@ class UserApi {
     }
   }
 
+  @override
   Future<void> signOut() async {
     await HiveService.clearUserToken();
   }
 
+  @override
   Future<bool> isUserSignedIn() async {
     return true;
   }
 
+  @override
   Future<bool> checkIfEmailExists({required String email}) async {
     try {
       final Response response = await dio.get(
@@ -102,6 +139,7 @@ class UserApi {
     }
   }
 
+  @override
   Future<void> refreshAccessToken(
       {required String accessToken, required String refreshToken}) async {
     try {
@@ -128,6 +166,7 @@ class UserApi {
     }
   }
 
+  @override
   Future<String> uploadAvatar({required File image}) async {
     try {
       final Response response = await dio.post(
@@ -147,6 +186,7 @@ class UserApi {
     }
   }
 
+  @override
   Future<void> updateUserData({required MyUser user}) async {
     try {
       print(user.userId);
@@ -175,16 +215,8 @@ class UserApi {
     }
   }
 
-  void printError(DioException e) {
-    if (e.response != null) {
-      print('Error response: ${e.response?.data}');
-      print('Status code: ${e.response?.statusCode}');
-    } else {
-      print('Error message: ${e.message}');
-    }
-  }
-
   // User Rest API
+  @override
   Future<MyUser> fetchUserDataById({required String userId}) async {
     final accessToken = await HiveService.getUserAccessToken();
     final refreshToken = await HiveService.getUserRefreshToken();
@@ -238,6 +270,7 @@ class UserApi {
     }
   }
 
+  @override
   Future<void> toggleBookmark({required String travelId}) async {
     try {
       await dio.put("$baseUrl/user/toggleBookmark", data: {

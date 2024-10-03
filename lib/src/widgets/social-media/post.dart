@@ -29,8 +29,8 @@ class _PostState extends State<Post> {
   }
 
   Future<void> _fetchUserData() async {
-    final fetchedUser =
-        await GetIt.I<UserApi>().fetchUserDataById(userId: widget.post.userId);
+    final fetchedUser = await GetIt.I<UserApiImpl>()
+        .fetchUserDataById(userId: widget.post.userId);
     setState(() {
       userData = fetchedUser;
       _isLoading = false;

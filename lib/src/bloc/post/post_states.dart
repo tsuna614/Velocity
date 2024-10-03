@@ -1,6 +1,6 @@
 import 'package:velocity_app/src/model/post_model.dart';
 
-class PostState {}
+abstract class PostState {}
 
 class PostInitial extends PostState {}
 

@@ -1,6 +1,6 @@
 import 'package:velocity_app/src/model/post_model.dart';
 
-class PostEvent {}
+abstract class PostEvent {}
 
 class FetchPosts extends PostEvent {
   final bool isReviewPost;
