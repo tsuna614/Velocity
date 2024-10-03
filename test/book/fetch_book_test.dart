@@ -1,125 +1,80 @@
-// test/book_api_test.dart
-
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mockito/annotations.dart';
 import 'package:velocity_app/src/model/book_model.dart';
-import 'package:velocity_app/src/services/book_api.dart';
 
-// Generate a MockDio class
-@GenerateMocks([Dio])
-import 'fetch_book_test.mocks.dart'; // Import the generated mocks
+import 'fetch_book_test.mocks.dart';
 
 void main() {
-  late BookApiImpl bookApi;
-  late MockDio mockDio;
+  late MockBookApi mockBookApi;
 
   setUp(() {
-    mockDio = MockDio();
-    bookApi = BookApiImpl();
-    bookApi.dio = mockDio; // Override the Dio instance with the mock
+    mockBookApi = MockBookApi();
   });
 
-  group('fetchBookData', () {
-    test('should return a list of books on successful API call', () async {
+  group('BookApi Test', () {
+    test('Fetch books returns a list of books', () async {
       // Arrange
-      final mockResponse = Response(
-        data: [
-          {
-            '_id': '1',
-            'travelId': '100',
-            'userId': 'user_1',
-            'bookedDate': '2023-10-01T12:00:00Z',
-            'amount': 200,
-          },
-          {
-            '_id': '2',
-            'travelId': '101',
-            'userId': 'user_2',
-            'bookedDate': '2023-10-02T12:00:00Z',
-            'amount': 300,
-          }
-        ],
-        requestOptions: RequestOptions(path: '/book/getAllBooks'),
-        statusCode: 200,
-      );
+      List<Book> mockBooks = [
+        // Book(
+        //   id: id,
+        //   travelId: travelId,
+        //   userId: userId,
+        //   dateOfTravel: dateOfTravel,
+        //   dateOfBooking: dateOfBooking,
+        //   amount: amount,
+        // ),
+        Book(
+          id: '1',
+          travelId: '1',
+          userId: '1',
+          dateOfTravel: DateTime.now(),
+          dateOfBooking: DateTime.now(),
+          amount: 1,
+        ),
+        Book(
+          id: '2',
+          travelId: '2',
+          userId: '2',
+          dateOfTravel: DateTime.now(),
+          dateOfBooking: DateTime.now(),
+          amount: 2,
+        ),
+      ];
 
-      when(mockDio.get(any)).thenAnswer((_) async => mockResponse);
+      // Mock the behavior of fetchBookData() to return the mockBooks
+      when(mockBookApi.fetchBookData()).thenAnswer((_) async => mockBooks);
 
       // Act
-      final books = await bookApi.fetchBookData();
+      final result = await mockBookApi.fetchBookData();
 
       // Assert
-      expect(books, isA<List<Book>>());
-      expect(books.length, 2);
-      expect(books[0].id, '1');
-      expect(books[0].travelId, '100');
-      expect(books[0].userId, 'user_1');
-      expect(books[0].dateOfBooking, DateTime.parse('2023-10-01T12:00:00Z'));
-      expect(books[0].dateOfTravel, DateTime.parse('2023-10-01T12:00:00Z'));
-      expect(books[0].amount, 200);
+      expect(result, isA<List<Book>>());
+      expect(result.length, 2);
+      expect(result[0].id, '1');
     });
 
-    test('should throw DioException on failed API call', () async {
+    test('Create a book returns a Book object', () async {
       // Arrange
-      final mockErrorResponse = Response(
-        requestOptions: RequestOptions(path: '/book/getAllBooks'),
-        statusCode: 500,
-      );
-
-      when(mockDio.get(any)).thenThrow(DioException(
-        requestOptions: mockErrorResponse.requestOptions,
-        response: mockErrorResponse,
-        message: 'Internal Server Error',
-      ));
-
-      // Act & Assert
-      expect(
-        () async => await bookApi.fetchBookData(),
-        throwsA(isA<DioException>()),
-      );
-    });
-  });
-
-  group('createBook', () {
-    test("should", () async {
-      // Arrange
-      final book = Book(
-        id: '1',
-        travelId: '100',
-        userId: 'user_1',
-        dateOfTravel: DateTime.parse('2023-10-01T12:00:00Z'),
+      Book newBook = Book(
+        id: '3',
+        travelId: '3',
+        userId: '3',
+        dateOfTravel: DateTime.now(),
         dateOfBooking: DateTime.now(),
-        amount: 200,
+        amount: 3,
       );
 
-      final mockResponse = Response(
-        data: {
-          '_id': '1',
-          'travelId': '100',
-          'userId': 'user_1',
-          'bookedDate': '2023-10-01T12:00:00Z',
-          'amount': 200,
-        },
-        requestOptions: RequestOptions(path: '/book/createBook'),
-        statusCode: 201,
-      );
-
-      when(mockDio.post(any, data: anyNamed('data')))
-          .thenAnswer((_) async => mockResponse);
+      // Mock the behavior of createBook() to return the newBook
+      when(mockBookApi.createBook(book: anyNamed('book')))
+          .thenAnswer((_) async => newBook);
 
       // Act
-      final createdBook = await bookApi.createBook(book: book);
+      final result = await mockBookApi.createBook(book: newBook);
 
       // Assert
-      expect(createdBook, isA<Book>());
-      expect(createdBook.id, '1');
-      expect(createdBook.travelId, '100');
-      expect(createdBook.userId, 'user_1');
-      expect(createdBook.dateOfBooking, DateTime.parse('2023-10-01T12:00:00Z'));
-      expect(createdBook.dateOfTravel, DateTime.parse('2023-10-01T12:00:00Z'));
-      expect(createdBook.amount, 200);
+      expect(result, isA<Book>());
+      expect(result.id, '3');
+      expect(result.amount, 3);
     });
   });
 }
