@@ -29,6 +29,8 @@ class _DetailBookingState extends State<DetailBooking> {
   int _amountCounter = 0;
   DateTime _selectedDate = DateTime.now();
 
+  Color _appBarColor = Colors.transparent;
+
   void onDateSelected(DateTime date) {
     setState(() {
       _selectedDate = date;
@@ -42,31 +44,15 @@ class _DetailBookingState extends State<DetailBooking> {
   }
 
   void _scrollListener() {
-    if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.reverse) {
-      // User is scrolling down, hide the panel
-      if (_showBottomPanel) {
-        setState(() {
-          _showBottomPanel = false;
-        });
-      }
-    } else if (_scrollController.position.userScrollDirection ==
-        ScrollDirection.forward) {
-      // User is scrolling up, show the panel
-      if (!_showBottomPanel) {
-        setState(() {
-          _showBottomPanel = true;
-        });
-      }
-    }
-
-    // If user scrolls to the bottom of the screen, show the panel
-    if (_scrollController.position.atEdge) {
-      if (_scrollController.position.pixels != 0) {
-        setState(() {
-          _showBottomPanel = true;
-        });
-      }
+    // Change the app bar color when user scrolls
+    if (_scrollController.offset > 50) {
+      setState(() {
+        _appBarColor = Colors.blue; // Change to your preferred color
+      });
+    } else {
+      setState(() {
+        _appBarColor = Colors.transparent;
+      });
     }
   }
 
@@ -101,6 +87,41 @@ class _DetailBookingState extends State<DetailBooking> {
       }
 
       return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            color: _appBarColor,
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              foregroundColor: Colors.white,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    BlocProvider.of<UserBloc>(context).add(
+                      ToggleBookmark(
+                        travelId: widget.travelData.id,
+                        context: context,
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    state.user.bookmarkedTravels.contains(widget.travelData.id)
+                        ? FontAwesomeIcons.solidHeart
+                        : FontAwesomeIcons.heart,
+                    color: state.user.bookmarkedTravels
+                            .contains(widget.travelData.id)
+                        ? Colors.red
+                        : Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         body: Column(
           children: [
             Expanded(
@@ -176,7 +197,6 @@ class _DetailBookingState extends State<DetailBooking> {
               fit: BoxFit.cover,
             ),
           ),
-          buildTopButtons(state),
         ],
       ),
     );
@@ -419,49 +439,6 @@ class _DetailBookingState extends State<DetailBooking> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildTopButtons(UserLoaded state) {
-    return SafeArea(
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              size: 30,
-              color: Colors.white,
-            ),
-          ),
-          const Spacer(),
-          Hero(
-            tag: "${widget.travelData.id}-bookmark",
-            child: IconButton(
-              onPressed: () {
-                BlocProvider.of<UserBloc>(context).add(
-                  ToggleBookmark(
-                    travelId: widget.travelData.id,
-                    context: context,
-                  ),
-                );
-              },
-              icon: Icon(
-                state.user.bookmarkedTravels.contains(widget.travelData.id)
-                    ? FontAwesomeIcons.solidHeart
-                    : FontAwesomeIcons.heart,
-                size: 30,
-                color:
-                    state.user.bookmarkedTravels.contains(widget.travelData.id)
-                        ? Colors.red
-                        : Colors.white,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
