@@ -36,7 +36,7 @@ class _CommunityTabState extends State<CommunityTab> {
       return RefreshIndicator(
         onRefresh: () async {
           BlocProvider.of<PostBloc>(context)
-              .add(FetchPosts(isReviewPost: false));
+              .add(FetchPosts(postType: PostType.normalPost));
         },
         child: ListView.builder(
           shrinkWrap: true,

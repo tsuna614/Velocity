@@ -1,13 +1,18 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 
 abstract class PostApi {
-  Future<List<MyPost>> fetchPosts(
-      {required bool isReviewPost, String? travelId});
+  Future<List<MyPost>> fetchPosts({
+    required PostType postType,
+    String?
+        targetId, // target id is the id of the object that the post is related to
+    // for example it could be the id of a travel (review post) or the id of another post (comment post)
+  });
 
   Future<String> addPost({required MyPost post});
 
@@ -22,14 +27,16 @@ class PostApiImpl extends PostApi {
 
   @override
   Future<List<MyPost>> fetchPosts(
-      {required bool isReviewPost, String? travelId}) async {
+      {required PostType postType, String? targetId}) async {
     try {
       final Response response = await dio.get(
-        isReviewPost
+        postType == PostType.reviewPost
             ? "$baseUrl/post/getAllReviewPosts"
-            : "$baseUrl/post/getAllNormalPosts",
+            : postType == PostType.commentPost
+                ? "$baseUrl/post/getAllCommentPosts"
+                : "$baseUrl/post/getAllNormalPosts",
         data: {
-          "travelId": travelId,
+          "targetId": targetId,
         },
         options: Options(
           headers: {
@@ -80,8 +87,9 @@ class PostApiImpl extends PostApi {
           "userId": post.userId,
           "content": post.content,
           "imageUrl": post.imageUrl,
-          "travelId": post.travelId,
-          "rating": post.rating,
+          if (post.travelId != null) "travelId": post.travelId,
+          if (post.rating != null) "rating": post.rating,
+          if (post.commentTargetId != null) "postId": post.commentTargetId,
         },
         options: Options(
           headers: {

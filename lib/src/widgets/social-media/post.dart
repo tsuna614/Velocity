@@ -8,6 +8,7 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/data/global_data.dart';
+import 'package:velocity_app/src/widgets/social-media/comment_screen.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key, required this.post});
@@ -21,9 +22,11 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   MyUser? userData;
   bool _isLoading = true;
+  late bool _isRatingPost;
 
   @override
   void initState() {
+    _isRatingPost = widget.post.rating != null;
     _fetchUserData();
     super.initState();
   }
@@ -45,6 +48,17 @@ class _PostState extends State<Post> {
     });
   }
 
+  Future<void> _handleCommentPressed(BuildContext context) async {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      useSafeArea: true,
+      context: context,
+      builder: (builder) {
+        return CommentScreen(postId: widget.post.postId);
+      },
+    );
+  }
+
   String formattedDate(DateTime date) {
     return "${date.day}/${date.month}/${date.year}";
   }
@@ -57,20 +71,27 @@ class _PostState extends State<Post> {
 
     return Card(
       color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildUserAvatarAndName(userData!),
-            if (widget.post.rating != null) buildRatingRow(),
-            const SizedBox(height: 10),
-            buildPostContent(),
-            const SizedBox(height: 8),
-            buildPostImage(),
-            buildPostActionsRow(),
-          ],
-        ),
+      clipBehavior: Clip.hardEdge,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildUserAvatarAndName(userData!),
+                if (_isRatingPost) buildRatingRow(),
+                const SizedBox(height: 10),
+                buildPostContent(),
+                const SizedBox(height: 8),
+                buildPostImage(),
+                const SizedBox(height: 8),
+                buildActionsCounter(),
+              ],
+            ),
+          ),
+          buildPostActionsRow(),
+        ],
       ),
     );
   }
@@ -202,28 +223,69 @@ class _PostState extends State<Post> {
     );
   }
 
-  Widget buildPostActionsRow() {
+  Widget buildActionsCounter() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: [
-          PostActionButton(
-            icon: Icons.favorite,
-            onPressed: _handleLikePressed,
-            amount: widget.post.likes?.length ?? 0,
-            isActive: widget.post.likes?.contains(GlobalData.userId) ?? false,
+          buildCounterTextSpan(widget.post.likes!.length, "Likes"),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child:
+                buildCounterTextSpan(widget.post.comments!.length, "Comments"),
           ),
+          if (!_isRatingPost)
+            buildCounterTextSpan(widget.post.shares!.length, "Shares"),
+        ],
+      ),
+    );
+  }
+
+  Widget buildPostActionsRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        PostActionButton(
+          label: "Like",
+          actionType: ActionType.like,
+          onPressed: _handleLikePressed,
+          isActive: widget.post.likes?.contains(GlobalData.userId) ?? false,
+        ),
+        PostActionButton(
+          label: "Comment",
+          actionType: ActionType.comment,
+          onPressed: () {
+            _handleCommentPressed(context);
+          },
+          isActive: false,
+        ),
+        if (!_isRatingPost)
           PostActionButton(
-            icon: Icons.comment,
+            label: "Share",
+            actionType: ActionType.share,
             onPressed: () {},
-            amount: widget.post.comments?.length ?? 0,
             isActive: false,
           ),
-          PostActionButton(
-            icon: Icons.share,
-            onPressed: () {},
-            amount: widget.post.shares?.length ?? 0,
-            isActive: false,
+      ],
+    );
+  }
+
+  Widget buildCounterTextSpan(int count, String label) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: "$count ",
+            style: const TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: label,
+            style: const TextStyle(
+              color: Colors.grey,
+            ),
           ),
         ],
       ),
@@ -231,33 +293,47 @@ class _PostState extends State<Post> {
   }
 }
 
+enum ActionType { like, comment, share }
+
 class PostActionButton extends StatelessWidget {
   const PostActionButton({
     super.key,
-    required this.icon,
+    required this.label,
+    required this.actionType,
     required this.onPressed,
-    required this.amount,
     required this.isActive,
   });
 
-  final IconData icon;
+  final String label;
+  final ActionType actionType;
   final Function() onPressed;
-  final int amount;
   final bool isActive;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 32.0),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: onPressed,
-            icon: Icon(icon),
-            color: isActive ? Colors.red : Colors.grey,
+    IconData icon = actionType == ActionType.like
+        ? Icons.favorite
+        : actionType == ActionType.comment
+            ? Icons.comment
+            : Icons.share;
+
+    return Expanded(
+      child: InkWell(
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: isActive ? Colors.red : Colors.grey,
+              ),
+              const SizedBox(width: 10),
+              Flexible(child: Text(label)),
+            ],
           ),
-          Text(amount.toString()),
-        ],
+        ),
       ),
     );
   }

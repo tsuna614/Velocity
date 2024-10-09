@@ -44,8 +44,8 @@ class _RatingPageState extends State<RatingPage> {
     return BlocProvider(
       create: (context) => PostBloc(getIt<PostApiImpl>())
         ..add(FetchPosts(
-          isReviewPost: true,
-          travelId: widget.travelData.id,
+          postType: PostType.reviewPost,
+          targetId: widget.travelData.id,
         )),
       // this blocbuilder will listen to the state of PostBloc that is the nearest on the widget tree (hopefully)
       child: Scaffold(

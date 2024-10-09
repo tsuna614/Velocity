@@ -7,10 +7,11 @@ class MyPost {
   final List<String>? likes;
   final List<String>? comments;
   final List<String>? shares;
-  // these two fields are for the rating posts
+  // these fields are for the rating posts
   final double? rating;
   final String? travelId;
-  // final DateTime dateCreated;
+  // these fields are for the comment posts
+  final String? commentTargetId; // the id of the post that this post comment on
 
   MyPost({
     required this.postId,
@@ -23,6 +24,7 @@ class MyPost {
     this.shares = const [],
     this.rating,
     this.travelId,
+    this.commentTargetId,
   });
 
   MyPost copyWith({
@@ -36,6 +38,7 @@ class MyPost {
     DateTime? dateCreated,
     double? rating,
     String? travelId,
+    String? commentTargetId,
   }) {
     return MyPost(
       postId: postId ?? this.postId,
@@ -48,6 +51,7 @@ class MyPost {
       dateCreated: dateCreated ?? this.dateCreated,
       rating: rating ?? this.rating,
       travelId: travelId ?? this.travelId,
+      commentTargetId: commentTargetId ?? this.commentTargetId,
     );
   }
 

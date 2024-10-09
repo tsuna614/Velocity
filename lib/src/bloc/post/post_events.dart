@@ -1,12 +1,18 @@
 import 'package:velocity_app/src/model/post_model.dart';
 
+enum PostType {
+  normalPost,
+  reviewPost,
+  commentPost,
+}
+
 abstract class PostEvent {}
 
 class FetchPosts extends PostEvent {
-  final bool isReviewPost;
-  final String? travelId;
+  final PostType postType;
+  final String? targetId;
 
-  FetchPosts({required this.isReviewPost, this.travelId});
+  FetchPosts({required this.postType, this.targetId});
 }
 
 class AddPost extends PostEvent {

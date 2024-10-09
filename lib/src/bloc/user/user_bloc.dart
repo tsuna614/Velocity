@@ -56,6 +56,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // Call the API to sign out the user
       try {
         await HiveService.clearUserToken();
+        GlobalData.userId = '';
         emit(UserInitial());
       } on DioException catch (e) {
         emit(UserFailure(message: e.response!.statusMessage!));
