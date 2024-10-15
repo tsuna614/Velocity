@@ -312,7 +312,7 @@ class PostActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     IconData icon = actionType == ActionType.like
-        ? Icons.favorite
+        ? Icons.thumb_up
         : actionType == ActionType.comment
             ? Icons.comment
             : Icons.share;
@@ -327,7 +327,7 @@ class PostActionButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isActive ? Colors.red : Colors.grey,
+                color: isActive ? Colors.blue : Colors.grey,
               ),
               const SizedBox(width: 10),
               Flexible(child: Text(label)),

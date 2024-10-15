@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_app/src/bloc/book/book.events.dart';
 import 'package:velocity_app/src/bloc/book/book_bloc.dart';
@@ -22,6 +22,8 @@ import 'package:velocity_app/src/view/loading_screen.dart';
 import 'package:velocity_app/src/view/main_screen.dart';
 import 'dart:io';
 
+final getIt = GetIt.instance;
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -30,8 +32,6 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
-
-final getIt = GetIt.instance;
 
 void setupLocator() {
   // getIt.registerLazySingleton(() => UserBloc());
@@ -97,6 +97,7 @@ class MyApp extends StatelessWidget {
           Locale('es'), // Spanish
         ],
         home: MyHomePage(),
+        // home: VideoApp(),
         // home: NestedScrollViewExample(),
       ),
     );

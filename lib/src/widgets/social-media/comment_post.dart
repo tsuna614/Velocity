@@ -7,7 +7,9 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
+import 'package:velocity_app/src/services/general_api.dart';
 import 'package:velocity_app/src/services/user_api.dart';
+import 'package:velocity_app/src/widgets/expandable_text.dart';
 
 class CommentPost extends StatefulWidget {
   const CommentPost({super.key, required this.post});
@@ -100,9 +102,7 @@ class _CommentPostState extends State<CommentPost> {
                   : '${userData!.firstName} ${userData!.lastName}',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(
-              widget.post.content!,
-            ),
+            ExpandableText(text: widget.post.content!),
           ],
         ),
       ),
@@ -116,7 +116,7 @@ class _CommentPostState extends State<CommentPost> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
         children: [
-          const Text("2h"),
+          Text(GeneralApi.getTime(widget.post.dateCreated)),
           const SizedBox(width: 10),
           TextButton(
             onPressed: _handleLikePressed,
@@ -128,17 +128,17 @@ class _CommentPostState extends State<CommentPost> {
             ),
             child: const Text('Like'),
           ),
-          // const SizedBox(width: 10),
-          // TextButton(
-          //   onPressed: () {},
-          //   style: TextButton.styleFrom(
-          //     padding: const EdgeInsets.all(0),
-          //     minimumSize: const Size(50, 30),
-          //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          //     foregroundColor: Colors.grey.shade800,
-          //   ),
-          //   child: const Text('Reply'),
-          // ),
+          const SizedBox(width: 10),
+          TextButton(
+            onPressed: () {},
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(0),
+              minimumSize: const Size(50, 30),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              foregroundColor: Colors.grey.shade800,
+            ),
+            child: const Text('Reply'),
+          ),
           const Spacer(),
           Text(
             '${widget.post.likes?.length ?? 0} likes',

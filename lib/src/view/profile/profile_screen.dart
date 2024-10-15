@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 buildUserProfileCard((state as UserLoaded).user),
               ],
             ),
-            ProfileScreenOptions(),
+            const ProfileScreenOptions(),
           ],
         ),
       );
