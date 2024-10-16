@@ -22,8 +22,6 @@ import 'package:velocity_app/src/view/loading_screen.dart';
 import 'package:velocity_app/src/view/main_screen.dart';
 import 'dart:io';
 
-final getIt = GetIt.instance;
-
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -32,6 +30,8 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
+
+final getIt = GetIt.instance;
 
 void setupLocator() {
   // getIt.registerLazySingleton(() => UserBloc());

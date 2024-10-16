@@ -18,6 +18,8 @@ abstract class PostApi {
 
   Future<String> uploadImage({required File image});
 
+  Future<String> uploadVideo({required File video});
+
   Future<void> likePost({required String postId, required String userId});
 }
 
@@ -55,6 +57,9 @@ class PostApiImpl extends PostApi {
           dateCreated: DateTime.parse(postData['createdAt']),
           content: postData['content'] ?? "",
           imageUrl: postData['imageUrl'] ?? "",
+          contentType: postData['contentType'] == "video"
+              ? ContentType.video
+              : ContentType.image,
           likes: postData['likes'].map<String>((e) => e.toString()).toList(),
           comments:
               postData['comments'].map<String>((e) => e.toString()).toList(),
@@ -87,6 +92,8 @@ class PostApiImpl extends PostApi {
           "userId": post.userId,
           "content": post.content,
           "imageUrl": post.imageUrl,
+          "contentType":
+              post.contentType == ContentType.image ? "image" : "video",
           if (post.travelId != null) "travelId": post.travelId,
           if (post.rating != null) "rating": post.rating,
           if (post.commentTargetId != null) "postId": post.commentTargetId,
@@ -111,7 +118,6 @@ class PostApiImpl extends PostApi {
   @override
   Future<String> uploadImage({required File image}) async {
     try {
-      print("UPLOADING IMAGE");
       final Response response = await dio.post(
         "$baseUrl/post/uploadImage",
         data: FormData.fromMap({
@@ -124,6 +130,30 @@ class PostApiImpl extends PostApi {
         ),
       );
       return response.data["imageUrl"];
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
+
+  @override
+  Future<String> uploadVideo({required File video}) async {
+    try {
+      final Response response = await dio.post(
+        "$baseUrl/post/uploadVideo",
+        data: FormData.fromMap({
+          "video": await MultipartFile.fromFile(video.path),
+        }),
+        options: Options(
+          headers: {
+            "x_authorization": await HiveService.getUserAccessToken(),
+          },
+        ),
+      );
+      return response.data["videoUrl"];
     } on DioException catch (e) {
       throw DioException(
         requestOptions: e.requestOptions,

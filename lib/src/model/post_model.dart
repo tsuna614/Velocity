@@ -1,9 +1,15 @@
+enum ContentType {
+  image,
+  video,
+}
+
 class MyPost {
   final String postId;
   final String userId;
   final DateTime dateCreated;
   final String? content;
   final String? imageUrl;
+  final ContentType contentType;
   final List<String>? likes;
   final List<String>? comments;
   final List<String>? shares;
@@ -19,6 +25,7 @@ class MyPost {
     required this.dateCreated,
     this.content = "",
     this.imageUrl = "",
+    this.contentType = ContentType.image,
     this.likes = const [],
     this.comments = const [],
     this.shares = const [],
@@ -32,6 +39,7 @@ class MyPost {
     String? userId,
     String? content,
     String? imageUrl,
+    ContentType? contentType,
     List<String>? likes,
     List<String>? comments,
     List<String>? shares,
@@ -45,6 +53,7 @@ class MyPost {
       userId: userId ?? this.userId,
       content: content ?? this.content,
       imageUrl: imageUrl ?? this.imageUrl,
+      contentType: contentType ?? this.contentType,
       likes: likes ?? this.likes,
       comments: comments ?? this.comments,
       shares: shares ?? this.shares,

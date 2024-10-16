@@ -9,6 +9,7 @@ import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/widgets/social-media/comment_screen.dart';
+import 'package:velocity_app/src/widgets/social-media/post_video_player.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key, required this.post});
@@ -198,27 +199,29 @@ class _PostState extends State<Post> {
       width: double.infinity,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
-        child: Image.network(
-          widget.post.imageUrl!,
-          fit: BoxFit.cover,
-          // loading builder is to show a shimmer effect while the image is loading
-          // but because of loadingProgress, the shimmer doesn't show immediately when buildPostImage is called
-          // you can try commenting the if statement block to see the difference
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              return child;
-            }
+        child: widget.post.contentType == ContentType.video
+            ? PostVideoPlayer(videoUrl: widget.post.imageUrl!)
+            : Image.network(
+                widget.post.imageUrl!,
+                fit: BoxFit.cover,
+                // loading builder is to show a shimmer effect while the image is loading
+                // but because of loadingProgress, the shimmer doesn't show immediately when buildPostImage is called
+                // you can try commenting the if statement block to see the difference
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
 
-            return Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              child: Container(
-                height: 200,
-                color: Colors.grey.shade300,
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      height: 200,
+                      color: Colors.grey.shade300,
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
       ),
     );
   }

@@ -33,6 +33,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
   final TextEditingController _postTextController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   File? _image;
+  bool _isVideo = false;
   double rating = 0;
 
   @override
@@ -47,6 +48,9 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
         _pickImageFromGallery();
         break;
       case 1:
+        _pickVideoFromGallery();
+        break;
+      case 2:
         _takePhoto();
         break;
       default:
@@ -64,6 +68,18 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
     }
   }
 
+  // Function to pick video from gallery
+  Future<void> _pickVideoFromGallery() async {
+    final pickedFile = await _picker.pickVideo(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _isVideo = true;
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   // Function to take a photo with the camera
   Future<void> _takePhoto() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
@@ -76,6 +92,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
   }
 
   Future<void> _submitPost(BuildContext context) async {
+    // if the post is a rating post and the user has not put a rating yet
     if (widget.travelId != null && rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -94,7 +111,10 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
           : _postTextController.text,
       imageUrl: _image == null
           ? ""
-          : await GetIt.I<PostApi>().uploadImage(image: _image!),
+          : _isVideo
+              ? await GetIt.I<PostApiImpl>().uploadVideo(video: _image!)
+              : await GetIt.I<PostApiImpl>().uploadImage(image: _image!),
+      contentType: _isVideo ? ContentType.video : ContentType.image,
       travelId: widget.travelId,
       rating: widget.travelId == null ? null : rating,
     );
@@ -286,6 +306,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
                 onPressed: () {
                   setState(() {
                     _image = null;
+                    _isVideo = false;
                   });
                 },
               ),

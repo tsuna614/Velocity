@@ -25,11 +25,22 @@ class CreatePostOptions extends StatelessWidget {
           height: 0,
         ),
         buildInkWellButton(
+          icon: FontAwesomeIcons.video,
+          color: Colors.purple,
+          text: 'Pick Video from Gallery',
+          onTap: () {
+            onFunctionCallback(1);
+          },
+        ),
+        const Divider(
+          height: 0,
+        ),
+        buildInkWellButton(
           icon: FontAwesomeIcons.camera,
           color: Colors.red,
           text: 'Take Photo',
           onTap: () {
-            onFunctionCallback(1);
+            onFunctionCallback(2);
           },
         ),
         const Divider(
@@ -40,7 +51,7 @@ class CreatePostOptions extends StatelessWidget {
           color: Colors.green,
           text: 'Add Location',
           onTap: () {
-            onFunctionCallback(2);
+            onFunctionCallback(3);
           },
         ),
         const Divider(
@@ -51,7 +62,7 @@ class CreatePostOptions extends StatelessWidget {
           color: Colors.orange,
           text: 'Add People',
           onTap: () {
-            onFunctionCallback(3);
+            onFunctionCallback(4);
           },
         ),
         const Divider(
