@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
+import 'package:velocity_app/src/view/settings/language_selection_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreenOptions extends StatefulWidget {
   const SettingsScreenOptions({super.key});
@@ -22,19 +24,19 @@ class _SettingsScreenOptionsState extends State<SettingsScreenOptions> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Are you sure you want to log out?"),
+          title: Text(AppLocalizations.of(context)!.areYouSureYouWantToLogOut),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Cancel"),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
               onPressed: () {
                 _logOut();
               },
-              child: const Text("Log Out"),
+              child: Text(AppLocalizations.of(context)!.logOut),
             ),
           ],
         );
@@ -42,40 +44,50 @@ class _SettingsScreenOptionsState extends State<SettingsScreenOptions> {
     );
   }
 
+  void _pushToLanguageScreen() {
+    // push to the language screen
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LanguageSelectionScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        buildTitle(title: "ACCOUNT & SECURITY"),
+        buildTitle(title: AppLocalizations.of(context)!.accountAndSecurity),
         buildListTileButton(
-          title: "Account Information",
+          title: AppLocalizations.of(context)!.accountInformation,
           icon: FontAwesomeIcons.user,
         ),
         buildListTileButton(
-          title: "Password & Security",
+          title: AppLocalizations.of(context)!.passwordAndSecurity,
           icon: FontAwesomeIcons.shieldHalved,
         ),
         buildListTileButton(
-          title: "Profile Privacy",
+          title: AppLocalizations.of(context)!.profilePrivacy,
           icon: FontAwesomeIcons.lock,
         ),
-        buildTitle(title: "PREFERENCES"),
+        buildTitle(title: AppLocalizations.of(context)!.preferences),
         buildListTileButton(
-          title: "Language",
+            icon: FontAwesomeIcons.globe,
+            title: AppLocalizations.of(context)!.language,
+            onTap: _pushToLanguageScreen),
+        const SizedBox(height: 20),
+        buildListTileButton(
+          title: AppLocalizations.of(context)!.termsAndConditions,
+        ),
+        buildListTileButton(
+          title: AppLocalizations.of(context)!.privacyPolicy,
+        ),
+        buildListTileButton(
+          title: AppLocalizations.of(context)!.aboutUs,
         ),
         const SizedBox(height: 20),
         buildListTileButton(
-          title: "Terms & Conditions",
-        ),
-        buildListTileButton(
-          title: "Privacy Policy",
-        ),
-        buildListTileButton(
-          title: "About Us",
-        ),
-        const SizedBox(height: 20),
-        buildListTileButton(
-          title: "Log Out",
+          title: AppLocalizations.of(context)!.logOut,
           onTap: _showAlert,
           icon: FontAwesomeIcons.arrowRightFromBracket,
         ),

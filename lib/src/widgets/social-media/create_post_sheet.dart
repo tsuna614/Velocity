@@ -12,6 +12,7 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/widgets/social-media/create_post_options.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatePostSheet extends StatefulWidget {
   final MyUser userData;
@@ -135,7 +136,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
       child: BlocBuilder<PostBloc, PostState>(builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Create Post'),
+            title: Text(AppLocalizations.of(context)!.createPost),
             actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -148,7 +149,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue,
                   ),
-                  child: const Text('Post'),
+                  child: Text(AppLocalizations.of(context)!.post),
                 ),
               ),
             ],
@@ -277,7 +278,8 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
       keyboardType: TextInputType.multiline,
       maxLines: 8,
       decoration: InputDecoration.collapsed(
-        hintText: 'What\'s on your mind, ${widget.userData.firstName}?',
+        hintText:
+            '${AppLocalizations.of(context)!.whatsOnYourMindSentence} ${widget.userData.firstName}?',
         hintStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.normal),
       ),
       style: const TextStyle(fontSize: 20),

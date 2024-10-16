@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:velocity_app/src/view/settings/settings.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum ButtonPosition {
   top,
@@ -22,72 +23,82 @@ class _ProfileScreenOptionsState extends State<ProfileScreenOptions> {
     return Column(
       // padding: EdgeInsets.only(top: _profileCardHeight),
       children: [
-        buildTitle(title: "My Payment Options"),
+        buildTitle(title: AppLocalizations.of(context)!.myPaymentOptions),
         buildButtonsCard(
           buttons: [
             buildListTileButton(
-              title: "My Cards",
-              subtitle: "Pay your booking in one single tap",
+              title: AppLocalizations.of(context)!.myCards,
+              subtitle:
+                  AppLocalizations.of(context)!.payYourBookingInOneSingleTap,
               icon: FontAwesomeIcons.creditCard,
               position: ButtonPosition.only,
             ),
           ],
         ),
-        buildTitle(title: "My Receipts"),
+        buildTitle(title: AppLocalizations.of(context)!.myReceipts),
         buildButtonsCard(
           buttons: [
             buildListTileButton(
-              title: "My Receipts",
-              subtitle: "View your booking receipts and history",
+              title: AppLocalizations.of(context)!.myReceipts,
+              subtitle: AppLocalizations.of(context)!
+                  .viewYourBookingReceiptsAndHistory,
               icon: FontAwesomeIcons.clockRotateLeft,
               position: ButtonPosition.only,
             ),
           ],
         ),
-        buildTitle(title: "My Rewards"),
+        buildTitle(title: AppLocalizations.of(context)!.myRewards),
         buildButtonsCard(
           buttons: [
             buildListTileButton(
-              title: "My Missions",
-              subtitle: "Complete more Missions, unlock more rewards",
+              title: AppLocalizations.of(context)!.myMissions,
+              subtitle: AppLocalizations.of(context)!.completeMoreMissions,
               icon: FontAwesomeIcons.bookBookmark,
               position: ButtonPosition.top,
             ),
             buildListTileButton(
-              title: "Coupons",
-              subtitle: "View coupons that you can use now",
+              title: AppLocalizations.of(context)!.coupons,
+              subtitle: AppLocalizations.of(context)!.viewCoupons,
               icon: FontAwesomeIcons.ticket,
               position: ButtonPosition.middle,
             ),
             buildListTileButton(
-              title: "Rewards",
-              subtitle: "Track rewards programs and redeem points",
+              title: AppLocalizations.of(context)!.rewards,
+              subtitle: AppLocalizations.of(context)!.trackRewards,
               icon: FontAwesomeIcons.coins,
               position: ButtonPosition.bottom,
             ),
           ],
         ),
-        buildTitle(title: "Advanced Options"),
+        buildTitle(title: AppLocalizations.of(context)!.advancedOptions),
         buildButtonsCard(
           buttons: [
             buildListTileButton(
-              title: "Help Center",
-              subtitle: "Find the best answer to your questions",
+              title: AppLocalizations.of(context)!.helpCenter,
+              subtitle: AppLocalizations.of(context)!
+                  .findTheBestAnswerToYourQuestions,
               icon: FontAwesomeIcons.circleQuestion,
               position: ButtonPosition.top,
             ),
             buildListTileButton(
-              title: "Contact Us",
-              subtitle: "Get help from our Customer Service",
+              title: AppLocalizations.of(context)!.contactUs,
+              subtitle:
+                  AppLocalizations.of(context)!.getHelpFromOurCustomerService,
               icon: FontAwesomeIcons.phoneFlip,
               position: ButtonPosition.middle,
             ),
             buildListTileButton(
-              title: "Settings",
-              subtitle: "Manage your account settings",
-              icon: FontAwesomeIcons.gear,
-              position: ButtonPosition.bottom,
-            ),
+                title: AppLocalizations.of(context)!.settings,
+                subtitle:
+                    AppLocalizations.of(context)!.manageYourAccountSettings,
+                icon: FontAwesomeIcons.gear,
+                position: ButtonPosition.bottom,
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return const SettingsScreen();
+                  }));
+                }),
           ],
         ),
       ],
@@ -141,6 +152,7 @@ class _ProfileScreenOptionsState extends State<ProfileScreenOptions> {
     required String subtitle,
     required IconData icon,
     required ButtonPosition position,
+    Function()? onTap,
   }) {
     // this long as code is basically just to make the inkwell's splash's corners rounded based on the position
     final BorderRadius borderRadius = BorderRadius.only(
@@ -166,13 +178,7 @@ class _ProfileScreenOptionsState extends State<ProfileScreenOptions> {
       clipBehavior:
           Clip.hardEdge, // apply this for the inkwell to have rounder corners
       child: InkWell(
-        onTap: () {
-          if (title == "Settings") {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return const SettingsScreen();
-            }));
-          }
-        },
+        onTap: onTap,
         child: ListTile(
           title: Text(title),
           subtitle: Text(subtitle),

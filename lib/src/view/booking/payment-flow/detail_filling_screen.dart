@@ -3,6 +3,7 @@ import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/widgets/animated_button_1.dart';
 import 'package:velocity_app/src/widgets/booking/receipt_details.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailFillingScreen extends StatefulWidget {
   const DetailFillingScreen(
@@ -39,7 +40,7 @@ class _DetailFillingScreenState extends State<DetailFillingScreen> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
             child: AnimatedButton1(
-              buttonText: "Continue to payment",
+              buttonText: AppLocalizations.of(context)!.continueToPayment,
               height: 50,
               voidCallback: () {
                 widget.navigateToPayment();
@@ -65,16 +66,16 @@ class _DetailFillingScreenState extends State<DetailFillingScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.info,
                       color: Colors.blue,
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Expanded(
                       child: Text(
-                          "Please check your booking details before proceeding to payment"),
+                          AppLocalizations.of(context)!.pleaseCheckYourBooking),
                     ),
                   ],
                 ),
@@ -102,7 +103,7 @@ class _DetailFillingScreenState extends State<DetailFillingScreen> {
                             ),
                           ),
                           Text(
-                            "Amount: ${widget.amount}",
+                            "${AppLocalizations.of(context)!.amount}: ${widget.amount}",
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
@@ -145,7 +146,7 @@ class _DetailFillingScreenState extends State<DetailFillingScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Logged in as ${widget.userData.firstName} ${widget.userData.lastName}",
+                        "${AppLocalizations.of(context)!.loggedInAs} ${widget.userData.firstName} ${widget.userData.lastName}",
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 18,

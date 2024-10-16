@@ -1,58 +1,116 @@
 {
   "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  },
   "letsGetStarted": "Let's get started!",
-  "@letsGetStarted": {
-    "description": "The conventional newborn programmer greeting"
-  },
   "home": "Home",
-  "@home": {
-    "description": "Home"
-  },
   "explore": "Explore",
-  "@explore": {
-    "description": "Home"
-  },
   "myBooking": "My Booking",
-  "@myBooking": {
-    "description": "Home"
-  },
   "profile": "Profile",
-  "@profile": {
-    "description": "Home"
-  },
   "editProfile": "Edit Profile",
-  "@editProfile": {
-    "description": "Home"
-  },
   "myPaymentOptions": "My Payment Options",
-  "@myPaymentOptions": {
-    "description": "Home"
-  },
   "myCards": "My Cards",
-  "@myCards": {
-    "description": "Home"
-  },
   "payYourBookingInOneSingleTap": "Pay Your Booking In One Single Tap",
-  "@payYourBookingInOneSingleTap": {
-    "description": "Home"
-  },
   "myReceipts": "My Receipts",
-  "@myReceipts": {
-    "description": "Home"
-  },
   "viewYourBookingReceiptsAndHistory": "View Your Booking Receipts And History",
-  "@viewYourBookingReceiptsAndHistory": {
-    "description": "Home"
-  },
   "myRewards": "My Rewards",
-  "@myRewards": {
-    "description": "Home"
-  },
   "myMissions": "My Missions",
-  "@myMissions": {
-    "description": "Home"
-  }
+  "completeMoreMissions": "Complete more Missions, unlock more rewards",
+  "coupons": "Coupons",
+  "viewCoupons": "View Coupons that you can use now",
+  "rewards": "Rewards",
+  "trackRewards": "Track Rewards programs and redeem points",
+  "advancedOptions": "Advanced Options",
+  "helpCenter": "Help Center",
+  "findTheBestAnswerToYourQuestions": "Find the best answer to your questions",
+  "contactUs": "Contact Us",
+  "getHelpFromOurCustomerService": "Get help from our Customer Service",
+  "settings": "Settings",
+  "manageYourAccountSettings": "Manage Your Account Settings",
+  "accountAndSecurity": "ACCOUNT & SECURITY",
+  "accountInformation": "Account Information",
+  "passwordAndSecurity": "Password & Security",
+  "profilePrivacy": "Profile Privacy",
+  "preferences": "Preferences",
+  "language": "Language",
+  "termsAndConditions": "Terms & Conditions",
+  "privacyPolicy": "Privacy Policy",
+  "aboutUs": "About Us",
+  "logOut": "Log Out",
+  "selectLanguage": "Select Language",
+  "areYouSureYouWantToLogOut": "Are you sure you want to log out?",
+  "cancel": "Cancel",
+  "logOut": "Log Out",
+  "bookATour": "Book a tour",
+  "bookAHotel": "Book a hotel",
+  "bookAFlight": "Book a flight",
+  "bookACar": "Book a car",
+  "tours": "Tours",
+  "hotels": "Hotels",
+  "flights": "Flights",
+  "carRentals": "Car Rentals",
+  "price": "Price",
+  "rating": "Rating",
+  "duration": "Duration",
+  "popularity": "Popularity",
+  "newest": "Newest",
+  "description": "Description",
+  "overview": "Overview",
+  "address": "Address",
+  "contact": "Contact",
+  "price": "Price",
+  "rating": "Rating",
+  "chooseYourDate": "Choose Your Date",
+  "chooseYourAmount": "Choose your amount",
+  "perTicket": "per ticket",
+  "allChargesIncluded": "All charges included",
+  "bookNow": "Book Now",
+  "booking": "Booking",
+  "fillInDetails": "Fill in details",
+  "payment": "Payment",
+  "pleaseCheckYourBooking": "Please check your booking details before proceeding to payment",
+  "amount": "Amount",
+  "loggedInAs": "Logged in as",
+  "guestDetails": "Guest Details",
+  "name": "Name",
+  "phoneNumber": "Phone Number",
+  "email": "Email",
+  "priceDetails": "Price Details",
+  "tax": "Tax",
+  "total": "Total",
+  "continueToPayment": "Continue to payment",
+  "scanTheQRCodeToPay": "Scan the QR code to pay",
+  "completePayment": "Complete Payment",
+  "like": "Like",
+  "comment": "Comment",
+  "share": "Share",
+  "likes": "Likes",
+  "comments": "Comments",
+  "shares": "Shares",
+  "writeAComment": "Write a comment...",
+  "reply": "Reply",
+  "posts": "Posts",
+  "whatsOnYourMindQuestion": "What's on your mind?",
+  "whatsOnYourMindSentence": "What's on your mind,",
+  "createPost": "Create Post",
+  "post": "Post",
+  "pickImageFromGallery": "Pick Image from Gallery",
+  "pickVideoFromGallery": "Pick Video from Gallery",
+  "takePhoto": "Take Photo",
+  "addLocation": "Add Location",
+  "addPeople": "Add People",
+  "active": "Active",
+  "past": "Past",
+  "saved": "Saved",
+  "bookmarkAdded": "Bookmark Added",
+  "bookmarkRemoved": "Bookmark Removed",
+  "destination": "Destination",
+  "duration": "Duration",
+  "city": "City",
+  "capacity": "Capacity",
+  "origin": "Origin",
+  "destination": "Destination",
+  "departureTime": "Departure Time",
+  "arrivalTime": "Arrival Time",
+  "airline": "Airline",
+  "location": "Location",
+  "carType": "Car Type"
 }

@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_app/src/bloc/book/book.events.dart';
 import 'package:velocity_app/src/bloc/book/book_bloc.dart';
+import 'package:velocity_app/src/bloc/locale/locale_bloc.dart';
 import 'package:velocity_app/src/services/book_api.dart';
 import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/services/travel_api.dart';
@@ -82,24 +83,31 @@ class MyApp extends StatelessWidget {
             return travelBloc;
           },
         ),
+        BlocProvider(create: (context) => LocaleBloc()),
       ],
-      child: const MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          Locale('en'), // English
-          Locale('es'), // Spanish
-        ],
-        home: MyHomePage(),
-        // home: VideoApp(),
-        // home: NestedScrollViewExample(),
-      ),
+      child: BlocBuilder<LocaleBloc, LocaleState>(builder: (context, state) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+            Locale('es'), // Spanish
+            Locale('fr'),
+            Locale('vi'),
+            Locale('ja'),
+          ],
+          locale: state.locale,
+          home: const MyHomePage(),
+          // home: VideoApp(),
+          // home: NestedScrollViewExample(),
+        );
+      }),
     );
   }
 }
@@ -109,20 +117,16 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Localizations.override(
-      context: context,
-      locale: const Locale('en'),
-      child: BlocBuilder<UserBloc, UserState>(
-        builder: (context, state) {
-          if (state is UserLoading) {
-            return const LoadingScreen();
-          } else if (state is UserLoaded) {
-            return const MainScreen();
-          } else {
-            return const LogInScreen();
-          }
-        },
-      ),
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, state) {
+        if (state is UserLoading) {
+          return const LoadingScreen();
+        } else if (state is UserLoaded) {
+          return const MainScreen();
+        } else {
+          return const LogInScreen();
+        }
+      },
     );
   }
 }

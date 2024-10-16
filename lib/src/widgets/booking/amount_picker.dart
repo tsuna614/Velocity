@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AmountPicker extends StatefulWidget {
   const AmountPicker({
@@ -26,9 +27,9 @@ class _AmountPickerState extends State<AmountPicker> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Choose your amount",
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.chooseYourAmount,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),

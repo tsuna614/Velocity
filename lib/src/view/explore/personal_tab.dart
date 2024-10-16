@@ -9,6 +9,7 @@ import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/widgets/social-media/create_post_sheet.dart';
 import 'package:velocity_app/src/widgets/social-media/post.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PersonalTab extends StatefulWidget {
   const PersonalTab({super.key, required this.scrollController});
@@ -85,8 +86,8 @@ class _PersonalTabState extends State<PersonalTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Posts",
+            Text(
+              AppLocalizations.of(context)!.posts,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -109,9 +110,9 @@ class _PersonalTabState extends State<PersonalTab> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Text(
-                      "What's on your mind?",
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.whatsOnYourMindQuestion,
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),

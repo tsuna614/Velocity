@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeTravelBannerButtons extends StatefulWidget {
   const HomeTravelBannerButtons({super.key, required this.onPressed});
@@ -12,12 +13,6 @@ class HomeTravelBannerButtons extends StatefulWidget {
 }
 
 class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
-  final List<String> _bannerDescriptions = [
-    'Book a tour',
-    'Book a hotel',
-    'Book a flight',
-    'Book a car',
-  ];
   final List<IconData> _bannerIcons = [
     FontAwesomeIcons.signsPost,
     FontAwesomeIcons.hotel,
@@ -35,6 +30,13 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> _bannerDescriptions = [
+      AppLocalizations.of(context)!.bookATour,
+      AppLocalizations.of(context)!.bookAHotel,
+      AppLocalizations.of(context)!.bookAFlight,
+      AppLocalizations.of(context)!.bookACar,
+    ];
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(

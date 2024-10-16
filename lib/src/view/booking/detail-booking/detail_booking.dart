@@ -11,6 +11,7 @@ import 'package:velocity_app/src/view/booking/detail-booking/rating_page.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/booking_screen.dart';
 import 'package:velocity_app/src/widgets/booking/amount_picker.dart';
 import 'package:velocity_app/src/widgets/booking/custom_date_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailBooking extends StatefulWidget {
   const DetailBooking({super.key, required this.travelData});
@@ -23,7 +24,7 @@ class DetailBooking extends StatefulWidget {
 
 class _DetailBookingState extends State<DetailBooking> {
   final ScrollController _scrollController = ScrollController();
-  bool _showBottomPanel = true;
+  final bool _showBottomPanel = true;
   final double _bottomPanelHeight = 80;
 
   int _amountCounter = 0;
@@ -161,7 +162,8 @@ class _DetailBookingState extends State<DetailBooking> {
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: AmountPicker(
                                 money: widget.travelData.price,
-                                description: "per ticket",
+                                description:
+                                    AppLocalizations.of(context)!.perTicket,
                                 onAmountSelected: onAmountSelected,
                                 amount: _amountCounter),
                           ),
@@ -236,9 +238,9 @@ class _DetailBookingState extends State<DetailBooking> {
                       color: Color.fromARGB(255, 255, 60, 0),
                     ),
                   ),
-                  const Text(
-                    "All charges included",
-                    style: TextStyle(fontSize: 12),
+                  Text(
+                    AppLocalizations.of(context)!.allChargesIncluded,
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
@@ -255,9 +257,9 @@ class _DetailBookingState extends State<DetailBooking> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-                child: const Text(
-                  "Book Now",
-                  style: TextStyle(
+                child: Text(
+                  AppLocalizations.of(context)!.bookNow,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -276,9 +278,9 @@ class _DetailBookingState extends State<DetailBooking> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Description",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Text(
+            AppLocalizations.of(context)!.description,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text(
@@ -296,30 +298,35 @@ class _DetailBookingState extends State<DetailBooking> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Overview",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(
+            AppLocalizations.of(context)!.overview,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           if (widget.travelData is Tour)
             Column(
               children: [
                 buildOverviewNode(
-                  FontAwesomeIcons.locationDot,
-                  "Destination",
-                  (widget.travelData as Tour).destination,
+                  icon: FontAwesomeIcons.locationDot,
+                  title: AppLocalizations.of(context)!.destination,
+                  value: (widget.travelData as Tour).destination,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.clock,
-                  "Duration",
-                  (widget.travelData as Tour).duration,
+                  icon: FontAwesomeIcons.clock,
+                  title: AppLocalizations.of(context)!.duration,
+                  value: (widget.travelData as Tour).duration,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.building,
-                  "City",
-                  (widget.travelData as Tour).city,
+                  icon: FontAwesomeIcons.building,
+                  title: AppLocalizations.of(context)!.city,
+                  value: (widget.travelData as Tour).city,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.users,
-                  "Capacity",
-                  (widget.travelData as Tour).capacity.toString(),
+                  icon: FontAwesomeIcons.users,
+                  title: AppLocalizations.of(context)!.capacity,
+                  value: (widget.travelData as Tour).capacity.toString(),
                 ),
               ],
             ),
@@ -327,14 +334,14 @@ class _DetailBookingState extends State<DetailBooking> {
             Column(
               children: [
                 buildOverviewNode(
-                  FontAwesomeIcons.building,
-                  "Address",
-                  (widget.travelData as Hotel).address,
+                  icon: FontAwesomeIcons.building,
+                  title: AppLocalizations.of(context)!.address,
+                  value: (widget.travelData as Hotel).address,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.phone,
-                  "Contact",
-                  (widget.travelData as Hotel).contact,
+                  icon: FontAwesomeIcons.phone,
+                  title: AppLocalizations.of(context)!.contact,
+                  value: (widget.travelData as Hotel).contact,
                 ),
               ],
             ),
@@ -342,29 +349,29 @@ class _DetailBookingState extends State<DetailBooking> {
             Column(
               children: [
                 buildOverviewNode(
-                  FontAwesomeIcons.planeDeparture,
-                  "Origin",
-                  (widget.travelData as Flight).origin,
+                  icon: FontAwesomeIcons.planeDeparture,
+                  title: AppLocalizations.of(context)!.origin,
+                  value: (widget.travelData as Flight).origin,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.planeArrival,
-                  "Destination",
-                  (widget.travelData as Flight).destination,
+                  icon: FontAwesomeIcons.planeArrival,
+                  title: AppLocalizations.of(context)!.destination,
+                  value: (widget.travelData as Flight).destination,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.clock,
-                  "Departure Time",
-                  (widget.travelData as Flight).departureTime,
+                  icon: FontAwesomeIcons.clock,
+                  title: AppLocalizations.of(context)!.departureTime,
+                  value: (widget.travelData as Flight).departureTime,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.clock,
-                  "Arrival Time",
-                  (widget.travelData as Flight).arrivalTime,
+                  icon: FontAwesomeIcons.clock,
+                  title: AppLocalizations.of(context)!.arrivalTime,
+                  value: (widget.travelData as Flight).arrivalTime,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.plane,
-                  "Airline",
-                  (widget.travelData as Flight).airline,
+                  icon: FontAwesomeIcons.plane,
+                  title: AppLocalizations.of(context)!.airline,
+                  value: (widget.travelData as Flight).airline,
                 ),
               ],
             ),
@@ -372,44 +379,52 @@ class _DetailBookingState extends State<DetailBooking> {
             Column(
               children: [
                 buildOverviewNode(
-                  FontAwesomeIcons.locationDot,
-                  "Location",
-                  (widget.travelData as CarRental).location,
+                  icon: FontAwesomeIcons.locationDot,
+                  title: AppLocalizations.of(context)!.location,
+                  value: (widget.travelData as CarRental).location,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.phone,
-                  "Contact",
-                  (widget.travelData as CarRental).contact,
+                  icon: FontAwesomeIcons.phone,
+                  title: AppLocalizations.of(context)!.contact,
+                  value: (widget.travelData as CarRental).contact,
                 ),
                 buildOverviewNode(
-                  FontAwesomeIcons.car,
-                  "Car Type",
-                  (widget.travelData as CarRental).carType,
+                  icon: FontAwesomeIcons.car,
+                  title: AppLocalizations.of(context)!.carType,
+                  value: (widget.travelData as CarRental).carType,
                 ),
               ],
             ),
-          buildOverviewNode(FontAwesomeIcons.dollarSign, "Price",
-              "\$${widget.travelData.price}"),
-          buildOverviewNode(FontAwesomeIcons.solidStar, "Rating",
-              "${widget.travelData.rating.toStringAsFixed(1)}/5.0"),
+          buildOverviewNode(
+              icon: FontAwesomeIcons.dollarSign,
+              title: AppLocalizations.of(context)!.price,
+              value: "\$${widget.travelData.price}"),
+          buildOverviewNode(
+              icon: FontAwesomeIcons.solidStar,
+              title: AppLocalizations.of(context)!.rating,
+              value: "${widget.travelData.rating.toStringAsFixed(1)}/5.0",
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => RatingPage(
+                      travelData: widget.travelData,
+                    ),
+                  ),
+                );
+              }),
         ],
       ),
     );
   }
 
-  Widget buildOverviewNode(IconData icon, String title, String value) {
+  Widget buildOverviewNode({
+    required IconData icon,
+    required String title,
+    required String value,
+    Function()? onTap,
+  }) {
     return InkWell(
-      onTap: () {
-        if (title == "Rating") {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => RatingPage(
-                travelData: widget.travelData,
-              ),
-            ),
-          );
-        }
-      },
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(

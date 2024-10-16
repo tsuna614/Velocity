@@ -7,6 +7,7 @@ import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/detail_filling_screen.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/payment_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen(
@@ -69,7 +70,11 @@ class _BookingScreenState extends State<BookingScreen> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text(_currentPageIndex == 0 ? "Booking" : "Paying & Finalizing"),
+        title: Text(
+          _currentPageIndex == 0
+              ? AppLocalizations.of(context)!.booking
+              : AppLocalizations.of(context)!.payment,
+        ),
         bottom: buildStageIndicator(),
       ),
       body: PageView(
@@ -113,7 +118,7 @@ class _BookingScreenState extends State<BookingScreen> {
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 padding: EdgeInsets.symmetric(
-                  horizontal: _currentPageIndex == 0 ? 50 : 0,
+                  horizontal: _currentPageIndex == 0 ? 10 : 0,
                 ),
               ),
               GestureDetector(
@@ -130,7 +135,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
                 child: buildPageTag(
                     index: 0,
-                    title: "Fill in details",
+                    title: AppLocalizations.of(context)!.fillInDetails,
                     isActive: _currentPageIndex == 0),
               ),
               Padding(
@@ -142,11 +147,13 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
               buildPageTag(
-                  index: 1, title: "Payment", isActive: _currentPageIndex == 1),
+                  index: 1,
+                  title: AppLocalizations.of(context)!.payment,
+                  isActive: _currentPageIndex == 1),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 padding: EdgeInsets.symmetric(
-                  horizontal: _currentPageIndex == 1 ? 50 : 0,
+                  horizontal: _currentPageIndex == 1 ? 10 : 0,
                 ),
               ),
             ],

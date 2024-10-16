@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/book/book.events.dart';
 import 'package:velocity_app/src/bloc/book/book_bloc.dart';
 import 'package:velocity_app/src/model/book_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Book bookData;
@@ -35,11 +36,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
             "https://upload.wikimedia.org/wikipedia/commons/2/2f/Rickrolling_QR_code.png",
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.all(16.0),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Scan the QR code to pay",
-            style: TextStyle(
+            AppLocalizations.of(context)!.scanTheQRCodeToPay,
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -57,7 +58,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
             ),
-            child: const Text("Complete Payment"),
+            child: Text(AppLocalizations.of(context)!.completePayment),
           ),
         ),
       ],

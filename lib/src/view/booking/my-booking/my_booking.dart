@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_app/src/view/booking/my-booking/receipt_page.dart';
 import 'package:velocity_app/src/view/booking/my-booking/bookmark_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyBookingScreen extends StatefulWidget {
   const MyBookingScreen({super.key});
@@ -18,8 +19,8 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Bookings',
+        title: Text(
+          AppLocalizations.of(context)!.myBooking,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.blue,
@@ -38,9 +39,9 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    buildButton('Active', 0),
-                    buildButton('Past', 1),
-                    buildButton('Saved', 2),
+                    buildButton(AppLocalizations.of(context)!.active, 0),
+                    buildButton(AppLocalizations.of(context)!.past, 1),
+                    buildButton(AppLocalizations.of(context)!.saved, 2),
                   ],
                 ),
                 buildActiveButtonOutline(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomDatePicker extends StatefulWidget {
   const CustomDatePicker(
@@ -36,9 +37,9 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Choose Your Date",
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.chooseYourDate,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),

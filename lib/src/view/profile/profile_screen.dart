@@ -4,7 +4,8 @@ import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/view/profile/edit_profile.dart';
-import 'package:velocity_app/src/widgets/profile_screen_options.dart';
+import 'package:velocity_app/src/widgets/settings/profile_screen_options.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -117,9 +118,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text(
-                        "Edit profile",
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.editProfile,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),

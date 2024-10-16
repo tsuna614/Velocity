@@ -10,6 +10,7 @@ import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/widgets/social-media/comment_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/post_video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key, required this.post});
@@ -231,14 +232,16 @@ class _PostState extends State<Post> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: [
-          buildCounterTextSpan(widget.post.likes!.length, "Likes"),
+          buildCounterTextSpan(
+              widget.post.likes!.length, AppLocalizations.of(context)!.likes),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child:
-                buildCounterTextSpan(widget.post.comments!.length, "Comments"),
+            child: buildCounterTextSpan(widget.post.comments!.length,
+                AppLocalizations.of(context)!.comments),
           ),
           if (!_isRatingPost)
-            buildCounterTextSpan(widget.post.shares!.length, "Shares"),
+            buildCounterTextSpan(widget.post.shares!.length,
+                AppLocalizations.of(context)!.shares),
         ],
       ),
     );
@@ -249,13 +252,13 @@ class _PostState extends State<Post> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         PostActionButton(
-          label: "Like",
+          label: AppLocalizations.of(context)!.like,
           actionType: ActionType.like,
           onPressed: _handleLikePressed,
           isActive: widget.post.likes?.contains(GlobalData.userId) ?? false,
         ),
         PostActionButton(
-          label: "Comment",
+          label: AppLocalizations.of(context)!.comment,
           actionType: ActionType.comment,
           onPressed: () {
             _handleCommentPressed(context);
@@ -264,7 +267,7 @@ class _PostState extends State<Post> {
         ),
         if (!_isRatingPost)
           PostActionButton(
-            label: "Share",
+            label: AppLocalizations.of(context)!.share,
             actionType: ActionType.share,
             onPressed: () {},
             isActive: false,

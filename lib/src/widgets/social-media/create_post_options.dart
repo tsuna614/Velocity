@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatePostOptions extends StatelessWidget {
   const CreatePostOptions({super.key, required this.onFunctionCallback});
@@ -16,7 +17,7 @@ class CreatePostOptions extends StatelessWidget {
         buildInkWellButton(
           icon: FontAwesomeIcons.image,
           color: Colors.blue,
-          text: 'Pick Image from Gallery',
+          text: AppLocalizations.of(context)!.pickImageFromGallery,
           onTap: () {
             onFunctionCallback(0);
           },
@@ -27,7 +28,7 @@ class CreatePostOptions extends StatelessWidget {
         buildInkWellButton(
           icon: FontAwesomeIcons.video,
           color: Colors.purple,
-          text: 'Pick Video from Gallery',
+          text: AppLocalizations.of(context)!.pickVideoFromGallery,
           onTap: () {
             onFunctionCallback(1);
           },
@@ -38,7 +39,7 @@ class CreatePostOptions extends StatelessWidget {
         buildInkWellButton(
           icon: FontAwesomeIcons.camera,
           color: Colors.red,
-          text: 'Take Photo',
+          text: AppLocalizations.of(context)!.takePhoto,
           onTap: () {
             onFunctionCallback(2);
           },
@@ -49,7 +50,7 @@ class CreatePostOptions extends StatelessWidget {
         buildInkWellButton(
           icon: FontAwesomeIcons.locationDot,
           color: Colors.green,
-          text: 'Add Location',
+          text: AppLocalizations.of(context)!.addLocation,
           onTap: () {
             onFunctionCallback(3);
           },
@@ -60,7 +61,7 @@ class CreatePostOptions extends StatelessWidget {
         buildInkWellButton(
           icon: FontAwesomeIcons.userTag,
           color: Colors.orange,
-          text: 'Add People',
+          text: AppLocalizations.of(context)!.addPeople,
           onTap: () {
             onFunctionCallback(4);
           },

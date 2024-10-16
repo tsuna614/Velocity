@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_app/src/model/book_model.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 String formattedDate(DateTime date) {
   return "${date.day}/${date.month}/${date.year} ${date.hour < 10 ? '0${date.hour}' : date.hour}:${date.minute < 10 ? '0${date.minute}' : date.minute}";
@@ -43,11 +44,11 @@ class _ReceiptDetailsState extends State<ReceiptDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
             child: Text(
-              "Guest Details",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              AppLocalizations.of(context)!.guestDetails,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 10),
@@ -63,16 +64,17 @@ class _ReceiptDetailsState extends State<ReceiptDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   buildDetailTextRow(
-                      tag: "Name",
+                      tag: AppLocalizations.of(context)!.name,
                       content:
                           "Mr. ${widget.userData.firstName} ${widget.userData.lastName}"),
                   const Divider(),
                   buildDetailTextRow(
-                      tag: "Phone Number",
+                      tag: AppLocalizations.of(context)!.phoneNumber,
                       content: "+${widget.userData.phone}"),
                   const Divider(),
                   buildDetailTextRow(
-                      tag: "Email", content: widget.userData.email),
+                      tag: AppLocalizations.of(context)!.email,
+                      content: widget.userData.email),
                 ],
               ),
             ),
@@ -88,11 +90,11 @@ class _ReceiptDetailsState extends State<ReceiptDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
             child: Text(
-              "Price Details",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              AppLocalizations.of(context)!.priceDetails,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 10),
@@ -108,18 +110,18 @@ class _ReceiptDetailsState extends State<ReceiptDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   buildDetailTextRow(
-                      tag: "Amount",
+                      tag: AppLocalizations.of(context)!.amount,
                       content:
                           "${widget.amount} x \$${widget.travelData.price}"),
                   buildDetailTextRow(
-                      tag: "Tax",
+                      tag: AppLocalizations.of(context)!.tax,
                       content: "10% x \$${widget.travelData.price}"),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Divider(),
                   ),
                   buildDetailTextRow(
-                      tag: "Total",
+                      tag: AppLocalizations.of(context)!.total,
                       content:
                           "\$${widget.amount * widget.travelData.price * 1.1}"),
                 ],

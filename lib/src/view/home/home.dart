@@ -9,6 +9,7 @@ import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/widgets/traveling/home_travel_banner_buttons.dart';
 import 'package:velocity_app/src/widgets/search_bar.dart';
 import 'package:velocity_app/src/widgets/traveling/travel_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -36,26 +37,11 @@ class _TourPageState extends State<TourPage> {
 
   final _scrollController = ScrollController();
 
-  final List<String> titleList = [
-    "Tours",
-    "Hotels",
-    "Flights",
-    "Car Rentals",
-  ];
-
   final List<IconData> iconList = [
     FontAwesomeIcons.mapLocationDot,
     FontAwesomeIcons.hotel,
     FontAwesomeIcons.plane,
     FontAwesomeIcons.car,
-  ];
-
-  final List<String> sortOptions = [
-    'Price',
-    'Rating',
-    'Duration',
-    'Popularity',
-    'Newest',
   ];
 
   final List<TravelType> travelTypeList = [
@@ -84,6 +70,25 @@ class _TourPageState extends State<TourPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> titleList = [
+      AppLocalizations.of(context)!.tours,
+      AppLocalizations.of(context)!.hotels,
+      AppLocalizations.of(context)!.flights,
+      AppLocalizations.of(context)!.carRentals,
+      // "Tours",
+      // "Hotels",
+      // "Flights",
+      // "Car Rentals",
+    ];
+
+    List<String> sortOptions = [
+      AppLocalizations.of(context)!.price,
+      AppLocalizations.of(context)!.rating,
+      AppLocalizations.of(context)!.duration,
+      AppLocalizations.of(context)!.popularity,
+      AppLocalizations.of(context)!.newest,
+    ];
+
     return BlocBuilder<TravelBloc, TravelState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
@@ -108,20 +113,20 @@ class _TourPageState extends State<TourPage> {
                       List<Travel> travelData = [];
 
                       if (state is TravelLoaded) {
-                        switch (titleList[index]) {
-                          case "Tours":
+                        switch (index) {
+                          case 0:
                             travelData =
                                 state.travels.whereType<Tour>().toList();
                             break;
-                          case "Hotels":
+                          case 1:
                             travelData =
                                 state.travels.whereType<Hotel>().toList();
                             break;
-                          case "Flights":
+                          case 2:
                             travelData =
                                 state.travels.whereType<Flight>().toList();
                             break;
-                          case "Car Rentals":
+                          case 3:
                             travelData =
                                 state.travels.whereType<CarRental>().toList();
                             break;
@@ -176,7 +181,6 @@ class _TourPageState extends State<TourPage> {
           ),
           const SizedBox(width: 10),
           Text(
-            // AppLocalizations.of(context)!.helloWorld,
             title,
             style: const TextStyle(
                 fontSize: 26, fontWeight: FontWeight.bold, color: Colors.blue),
