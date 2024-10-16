@@ -88,7 +88,7 @@ class _PersonalTabState extends State<PersonalTab> {
           children: [
             Text(
               AppLocalizations.of(context)!.posts,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

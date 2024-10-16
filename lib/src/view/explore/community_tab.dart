@@ -29,10 +29,6 @@ class _CommunityTabState extends State<CommunityTab> {
         );
       }
 
-      state.posts.forEach((post) {
-        post.printPost();
-      });
-
       return RefreshIndicator(
         onRefresh: () async {
           BlocProvider.of<PostBloc>(context)

@@ -384,7 +384,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.black),
+                      side: const BorderSide(color: Colors.black),
                     ),
                   ),
                   elevation: WidgetStateProperty.all(0),

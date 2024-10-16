@@ -30,7 +30,7 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> _bannerDescriptions = [
+    List<String> bannerDescriptions = [
       AppLocalizations.of(context)!.bookATour,
       AppLocalizations.of(context)!.bookAHotel,
       AppLocalizations.of(context)!.bookAFlight,
@@ -40,7 +40,7 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
-        _bannerDescriptions.length,
+        bannerDescriptions.length,
         (index) => Flexible(
           child: InkWell(
             onTap: () {
@@ -68,7 +68,7 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
                   ),
                 ),
                 Text(
-                  _bannerDescriptions[index],
+                  bannerDescriptions[index],
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 12),
                 ),

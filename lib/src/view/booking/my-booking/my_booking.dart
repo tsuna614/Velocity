@@ -21,7 +21,7 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.myBooking,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,

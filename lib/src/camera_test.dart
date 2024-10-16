@@ -38,7 +38,7 @@ class _CameraTestState extends State<CameraTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Image Picker Example")),
+      appBar: AppBar(title: const Text("Image Picker Example")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -51,20 +51,20 @@ class _CameraTestState extends State<CameraTest> {
                     width: 200,
                     fit: BoxFit.cover,
                   )
-                : Text("No image selected"),
+                : const Text("No image selected"),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Button to pick image from gallery
             ElevatedButton(
               onPressed: _pickImageFromGallery,
-              child: Text("Pick Image from Gallery"),
+              child: const Text("Pick Image from Gallery"),
             ),
 
             // Button to take a photo using the camera
             ElevatedButton(
               onPressed: _takePhoto,
-              child: Text("Take a Photo"),
+              child: const Text("Take a Photo"),
             ),
           ],
         ),

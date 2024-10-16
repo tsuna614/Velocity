@@ -261,7 +261,7 @@ class _TravelCardSkeletonState extends State<TravelCardSkeleton> {
         SizedBox(
           height: 50,
           child: SortButtonHorizontalList(
-            sortOptions: [],
+            sortOptions: const [],
             onSortOptionTap: (sortOption) {},
           ),
         ),
