@@ -13,10 +13,10 @@ class LanguageSelectionScreen extends StatefulWidget {
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   final List<String> titles = [
     "English",
-    "Spanish",
-    "French",
-    "Japanese",
-    "Vietnamese",
+    "Española (Spanish)",
+    "Française (French)",
+    "日本語 (Japanese)",
+    "Tiếng Việt (Vietnamese)",
   ];
 
   final List<String> locales = [

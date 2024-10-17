@@ -109,5 +109,16 @@
     "arrivalTime": "Heure d'arrivée",
     "airline": "Compagnie aérienne",
     "location": "Emplacement",
-    "carType": "Type de voiture"
+    "carType": "Type de voiture",
+    "savePost": "Enregistrer la publication",
+    "saveThisPostToYourSavedPosts": "Enregistrer cette publication dans vos publications enregistrées",
+    "hidePost": "Masquer la publication",
+    "seeFewerPostsLikeThis": "Voir moins de publications comme celle-ci",
+    "reportPost": "Signaler la publication",
+    "reportThisPostToTheAdmin": "Signaler cette publication à l'administrateur",
+    "deletePost": "Supprimer la publication",
+    "deleteThisPost": "Supprimer cette publication",
+    "areYouSureYouWantToDeleteThisPost": "Êtes-vous sûr de vouloir supprimer cette publication?",
+    "delete": "Supprimer",
+    "postHasBeenDeletedSuccessfully": "Le post a été supprimé avec succès"
 }

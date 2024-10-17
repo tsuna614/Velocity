@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
             return travelBloc;
           },
         ),
-        BlocProvider(create: (context) => LocaleBloc()),
+        BlocProvider(create: (context) => LocaleBloc()..add(FetchLocale())),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(builder: (context, state) {
         return MaterialApp(

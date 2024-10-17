@@ -112,5 +112,16 @@
   "arrivalTime": "Arrival Time",
   "airline": "Airline",
   "location": "Location",
-  "carType": "Car Type"
+  "carType": "Car Type",
+  "savePost": "Save post",
+  "saveThisPostToYourSavedPosts": "Save this post to your saved posts",
+  "hidePost": "Hide post",
+  "seeFewerPostsLikeThis": "See fewer posts like this",
+  "reportPost": "Report post",
+  "reportThisPostToTheAdmin": "Report this post to the admin",
+  "deletePost": "Delete post",
+  "deleteThisPost": "Delete this post",
+  "areYouSureYouWantToDeleteThisPost": "Are you sure you want to delete this post?",
+  "delete": "Delete",
+  "postHasBeenDeletedSuccessfully": "Post has been deleted successfully"
 }

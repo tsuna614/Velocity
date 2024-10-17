@@ -109,5 +109,16 @@
     "arrivalTime": "Giờ đến",
     "airline": "Hãng hàng không",
     "location": "Địa điểm",
-    "carType": "Loại xe"
+    "carType": "Loại xe",
+    "savePost": "Lưu bài viết",
+    "saveThisPostToYourSavedPosts": "Lưu bài viết này vào bài viết đã lưu của bạn",
+    "hidePost": "Ẩn bài viết",
+    "seeFewerPostsLikeThis": "Xem ít bài viết như thế này hơn",
+    "reportPost": "Báo cáo bài viết",
+    "reportThisPostToTheAdmin": "Báo cáo bài viết này cho quản trị viên",
+    "deletePost": "Xóa bài viết",
+    "deleteThisPost": "Xóa bài viết này",
+    "areYouSureYouWantToDeleteThisPost": "Bạn có chắc chắn muốn xóa bài viết này không?",
+    "delete": "Xóa",
+    "postHasBeenDeletedSuccessfully": "Bài viết đã được xóa thành công"
 }

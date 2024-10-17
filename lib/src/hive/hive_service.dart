@@ -3,6 +3,14 @@ import 'package:hive/hive.dart';
 abstract class HiveService {
   static final Box _credentialsBox = Hive.box('credentialsBox');
 
+  static Future<void> storeLocale(String locale) async {
+    await _credentialsBox.put('locale', locale);
+  }
+
+  static Future<String> getLocale() async {
+    return await _credentialsBox.get('locale', defaultValue: 'en');
+  }
+
   static Future<void> storeUserToken({
     required String id,
     required String accessToken,

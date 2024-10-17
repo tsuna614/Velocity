@@ -21,6 +21,8 @@ abstract class PostApi {
   Future<String> uploadVideo({required File video});
 
   Future<void> likePost({required String postId, required String userId});
+
+  Future<void> deletePost({required String postId});
 }
 
 class PostApiImpl extends PostApi {
@@ -173,6 +175,26 @@ class PostApiImpl extends PostApi {
           "postId": postId,
           "userId": userId,
         },
+        options: Options(
+          headers: {
+            "x_authorization": await HiveService.getUserAccessToken(),
+          },
+        ),
+      );
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
+
+  @override
+  Future<void> deletePost({required String postId}) async {
+    try {
+      await dio.delete(
+        "$baseUrl/post/$postId",
         options: Options(
           headers: {
             "x_authorization": await HiveService.getUserAccessToken(),

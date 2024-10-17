@@ -39,7 +39,10 @@ class _CommunityTabState extends State<CommunityTab> {
           controller: widget.scrollController,
           itemCount: state.posts.length,
           itemBuilder: (context, index) {
-            return Post(post: state.posts[index]);
+            return Post(
+              key: ValueKey(state.posts[index].postId),
+              post: state.posts[index],
+            );
           },
         ),
       );

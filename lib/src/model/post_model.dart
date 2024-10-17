@@ -18,6 +18,8 @@ class MyPost {
   final String? travelId;
   // these fields are for the comment posts
   final String? commentTargetId; // the id of the post that this post comment on
+  // these fields are for the shared posts
+  final String? sharedPostId; // the id of the post that this post shared
 
   MyPost({
     required this.postId,
@@ -32,6 +34,7 @@ class MyPost {
     this.rating,
     this.travelId,
     this.commentTargetId,
+    this.sharedPostId,
   });
 
   MyPost copyWith({
@@ -47,6 +50,7 @@ class MyPost {
     double? rating,
     String? travelId,
     String? commentTargetId,
+    String? sharedPostId,
   }) {
     return MyPost(
       postId: postId ?? this.postId,
@@ -61,6 +65,7 @@ class MyPost {
       rating: rating ?? this.rating,
       travelId: travelId ?? this.travelId,
       commentTargetId: commentTargetId ?? this.commentTargetId,
+      sharedPostId: sharedPostId ?? this.sharedPostId,
     );
   }
 

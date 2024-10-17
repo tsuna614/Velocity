@@ -42,9 +42,21 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
 
     on<DeletePost>((event, emit) async {
-      // Call the API to delete a post
-      // await GeneralApi().deletePost(postId: event.postId);
-      // add(FetchPosts());
+      if (state is PostLoaded) {
+        // filter out the post that need deleting by postId
+        List<MyPost> updatedPosts = (state as PostLoaded)
+            .posts
+            .where((post) => post.postId != event.postId)
+            .toList();
+
+        // send api request to server
+        await postApi.deletePost(postId: event.postId);
+
+        // emit the updated list
+        emit(PostLoaded(
+          posts: updatedPosts,
+        ));
+      }
     });
 
     on<LikePost>((event, emit) async {
