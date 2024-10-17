@@ -14,6 +14,8 @@ abstract class PostApi {
     // for example it could be the id of a travel (review post) or the id of another post (comment post)
   });
 
+  Future<MyPost> fetchPost({required String postId});
+
   Future<String> addPost({required MyPost post});
 
   Future<String> uploadImage({required File image});
@@ -70,12 +72,57 @@ class PostApiImpl extends PostApi {
               ? null
               : double.parse(postData['rating'].toString()),
           travelId: postData['travelId'],
+          commentTargetId: postData['postId'],
+          sharedPostId: postData['sharedPostId'],
         ));
       }
 
       posts.sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
 
       return posts;
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
+
+  @override
+  Future<MyPost> fetchPost({required String postId}) async {
+    try {
+      final Response response = await dio.get(
+        "$baseUrl/post/$postId",
+        options: Options(
+          headers: {
+            "x_authorization": await HiveService.getUserAccessToken(),
+          },
+        ),
+      );
+
+      final postData = response.data;
+
+      return MyPost(
+        postId: postData['_id'],
+        userId: postData['userId'],
+        dateCreated: DateTime.parse(postData['createdAt']),
+        content: postData['content'] ?? "",
+        imageUrl: postData['imageUrl'] ?? "",
+        contentType: postData['contentType'] == "video"
+            ? ContentType.video
+            : ContentType.image,
+        likes: postData['likes'].map<String>((e) => e.toString()).toList(),
+        comments:
+            postData['comments'].map<String>((e) => e.toString()).toList(),
+        shares: postData['shares'].map<String>((e) => e.toString()).toList(),
+        rating: postData["rating"] == null
+            ? null
+            : double.parse(postData['rating'].toString()),
+        travelId: postData['travelId'],
+        commentTargetId: postData['postId'],
+        sharedPostId: postData['sharedPostId'],
+      );
     } on DioException catch (e) {
       throw DioException(
         requestOptions: e.requestOptions,
@@ -95,10 +142,11 @@ class PostApiImpl extends PostApi {
           "content": post.content,
           "imageUrl": post.imageUrl,
           "contentType":
-              post.contentType == ContentType.image ? "image" : "video",
+              post.contentType == ContentType.video ? "video" : "image",
           if (post.travelId != null) "travelId": post.travelId,
           if (post.rating != null) "rating": post.rating,
           if (post.commentTargetId != null) "postId": post.commentTargetId,
+          if (post.sharedPostId != null) "sharedPostId": post.sharedPostId,
         },
         options: Options(
           headers: {

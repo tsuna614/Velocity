@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
@@ -12,11 +13,13 @@ import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/widgets/social-media/comment_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/post_video_player.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/src/widgets/social-media/share_post_sheet.dart';
 
 class Post extends StatefulWidget {
-  const Post({super.key, required this.post});
+  const Post({super.key, required this.post, this.isShared = false});
 
   final MyPost post;
+  final bool isShared;
 
   @override
   State<Post> createState() => _PostState();
@@ -24,6 +27,7 @@ class Post extends StatefulWidget {
 
 class _PostState extends State<Post> {
   MyUser? userData;
+  MyPost? sharedPost;
   bool _isLoading = true;
   late bool _isRatingPost;
 
@@ -31,6 +35,7 @@ class _PostState extends State<Post> {
   void initState() {
     _isRatingPost = widget.post.rating != null;
     _fetchUserData();
+    _fetchSharedPost();
     super.initState();
   }
 
@@ -40,6 +45,20 @@ class _PostState extends State<Post> {
     setState(() {
       userData = fetchedUser;
       _isLoading = false;
+    });
+  }
+
+  Future<void> _fetchSharedPost() async {
+    if (widget.post.sharedPostId == null) {
+      return Future.value();
+    }
+
+    await GetIt.I<PostApiImpl>()
+        .fetchPost(postId: widget.post.sharedPostId!)
+        .then((value) {
+      setState(() {
+        sharedPost = value;
+      });
     });
   }
 
@@ -63,6 +82,12 @@ class _PostState extends State<Post> {
   }
 
   Future<void> _handleSharePressed() async {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return SharePostSheet(postData: widget.post);
+        });
     // // call the share post event of PostBloc
     // BlocProvider.of<PostBloc>(context)
     //     .add(SharePost(postId: widget.post.postId, userId: GlobalData.userId));
@@ -93,13 +118,21 @@ class _PostState extends State<Post> {
                 const SizedBox(height: 10),
                 buildPostContent(),
                 const SizedBox(height: 8),
+                if (sharedPost != null)
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Post(
+                      post: sharedPost!,
+                      isShared: true,
+                    ),
+                  ),
                 buildPostImage(),
                 const SizedBox(height: 8),
                 buildActionsCounter(),
               ],
             ),
           ),
-          buildPostActionsRow(),
+          if (!widget.isShared) buildPostActionsRow(),
         ],
       ),
     );
@@ -144,11 +177,9 @@ class _PostState extends State<Post> {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage: NetworkImage(
-            userData.profileImageUrl.isNotEmpty
-                ? userData.profileImageUrl
-                : "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
-          ),
+          backgroundImage: userData.profileImageUrl.isEmpty
+              ? const AssetImage("assets/images/user-placeholder.png")
+              : NetworkImage(userData.profileImageUrl),
           radius: 20,
         ),
         const SizedBox(width: 10),
@@ -290,7 +321,9 @@ class _PostState extends State<Post> {
           PostActionButton(
             label: AppLocalizations.of(context)!.share,
             actionType: ActionType.share,
-            onPressed: () {},
+            onPressed: () {
+              _handleSharePressed();
+            },
             isActive: false,
           ),
       ],

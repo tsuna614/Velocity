@@ -103,11 +103,10 @@ class _PersonalTabState extends State<PersonalTab> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        state.user.profileImageUrl.isEmpty
-                            ? "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
-                            : state.user.profileImageUrl,
-                      ),
+                      backgroundImage: state.user.profileImageUrl.isEmpty
+                          ? const AssetImage(
+                              "assets/images/user-placeholder.png")
+                          : NetworkImage(state.user.profileImageUrl),
                     ),
                     const SizedBox(width: 10),
                     Text(

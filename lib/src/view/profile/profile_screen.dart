@@ -64,12 +64,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        userData.profileImageUrl.isNotEmpty
-                            ? userData.profileImageUrl
-                            : "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
-                        // scale: 20,
-                      ),
+                      backgroundImage: userData.profileImageUrl.isEmpty
+                          ? const AssetImage(
+                              "assets/images/user-placeholder.png")
+                          : NetworkImage(userData.profileImageUrl),
                       radius: 40,
                     ),
                     const SizedBox(width: 20),
