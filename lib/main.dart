@@ -104,6 +104,7 @@ class MyApp extends StatelessWidget {
           ],
           locale: state.locale,
           home: const MyHomePage(),
+          // home: WebSocketExample(),
           // home: VideoApp(),
           // home: NestedScrollViewExample(),
         );

@@ -120,5 +120,6 @@
     "deleteThisPost": "Xóa bài viết này",
     "areYouSureYouWantToDeleteThisPost": "Bạn có chắc chắn muốn xóa bài viết này không?",
     "delete": "Xóa",
-    "postHasBeenDeletedSuccessfully": "Bài viết đã được xóa thành công"
+    "postHasBeenDeletedSuccessfully": "Bài viết đã được xóa thành công",
+    "shareYourThoughts": "Chia sẻ suy nghĩ của bạn"
 }

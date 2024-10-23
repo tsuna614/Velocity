@@ -120,5 +120,6 @@
     "deleteThisPost": "Eliminar esta publicación",
     "areYouSureYouWantToDeleteThisPost": "¿Estás seguro de que deseas eliminar esta publicación?",
     "delete": "Eliminar",
-    "postHasBeenDeletedSuccessfully": "La publicación ha sido eliminada con éxito"
+    "postHasBeenDeletedSuccessfully": "La publicación ha sido eliminada con éxito",
+    "shareYourThoughts": "Comparte tus pensamientos"
 }

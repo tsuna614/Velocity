@@ -33,9 +33,16 @@ class CreatePostSheet extends StatefulWidget {
 class _CreatePostSheetState extends State<CreatePostSheet> {
   final TextEditingController _postTextController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
+  late bool _isRatingPost;
   File? _image;
   bool _isVideo = false;
   double rating = 0;
+
+  @override
+  void initState() {
+    _isRatingPost = widget.travelId != null;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -94,7 +101,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
 
   Future<void> _submitPost(BuildContext context) async {
     // if the post is a rating post and the user has not put a rating yet
-    if (widget.travelId != null && rating == 0) {
+    if (_isRatingPost && rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please put a rating first.'),
@@ -278,8 +285,9 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
       keyboardType: TextInputType.multiline,
       maxLines: 8,
       decoration: InputDecoration.collapsed(
-        hintText:
-            '${AppLocalizations.of(context)!.whatsOnYourMindSentence} ${widget.userData.firstName}?',
+        hintText: _isRatingPost
+            ? AppLocalizations.of(context)!.shareYourThoughts
+            : '${AppLocalizations.of(context)!.whatsOnYourMindSentence} ${widget.userData.firstName}?',
         hintStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.normal),
       ),
       style: const TextStyle(fontSize: 20),

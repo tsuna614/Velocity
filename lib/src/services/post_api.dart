@@ -35,11 +35,11 @@ class PostApiImpl extends PostApi {
   Future<List<MyPost>> fetchPosts(
       {required PostType postType, String? targetId}) async {
     try {
-      final Response response = await dio.get(
+      final Response response = await dio.post(
         postType == PostType.reviewPost
-            ? "$baseUrl/post/getAllReviewPosts"
+            ? "$baseUrl/post/getReviewPosts"
             : postType == PostType.commentPost
-                ? "$baseUrl/post/getAllCommentPosts"
+                ? "$baseUrl/post/getCommentPosts"
                 : "$baseUrl/post/getAllNormalPosts",
         data: {
           "targetId": targetId,

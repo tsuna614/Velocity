@@ -11,6 +11,7 @@ import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/widgets/social-media/create_post_sheet.dart';
 import 'package:velocity_app/src/widgets/social-media/post.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RatingPage extends StatefulWidget {
   final Travel travelData;
@@ -50,7 +51,7 @@ class _RatingPageState extends State<RatingPage> {
       // this blocbuilder will listen to the state of PostBloc that is the nearest on the widget tree (hopefully)
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Rating'),
+          title: Text(AppLocalizations.of(context)!.rating),
           scrolledUnderElevation: 0,
           elevation: 0,
           backgroundColor: Colors.blue,
@@ -113,9 +114,9 @@ class _RatingPageState extends State<RatingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Posts",
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.posts,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -137,9 +138,9 @@ class _RatingPageState extends State<RatingPage> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Text(
-                      "What's on your mind?",
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.whatsOnYourMindQuestion,
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),

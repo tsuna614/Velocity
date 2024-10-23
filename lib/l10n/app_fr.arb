@@ -120,5 +120,6 @@
     "deleteThisPost": "Supprimer cette publication",
     "areYouSureYouWantToDeleteThisPost": "Êtes-vous sûr de vouloir supprimer cette publication?",
     "delete": "Supprimer",
-    "postHasBeenDeletedSuccessfully": "Le post a été supprimé avec succès"
+    "postHasBeenDeletedSuccessfully": "Le post a été supprimé avec succès",
+    "shareYourThoughts": "Partagez vos pensées"
 }

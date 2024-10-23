@@ -10,6 +10,7 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/data/global_data.dart';
+import 'package:velocity_app/src/view/explore/messaging/message_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/comment_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/post_video_player.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,10 +43,12 @@ class _PostState extends State<Post> {
   Future<void> _fetchUserData() async {
     final fetchedUser = await GetIt.I<UserApiImpl>()
         .fetchUserDataById(userId: widget.post.userId);
-    setState(() {
-      userData = fetchedUser;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        userData = fetchedUser;
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _fetchSharedPost() async {
@@ -56,9 +59,11 @@ class _PostState extends State<Post> {
     await GetIt.I<PostApiImpl>()
         .fetchPost(postId: widget.post.sharedPostId!)
         .then((value) {
-      setState(() {
-        sharedPost = value;
-      });
+      if (mounted) {
+        setState(() {
+          sharedPost = value;
+        });
+      }
     });
   }
 
@@ -91,6 +96,17 @@ class _PostState extends State<Post> {
     // // call the share post event of PostBloc
     // BlocProvider.of<PostBloc>(context)
     //     .add(SharePost(postId: widget.post.postId, userId: GlobalData.userId));
+  }
+
+  Future<void> _pushToMessageScreen(MyUser user) async {
+    if (user.userId == GlobalData.userId) {
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MessageScreen(receiverData: user),
+      ),
+    );
   }
 
   String formattedDate(DateTime date) {
@@ -174,53 +190,58 @@ class _PostState extends State<Post> {
   }
 
   Widget buildUserAvatarAndName(MyUser userData) {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundImage: userData.profileImageUrl.isEmpty
-              ? const AssetImage("assets/images/user-placeholder.png")
-              : NetworkImage(userData.profileImageUrl),
-          radius: 20,
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${userData.firstName} ${userData.lastName} ",
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "${formattedDate(widget.post.dateCreated)} - ${userData.email}",
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        _pushToMessageScreen(userData);
+      },
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundImage: userData.profileImageUrl.isEmpty
+                ? const AssetImage("assets/images/user-placeholder.png")
+                : NetworkImage(userData.profileImageUrl),
+            radius: 20,
           ),
-        ),
-        IconButton(
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return buildBottomPanel(context);
-              },
-            );
-          },
-          icon: const Icon(
-            FontAwesomeIcons.ellipsisVertical,
-            size: 16,
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${userData.firstName} ${userData.lastName} ",
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  "${formattedDate(widget.post.dateCreated)} - ${userData.email}",
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return buildBottomPanel(context);
+                },
+              );
+            },
+            icon: const Icon(
+              FontAwesomeIcons.ellipsisVertical,
+              size: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

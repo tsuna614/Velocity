@@ -120,5 +120,6 @@
     "deleteThisPost": "この投稿を削除する",
     "areYouSureYouWantToDeleteThisPost": "この投稿を削除してもよろしいですか？",
     "delete": "削除",
-    "postHasBeenDeletedSuccessfully": "投稿が正常に削除されました"
+    "postHasBeenDeletedSuccessfully": "投稿が正常に削除されました",
+    "shareYourThoughts": "あなたの考えを共有してください"
 }
