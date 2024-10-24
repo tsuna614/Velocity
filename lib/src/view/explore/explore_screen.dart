@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_app/src/view/explore/community_tab.dart';
+import 'package:velocity_app/src/view/explore/friends_tab.dart';
 import 'package:velocity_app/src/view/explore/personal_tab.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         backgroundColor: Colors.grey.shade200,
         body: NestedScrollView(
@@ -34,6 +35,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   // forceElevated: innerBoxIsScrolled,
                   bottom: TabBar(
                     tabs: const [
+                      Tab(
+                        icon: Icon(Icons.explore),
+                      ),
                       Tab(
                         icon: Icon(Icons.group),
                       ),
@@ -65,6 +69,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               child: TabBarView(
                 children: <Widget>[
                   CommunityTab(scrollController: _scrollController),
+                  FriendsTab(scrollController: _scrollController),
                   PersonalTab(scrollController: _scrollController),
                 ],
               ),

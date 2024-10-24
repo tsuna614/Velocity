@@ -68,7 +68,10 @@ class _PersonalTabState extends State<PersonalTab> {
               controller: widget.scrollController,
               itemCount: userPosts.length,
               itemBuilder: (context, index) {
-                return Post(post: userPosts[index]);
+                return Post(
+                  key: ValueKey(state.posts[index].postId),
+                  post: userPosts[index],
+                );
               },
             );
           }),

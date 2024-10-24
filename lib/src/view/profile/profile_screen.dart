@@ -22,6 +22,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           backgroundColor: Colors.blue,
           // scrolledUnderElevation: 0,
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.notifications,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+          ],
         ),
         backgroundColor: Colors.grey.shade200,
         body: ListView(

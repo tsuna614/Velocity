@@ -23,7 +23,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         try {
           final MyUser user = await userApi.fetchUserDataById(userId: userId);
           GlobalData.userId = userId; // set the global user id for easy access
-          print(userId);
           emit(UserLoaded(user: user));
         } on DioException catch (e) {
           emit(UserFailure(message: e.response!.data!));

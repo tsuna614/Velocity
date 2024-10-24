@@ -10,11 +10,11 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/data/global_data.dart';
-import 'package:velocity_app/src/view/explore/messaging/message_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/comment_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/post_video_player.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:velocity_app/src/widgets/social-media/share_post_sheet.dart';
+import 'package:velocity_app/src/widgets/social-media/view_profile_sheet.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key, required this.post, this.isShared = false});
@@ -96,17 +96,6 @@ class _PostState extends State<Post> {
     // // call the share post event of PostBloc
     // BlocProvider.of<PostBloc>(context)
     //     .add(SharePost(postId: widget.post.postId, userId: GlobalData.userId));
-  }
-
-  Future<void> _pushToMessageScreen(MyUser user) async {
-    if (user.userId == GlobalData.userId) {
-      return;
-    }
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => MessageScreen(receiverData: user),
-      ),
-    );
   }
 
   String formattedDate(DateTime date) {
@@ -192,7 +181,15 @@ class _PostState extends State<Post> {
   Widget buildUserAvatarAndName(MyUser userData) {
     return GestureDetector(
       onTap: () {
-        _pushToMessageScreen(userData);
+        if (userData.userId == GlobalData.userId) {
+          return;
+        }
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ViewProfileSheet(userData: userData);
+          },
+        );
       },
       child: Row(
         children: [

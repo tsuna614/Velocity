@@ -47,6 +47,7 @@ class _LogInScreenState extends State<LogInScreen> {
           (state) => state is UserLoaded || state is UserFailure,
         );
 
+    if (!mounted) return;
     // Show a snackbar with the result
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

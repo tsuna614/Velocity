@@ -8,6 +8,7 @@ import 'package:velocity_app/src/bloc/book/book.events.dart';
 import 'package:velocity_app/src/bloc/book/book_bloc.dart';
 import 'package:velocity_app/src/bloc/locale/locale_bloc.dart';
 import 'package:velocity_app/src/services/book_api.dart';
+import 'package:velocity_app/src/services/notification_api.dart';
 import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/services/travel_api.dart';
 import 'package:velocity_app/src/services/user_api.dart';
@@ -42,6 +43,7 @@ void setupLocator() {
   getIt.registerLazySingleton(() => PostApiImpl());
   getIt.registerLazySingleton(() => TravelApiImpl());
   getIt.registerLazySingleton(() => BookApiImpl());
+  getIt.registerLazySingleton(() => NotificationApiImpl());
 }
 
 void main() async {
