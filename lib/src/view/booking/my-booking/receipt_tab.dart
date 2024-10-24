@@ -6,6 +6,7 @@ import 'package:velocity_app/src/bloc/book/book_bloc.dart';
 import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
 import 'package:velocity_app/src/bloc/travel/travel_states.dart';
 import 'package:velocity_app/src/widgets/booking/travel_booking_receipt.dart';
+import 'package:velocity_app/src/widgets/empty_indicator.dart';
 
 enum ReceiptStatus {
   active,
@@ -31,14 +32,6 @@ class ReceiptPage extends StatelessWidget {
             });
       }
 
-      if (bookingState.books.isEmpty) {
-        return const Center(
-          child: Text(
-            "You don't have any active bookings",
-          ),
-        );
-      }
-
       return BlocBuilder<TravelBloc, TravelState>(
           builder: (context, travelState) {
         if (travelState is! TravelLoaded) {
@@ -55,6 +48,12 @@ class ReceiptPage extends StatelessWidget {
             return e.dateOfTravel.isBefore(DateTime.now());
           }
         }).toList();
+
+        if (sortedBookings.isEmpty) {
+          return const Center(
+            child: EmptyIndicator(message: "No bookings found"),
+          );
+        }
 
         return Padding(
           padding: const EdgeInsets.all(8.0),

@@ -8,7 +8,9 @@ enum FriendRequestResponse {
 }
 
 abstract class NotificationApi {
-  Future<List<NotificationModel>> fetchNotifications();
+  Future<List<NotificationModel>> fetchNotifications({
+    required String userId,
+  });
   Future<void> sendFriendRequest({
     required String receiverId,
     required String senderId,
@@ -24,10 +26,11 @@ class NotificationApiImpl extends NotificationApi {
   Dio dio = Dio();
 
   @override
-  Future<List<NotificationModel>> fetchNotifications() async {
+  Future<List<NotificationModel>> fetchNotifications(
+      {required String userId}) async {
     try {
-      final response = await dio.get(
-          '$baseUrl/notification/getNotificationByReceiverId/${GlobalData.userId}');
+      final response = await dio
+          .get('$baseUrl/notification/getNotificationByReceiverId/$userId');
 
       List<NotificationModel> notifications = [];
 
@@ -52,7 +55,7 @@ class NotificationApiImpl extends NotificationApi {
   }) async {
     try {
       await dio.post(
-        '$baseUrl/notification/sendFriendRequest',
+        '$baseUrl/notification/createNotification',
         data: {
           "type": "friendRequest",
           "receiver": receiverId,

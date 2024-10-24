@@ -5,7 +5,7 @@ import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/book_model.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
-import 'package:velocity_app/src/view/booking/my-booking/receipt_page.dart';
+import 'package:velocity_app/src/view/booking/my-booking/receipt_tab.dart';
 import 'package:velocity_app/src/widgets/booking/receipt_details.dart';
 
 String formattedDate(DateTime date) {
@@ -75,6 +75,13 @@ class TravelBookingReceipt extends StatelessWidget {
             travelData.imageUrl[0],
             width: 80,
             fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                "assets/images/image-error.png",
+                width: 80,
+                fit: BoxFit.cover,
+              );
+            },
           ),
         ),
         title: Text(travelData.title),

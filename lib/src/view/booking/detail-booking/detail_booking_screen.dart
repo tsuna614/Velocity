@@ -7,7 +7,7 @@ import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
-import 'package:velocity_app/src/view/booking/detail-booking/rating_page.dart';
+import 'package:velocity_app/src/view/booking/detail-booking/rating_screen.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/booking_screen.dart';
 import 'package:velocity_app/src/widgets/booking/amount_picker.dart';
 import 'package:velocity_app/src/widgets/booking/custom_date_picker.dart';

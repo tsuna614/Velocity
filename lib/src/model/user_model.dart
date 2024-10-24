@@ -5,6 +5,7 @@ class MyUser {
   final String lastName;
   final String phone;
   final List<String> bookmarkedTravels;
+  final List<String> friends;
   final String profileImageUrl;
 
   MyUser({
@@ -14,6 +15,7 @@ class MyUser {
     required this.lastName,
     required this.phone,
     this.bookmarkedTravels = const [],
+    this.friends = const [],
     required this.profileImageUrl,
   });
 
@@ -24,6 +26,7 @@ class MyUser {
     String? lastName,
     String? phone,
     List<String>? bookmarkedTravels,
+    List<String>? friends,
     String? profileImageUrl,
   }) {
     return MyUser(
@@ -34,6 +37,7 @@ class MyUser {
       lastName: lastName ?? this.lastName,
       phone: phone ?? this.phone,
       bookmarkedTravels: bookmarkedTravels ?? this.bookmarkedTravels,
+      friends: friends ?? this.friends,
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     );
   }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/bloc/post/post_states.dart';
-import 'package:velocity_app/src/widgets/social-media/post.dart';
+import 'package:velocity_app/src/widgets/social-media/post/post.dart';
 
 class CommunityTab extends StatefulWidget {
   const CommunityTab({super.key, required this.scrollController});

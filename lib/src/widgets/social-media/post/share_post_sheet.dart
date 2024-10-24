@@ -4,7 +4,7 @@ import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/post_model.dart';
-import 'package:velocity_app/src/widgets/social-media/avatar_and_name.dart';
+import 'package:velocity_app/src/widgets/social-media/user/avatar_and_name.dart';
 
 class SharePostSheet extends StatefulWidget {
   const SharePostSheet({super.key, required this.postData});
@@ -59,14 +59,16 @@ class _SharePostSheetState extends State<SharePostSheet> {
                 color: Colors.white,
               ),
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    const AvatarAndName(),
+                    AvatarAndName(
+                      userId: GlobalData.userId,
+                    ),
                     const SizedBox(height: 10),
                     TextField(
                       controller: _textEditingController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Write something about this',
                         border: InputBorder.none,
                       ),

@@ -1,6 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:velocity_app/src/bloc/user/user_bloc.dart';
+import 'package:velocity_app/src/bloc/user/user_events.dart';
+import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/user_model.dart';
+import 'package:velocity_app/src/services/notification_api.dart';
 import 'package:velocity_app/src/view/explore/messaging/message_screen.dart';
 
 class ViewProfileSheet extends StatefulWidget {
@@ -13,7 +20,58 @@ class ViewProfileSheet extends StatefulWidget {
 }
 
 class _ViewProfileSheetState extends State<ViewProfileSheet> {
-  Future<void> _sendFriendRequest() async {}
+  Future<void> _sendFriendRequest() async {
+    try {
+      await GetIt.I<NotificationApiImpl>().sendFriendRequest(
+        receiverId: widget.userData.userId,
+        senderId: GlobalData.userId,
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Friend request sent"),
+        ),
+      );
+    } on DioException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message!),
+        ),
+      );
+    }
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _removeFriend() async {
+    final userBloc = BlocProvider.of<UserBloc>(context);
+
+    userBloc.add(
+      RemoveFriend(
+        friendId: widget.userData.userId,
+      ),
+    );
+
+    final result = await userBloc.stream.firstWhere(
+      (state) => state is UserLoaded || state is UserFailure,
+    );
+
+    if (!mounted) return;
+    if (result is UserLoaded) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Friend removed successfully"),
+        ),
+      );
+    } else if (result is UserFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result.message),
+        ),
+      );
+    }
+
+    Navigator.of(context).pop();
+  }
 
   Future<void> _pushToMessageScreen(MyUser user) async {
     if (user.userId == GlobalData.userId) {
@@ -28,6 +86,12 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
 
   @override
   Widget build(BuildContext context) {
+    bool isUserAlreadyFriend =
+        (BlocProvider.of<UserBloc>(context).state as UserLoaded)
+            .user
+            .friends
+            .contains(widget.userData.userId);
+
     return Container(
       height: 200,
       width: double.infinity,
@@ -68,11 +132,18 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: _sendFriendRequest,
-                    child: const Text("Send Friend Request"),
+                    onPressed: isUserAlreadyFriend
+                        ? _removeFriend
+                        : _sendFriendRequest,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
+                      backgroundColor:
+                          isUserAlreadyFriend ? Colors.red : Colors.blue,
+                    ),
+                    child: Text(
+                      isUserAlreadyFriend
+                          ? "Remove Friend"
+                          : "Send Friend Request",
                     ),
                   ),
                 ),
@@ -80,11 +151,11 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () => _pushToMessageScreen(widget.userData),
-                    child: const Text("Message"),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.blue,
                     ),
+                    child: const Text("Message"),
                   ),
                 ),
               ],

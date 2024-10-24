@@ -19,7 +19,7 @@ import 'package:velocity_app/src/bloc/user/user_events.dart';
 import 'package:velocity_app/src/bloc/travel/travel_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
-import 'package:velocity_app/src/view/auth/log_in.dart';
+import 'package:velocity_app/src/view/auth/log_in_screen.dart';
 import 'package:velocity_app/src/view/loading_screen.dart';
 import 'package:velocity_app/src/view/main_screen.dart';
 import 'dart:io';

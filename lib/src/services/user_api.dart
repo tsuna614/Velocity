@@ -26,6 +26,8 @@ abstract class UserApi {
   Future<MyUser> fetchUserDataById({required String userId});
 
   Future<void> toggleBookmark({required String travelId});
+
+  Future<void> removeFriend({required String friendId});
 }
 
 class UserApiImpl extends UserApi {
@@ -90,15 +92,13 @@ class UserApiImpl extends UserApi {
   Future<MyUser> signUp(
       {required MyUser user, required String password}) async {
     try {
-      final Response response = await dio.post("$baseUrl/auth/register", data: {
+      await dio.post("$baseUrl/auth/register", data: {
         "email": user.email,
         "password": password,
         "firstName": user.firstName,
         "lastName": user.lastName,
         "number": user.phone,
       });
-
-      print(response.statusCode);
 
       return user;
     } on DioException catch (e) {
@@ -143,7 +143,6 @@ class UserApiImpl extends UserApi {
   Future<void> refreshAccessToken(
       {required String accessToken, required String refreshToken}) async {
     try {
-      print("TOKEN REFRESHED");
       final Response response = await dio.post(
         "$baseUrl/auth/refresh",
         options: Options(
@@ -189,7 +188,6 @@ class UserApiImpl extends UserApi {
   @override
   Future<void> updateUserData({required MyUser user}) async {
     try {
-      print(user.userId);
       await dio.put(
         "$baseUrl/user/updateUserById/${user.userId}",
         data: {
@@ -240,6 +238,7 @@ class UserApiImpl extends UserApi {
         profileImageUrl: response.data[0]["profileImageUrl"] ?? "",
         bookmarkedTravels:
             List<String>.from(response.data[0]["bookmarkedTravels"]),
+        friends: List<String>.from(response.data[0]["userFriends"]),
       );
 
       return user;
@@ -276,6 +275,21 @@ class UserApiImpl extends UserApi {
       await dio.put("$baseUrl/user/toggleBookmark", data: {
         "userId": GlobalData.userId,
         "travelId": travelId,
+      });
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: e.message,
+      );
+    }
+  }
+
+  @override
+  Future<void> removeFriend({required String friendId}) async {
+    try {
+      await dio.put("$baseUrl/user/removeFriend/${GlobalData.userId}", data: {
+        "targetId": friendId,
       });
     } on DioException catch (e) {
       throw DioException(

@@ -58,6 +58,7 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
         );
 
     // Handle result
+    if (!mounted) return;
     if (result is UserLoaded) {
       Navigator.of(context).popUntil((route) => route.isFirst);
     } else {

@@ -44,3 +44,19 @@ class ToggleBookmark extends UserEvent {
     required this.context,
   });
 }
+
+class AddFriend extends UserEvent {
+  final String friendId;
+
+  AddFriend({
+    required this.friendId,
+  });
+}
+
+class RemoveFriend extends UserEvent {
+  final String friendId;
+
+  RemoveFriend({
+    required this.friendId,
+  });
+}

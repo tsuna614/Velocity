@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/user_model.dart';
-import 'package:velocity_app/src/view/profile/edit_profile.dart';
+import 'package:velocity_app/src/view/profile/edit_profile_screen.dart';
+import 'package:velocity_app/src/view/profile/notification_screen.dart';
 import 'package:velocity_app/src/widgets/settings/profile_screen_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,6 +16,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  void _pushToNotificationScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return NotificationScreen();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
@@ -24,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // scrolledUnderElevation: 0,
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: _pushToNotificationScreen,
               icon: const Icon(
                 Icons.notifications,
                 color: Colors.white,

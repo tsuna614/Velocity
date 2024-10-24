@@ -7,7 +7,7 @@ import 'package:velocity_app/src/bloc/post/post_states.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/services/post_api.dart';
-import 'package:velocity_app/src/widgets/social-media/comment_post.dart';
+import 'package:velocity_app/src/widgets/social-media/post/comment_post.dart';
 
 class CommentScreen extends StatefulWidget {
   const CommentScreen({super.key, required this.postId});

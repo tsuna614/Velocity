@@ -10,11 +10,12 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/data/global_data.dart';
-import 'package:velocity_app/src/widgets/social-media/comment_screen.dart';
-import 'package:velocity_app/src/widgets/social-media/post_video_player.dart';
+import 'package:velocity_app/src/widgets/social-media/post/comment_screen.dart';
+import 'package:velocity_app/src/widgets/social-media/post/post_advanced_options.dart';
+import 'package:velocity_app/src/widgets/social-media/post/post_video_player.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:velocity_app/src/widgets/social-media/share_post_sheet.dart';
-import 'package:velocity_app/src/widgets/social-media/view_profile_sheet.dart';
+import 'package:velocity_app/src/widgets/social-media/post/share_post_sheet.dart';
+import 'package:velocity_app/src/widgets/social-media/user/view_profile_sheet.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key, required this.post, this.isShared = false});
@@ -228,7 +229,7 @@ class _PostState extends State<Post> {
               showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return buildBottomPanel(context);
+                  return PostAdvancedOptions(post: widget.post);
                 },
               );
             },
@@ -367,96 +368,6 @@ class _PostState extends State<Post> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget buildBottomPanel(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.bookmark),
-                  title: Text(AppLocalizations.of(context)!.savePost),
-                  subtitle: Text(AppLocalizations.of(context)!
-                      .saveThisPostToYourSavedPosts),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: const Icon(FontAwesomeIcons.rectangleXmark),
-                  title: Text(AppLocalizations.of(context)!.hidePost),
-                  subtitle:
-                      Text(AppLocalizations.of(context)!.seeFewerPostsLikeThis),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: const Icon(Icons.report),
-                  title: Text(AppLocalizations.of(context)!.reportPost),
-                  subtitle: Text(
-                      AppLocalizations.of(context)!.reportThisPostToTheAdmin),
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ),
-        ),
-        if (widget.post.userId == GlobalData.userId)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(FontAwesomeIcons.trash),
-                    title: Text(AppLocalizations.of(context)!.deletePost),
-                    subtitle:
-                        Text(AppLocalizations.of(context)!.deleteThisPost),
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(AppLocalizations.of(context)!
-                                  .areYouSureYouWantToDeleteThisPost),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                      AppLocalizations.of(context)!.cancel),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    BlocProvider.of<PostBloc>(context).add(
-                                        DeletePost(postId: widget.post.postId));
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(AppLocalizations.of(
-                                                context)!
-                                            .postHasBeenDeletedSuccessfully),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                      AppLocalizations.of(context)!.delete),
-                                ),
-                              ],
-                            );
-                          });
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-      ],
     );
   }
 }

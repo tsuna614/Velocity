@@ -13,8 +13,8 @@ import 'package:velocity_app/src/widgets/traveling/travel_card_wide.dart';
 // If I want to display it in a order from newest to oldest (or vice versa)
 // make the TravelCardWide accept travel's id instead and build while running through user's bookmarkedTravels list
 
-class BookmarkPage extends StatelessWidget {
-  const BookmarkPage({super.key});
+class BookmarkTab extends StatelessWidget {
+  const BookmarkTab({super.key});
 
   @override
   Widget build(BuildContext context) {

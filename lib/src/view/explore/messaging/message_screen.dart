@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/message_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
-import 'package:velocity_app/src/widgets/social-media/message_bubble.dart';
+import 'package:velocity_app/src/widgets/social-media/message/message_bubble.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class MessageScreen extends StatefulWidget {

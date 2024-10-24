@@ -119,17 +119,26 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
-    // on<RemoveBookmark>((event, emit) {
-    //   // Call the API to remove a bookmark
-    //   if (state is UserLoaded) {
-    //     MyUser user = (state as UserLoaded).user.copyWith(
-    //       bookmarkedTravels: [
-    //         ...((state as UserLoaded).user.bookmarkedTravels)
-    //           ..remove(event.travelId)
-    //       ],
-    //     );
-    //     emit(UserLoaded(user: user));
-    //   }
-    // });
+    on<AddFriend>((event, emit) async {
+      MyUser user = (state as UserLoaded).user.copyWith(
+            friends: (state as UserLoaded).user.friends..add(event.friendId),
+          );
+      emit(UserLoaded(user: user));
+    });
+
+    on<RemoveFriend>((event, emit) async {
+      try {
+        await userApi.removeFriend(friendId: event.friendId);
+        if (state is UserLoaded) {
+          MyUser user = (state as UserLoaded).user.copyWith(
+                friends: (state as UserLoaded).user.friends
+                  ..removeWhere((friend) => friend == event.friendId),
+              );
+          emit(UserLoaded(user: user));
+        }
+      } on DioException {
+        // don't emit UserFailure here, because we don't want to log out the user
+      }
+    });
   }
 }

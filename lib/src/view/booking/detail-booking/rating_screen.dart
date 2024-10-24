@@ -9,8 +9,8 @@ import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/services/post_api.dart';
-import 'package:velocity_app/src/widgets/social-media/create_post_sheet.dart';
-import 'package:velocity_app/src/widgets/social-media/post.dart';
+import 'package:velocity_app/src/widgets/social-media/post/create_post_sheet.dart';
+import 'package:velocity_app/src/widgets/social-media/post/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RatingPage extends StatefulWidget {

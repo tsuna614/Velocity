@@ -11,7 +11,7 @@ import 'package:velocity_app/src/bloc/post/post_bloc.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
-import 'package:velocity_app/src/widgets/social-media/create_post_options.dart';
+import 'package:velocity_app/src/widgets/social-media/post/create_post_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatePostSheet extends StatefulWidget {
