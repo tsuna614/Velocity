@@ -92,6 +92,14 @@ class _TravelCardWideState extends State<TravelCardWide> {
                   height: imageCardHeight,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      "assets/images/image-error.png",
+                      height: imageCardHeight,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
               ],
             ),

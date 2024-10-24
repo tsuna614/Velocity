@@ -197,6 +197,14 @@ class _DetailBookingState extends State<DetailBooking> {
               placeholder: MemoryImage(kTransparentImage),
               image: NetworkImage(widget.travelData.imageUrl[0]),
               fit: BoxFit.cover,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  "assets/images/image-error.png",
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                );
+              },
             ),
           ),
         ],

@@ -122,6 +122,15 @@ class _TravelCardState extends State<TravelCard> {
                                       width: 200,
                                       height: 200,
                                       fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          "assets/images/image-error.png",
+                                          width: 200,
+                                          height: 200,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
