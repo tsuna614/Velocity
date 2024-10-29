@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/book_model.dart';
+import 'package:velocity_app/src/services/api_response.dart';
 
 abstract class BookApi {
-  Future<List<Book>> fetchBookData();
+  Future<ApiResponse<List<Book>>> fetchBookData();
   Future<Book> createBook({required Book book});
 }
 
@@ -12,7 +13,7 @@ class BookApiImpl extends BookApi {
   Dio dio = Dio();
 
   @override
-  Future<List<Book>> fetchBookData() async {
+  Future<ApiResponse<List<Book>>> fetchBookData() async {
     try {
       final response = await dio
           .get('$baseUrl/book/getAllBooksByUserId/${GlobalData.userId}');
@@ -23,13 +24,9 @@ class BookApiImpl extends BookApi {
         books.add(Book.fromJson(book));
       });
 
-      return books;
+      return ApiResponse(data: books);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 

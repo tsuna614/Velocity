@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/notification_model.dart';
+import 'package:velocity_app/src/services/api_response.dart';
 
 enum FriendRequestResponse {
   accept,
@@ -8,14 +9,14 @@ enum FriendRequestResponse {
 }
 
 abstract class NotificationApi {
-  Future<List<NotificationModel>> fetchNotifications({
+  Future<ApiResponse<List<NotificationModel>>> fetchNotifications({
     required String userId,
   });
-  Future<void> sendFriendRequest({
+  Future<ApiResponse<void>> sendFriendRequest({
     required String receiverId,
     required String senderId,
   });
-  Future<void> respondToFriendRequest({
+  Future<ApiResponse<void>> respondToFriendRequest({
     required String notificationId,
     required FriendRequestResponse receiverResponse,
   });
@@ -26,7 +27,7 @@ class NotificationApiImpl extends NotificationApi {
   Dio dio = Dio();
 
   @override
-  Future<List<NotificationModel>> fetchNotifications(
+  Future<ApiResponse<List<NotificationModel>>> fetchNotifications(
       {required String userId}) async {
     try {
       final response = await dio
@@ -38,18 +39,14 @@ class NotificationApiImpl extends NotificationApi {
         notifications.add(NotificationModel.fromJson(notification));
       });
 
-      return notifications;
+      return ApiResponse(data: notifications);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> sendFriendRequest({
+  Future<ApiResponse<void>> sendFriendRequest({
     required String receiverId,
     required String senderId,
   }) async {
@@ -62,17 +59,15 @@ class NotificationApiImpl extends NotificationApi {
           "sender": senderId,
         },
       );
+
+      return ApiResponse();
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> respondToFriendRequest({
+  Future<ApiResponse<void>> respondToFriendRequest({
     required String notificationId,
     required FriendRequestResponse receiverResponse,
   }) async {
@@ -86,12 +81,10 @@ class NotificationApiImpl extends NotificationApi {
               : "decline",
         },
       );
+
+      return ApiResponse();
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 }

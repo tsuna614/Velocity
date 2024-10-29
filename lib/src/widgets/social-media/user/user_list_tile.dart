@@ -28,7 +28,7 @@ class _UserListTileState extends State<UserListTile> {
     final response =
         await getIt<UserApiImpl>().fetchUserDataById(userId: widget.userId);
     setState(() {
-      userData = response;
+      userData = response.data!;
       _isLoading = false;
     });
   }

@@ -21,7 +21,7 @@ class _AvatarAndNameState extends State<AvatarAndName> {
     final response =
         await getIt<UserApiImpl>().fetchUserDataById(userId: widget.userId);
     setState(() {
-      userData = response;
+      userData = response.data!;
       _isLoading = false;
     });
   }

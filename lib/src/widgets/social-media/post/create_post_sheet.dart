@@ -120,8 +120,12 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
       imageUrl: _image == null
           ? ""
           : _isVideo
-              ? await GetIt.I<PostApiImpl>().uploadVideo(video: _image!)
-              : await GetIt.I<PostApiImpl>().uploadImage(image: _image!),
+              ? await GetIt.I<PostApiImpl>().uploadVideo(video: _image!).then(
+                    (value) => value.data,
+                  )
+              : await GetIt.I<PostApiImpl>().uploadImage(image: _image!).then(
+                    (value) => value.data,
+                  ),
       contentType: _isVideo ? ContentType.video : ContentType.image,
       travelId: widget.travelId,
       rating: widget.travelId == null ? null : rating,

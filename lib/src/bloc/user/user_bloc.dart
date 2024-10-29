@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:velocity_app/src/services/api_response.dart';
 import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
@@ -20,56 +20,58 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       if (userId.isEmpty) {
         emit(UserInitial());
       } else {
-        try {
-          final MyUser user = await userApi.fetchUserDataById(userId: userId);
-          GlobalData.userId = userId; // set the global user id for easy access
-          emit(UserLoaded(user: user));
-        } on DioException catch (e) {
-          emit(UserFailure(message: e.response!.data!));
+        final ApiResponse<MyUser> response =
+            await userApi.fetchUserDataById(userId: userId);
+        GlobalData.userId = userId; // set the global user id for easy access
+
+        if (response.errorMessage != null) {
+          emit(UserFailure(message: response.errorMessage!));
+        } else {
+          emit(UserLoaded(user: response.data!));
         }
       }
     });
 
     on<SignUp>((event, emit) async {
-      // Call the API to sign up the user
-      try {
-        // sign up, and if success THEN sign in
-        await userApi.signUp(user: event.user, password: event.password);
+      // sign up, and if success THEN sign in
+      final ApiResponse<void> response =
+          await userApi.signUp(user: event.user, password: event.password);
+
+      if (response.errorMessage != null) {
+        emit(UserFailure(message: response.errorMessage!));
+      } else {
         add(SignIn(email: event.user.email, password: event.password));
-      } on DioException catch (e) {
-        emit(UserFailure(message: e.response!.data!));
       }
     });
 
     on<SignIn>((event, emit) async {
       // Call the API to sign in the user
-      try {
-        await userApi.login(email: event.email, password: event.password);
+      final ApiResponse<void> response =
+          await userApi.login(email: event.email, password: event.password);
+
+      if (response.errorMessage != null) {
+        emit(UserFailure(message: response.errorMessage!));
+      } else {
         add(FetchUser());
-      } on DioException catch (e) {
-        emit(UserFailure(message: e.response!.data!));
       }
     });
 
     on<SignOut>((event, emit) async {
       // Call the API to sign out the user
-      try {
-        await HiveService.clearUserToken();
-        GlobalData.userId = '';
-        emit(UserInitial());
-      } on DioException catch (e) {
-        emit(UserFailure(message: e.response!.statusMessage!));
-      }
+      await HiveService.clearUserToken();
+      GlobalData.userId = '';
+      emit(UserInitial());
     });
 
     on<UpdateUser>((event, emit) async {
       // Call the API to update the user
-      try {
-        MyUser updatedUser = event.user;
-        await userApi.updateUserData(user: updatedUser);
+      MyUser updatedUser = event.user;
+      final ApiResponse<void> response =
+          await userApi.updateUserData(user: updatedUser);
+      if (response.errorMessage != null) {
+        emit(UserFailure(message: response.errorMessage!));
+      } else {
         emit(UserLoaded(user: updatedUser));
-      } on DioException {
-        // don't emit UserFailure here, because we don't want to log out the user
       }
     });
 
@@ -127,17 +129,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
 
     on<RemoveFriend>((event, emit) async {
-      try {
-        await userApi.removeFriend(friendId: event.friendId);
-        if (state is UserLoaded) {
-          MyUser user = (state as UserLoaded).user.copyWith(
-                friends: (state as UserLoaded).user.friends
-                  ..removeWhere((friend) => friend == event.friendId),
-              );
-          emit(UserLoaded(user: user));
-        }
-      } on DioException {
-        // don't emit UserFailure here, because we don't want to log out the user
+      await userApi.removeFriend(friendId: event.friendId);
+
+      if (state is UserLoaded) {
+        MyUser user = (state as UserLoaded).user.copyWith(
+              friends: (state as UserLoaded).user.friends
+                ..removeWhere((friend) => friend == event.friendId),
+            );
+        emit(UserLoaded(user: user));
       }
     });
   }

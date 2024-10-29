@@ -25,10 +25,10 @@ class _CommentPostState extends State<CommentPost> {
   bool _isLoading = true;
 
   Future<void> _fetchUserData() async {
-    final fetchedUser = await GetIt.I<UserApiImpl>()
+    final response = await GetIt.I<UserApiImpl>()
         .fetchUserDataById(userId: widget.post.userId);
     setState(() {
-      userData = fetchedUser;
+      userData = response.data!;
       _isLoading = false;
     });
   }

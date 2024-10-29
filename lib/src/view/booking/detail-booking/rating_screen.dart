@@ -93,7 +93,10 @@ class _RatingPageState extends State<RatingPage> {
                     shrinkWrap: true,
                     itemCount: state.posts.length,
                     itemBuilder: (context, index) {
-                      return Post(post: state.posts[index]);
+                      return Post(
+                        key: ValueKey(state.posts[index].postId),
+                        post: state.posts[index],
+                      );
                     },
                   );
                 },

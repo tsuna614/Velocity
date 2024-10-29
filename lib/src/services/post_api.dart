@@ -5,26 +5,28 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/post_model.dart';
+import 'package:velocity_app/src/services/api_response.dart';
 
 abstract class PostApi {
-  Future<List<MyPost>> fetchPosts({
+  Future<ApiResponse<List<MyPost>>> fetchPosts({
     required PostType postType,
     String?
         targetId, // target id is the id of the object that the post is related to
     // for example it could be the id of a travel (review post) or the id of another post (comment post)
   });
 
-  Future<MyPost> fetchPost({required String postId});
+  Future<ApiResponse<MyPost>> fetchPost({required String postId});
 
-  Future<String> addPost({required MyPost post});
+  Future<ApiResponse<String>> addPost({required MyPost post});
 
-  Future<String> uploadImage({required File image});
+  Future<ApiResponse<String>> uploadImage({required File image});
 
-  Future<String> uploadVideo({required File video});
+  Future<ApiResponse<String>> uploadVideo({required File video});
 
-  Future<void> likePost({required String postId, required String userId});
+  Future<ApiResponse<void>> likePost(
+      {required String postId, required String userId});
 
-  Future<void> deletePost({required String postId});
+  Future<ApiResponse<void>> deletePost({required String postId});
 }
 
 class PostApiImpl extends PostApi {
@@ -32,7 +34,7 @@ class PostApiImpl extends PostApi {
   final dio = Dio();
 
   @override
-  Future<List<MyPost>> fetchPosts(
+  Future<ApiResponse<List<MyPost>>> fetchPosts(
       {required PostType postType, String? targetId}) async {
     try {
       final Response response = await dio.post(
@@ -79,18 +81,14 @@ class PostApiImpl extends PostApi {
 
       posts.sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
 
-      return posts;
+      return ApiResponse(data: posts);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<MyPost> fetchPost({required String postId}) async {
+  Future<ApiResponse<MyPost>> fetchPost({required String postId}) async {
     try {
       final Response response = await dio.get(
         "$baseUrl/post/$postId",
@@ -103,7 +101,7 @@ class PostApiImpl extends PostApi {
 
       final postData = response.data;
 
-      return MyPost(
+      final responsePost = MyPost(
         postId: postData['_id'],
         userId: postData['userId'],
         dateCreated: DateTime.parse(postData['createdAt']),
@@ -123,17 +121,15 @@ class PostApiImpl extends PostApi {
         commentTargetId: postData['postId'],
         sharedPostId: postData['sharedPostId'],
       );
+
+      return ApiResponse(data: responsePost);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<String> addPost({required MyPost post}) async {
+  Future<ApiResponse<String>> addPost({required MyPost post}) async {
     try {
       Response response = await dio.post(
         "$baseUrl/post/createPost",
@@ -155,18 +151,14 @@ class PostApiImpl extends PostApi {
         ),
       );
 
-      return response.data["_id"];
+      return ApiResponse(data: response.data["_id"]);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<String> uploadImage({required File image}) async {
+  Future<ApiResponse<String>> uploadImage({required File image}) async {
     try {
       final Response response = await dio.post(
         "$baseUrl/post/uploadImage",
@@ -179,18 +171,15 @@ class PostApiImpl extends PostApi {
           },
         ),
       );
-      return response.data["imageUrl"];
+
+      return ApiResponse(data: response.data["imageUrl"]);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<String> uploadVideo({required File video}) async {
+  Future<ApiResponse<String>> uploadVideo({required File video}) async {
     try {
       final Response response = await dio.post(
         "$baseUrl/post/uploadVideo",
@@ -203,18 +192,15 @@ class PostApiImpl extends PostApi {
           },
         ),
       );
-      return response.data["videoUrl"];
+
+      return ApiResponse(data: response.data["videoUrl"]);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> likePost(
+  Future<ApiResponse<void>> likePost(
       {required String postId, required String userId}) async {
     try {
       await dio.post(
@@ -229,17 +215,14 @@ class PostApiImpl extends PostApi {
           },
         ),
       );
+      return ApiResponse();
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> deletePost({required String postId}) async {
+  Future<ApiResponse<void>> deletePost({required String postId}) async {
     try {
       await dio.delete(
         "$baseUrl/post/$postId",
@@ -249,12 +232,9 @@ class PostApiImpl extends PostApi {
           },
         ),
       );
+      return ApiResponse();
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 }

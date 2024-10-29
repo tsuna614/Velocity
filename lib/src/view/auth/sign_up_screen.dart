@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:velocity_app/src/services/api_response.dart';
 import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/view/auth/detail_sign_up_screen.dart';
 
@@ -29,10 +30,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     // Check for existing email, then either show error or navigate to detail sign up screen
-    final bool isUserExisted = await GetIt.I<UserApi>()
+    final ApiResponse<bool> response = await GetIt.I<UserApi>()
         .checkIfEmailExists(email: _emailController.text);
     if (!mounted) return;
-    if (isUserExisted) {
+    if (response.data!) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Email already exists. Please try again.'),

@@ -42,11 +42,12 @@ class _PostState extends State<Post> {
   }
 
   Future<void> _fetchUserData() async {
-    final fetchedUser = await GetIt.I<UserApiImpl>()
+    final response = await GetIt.I<UserApiImpl>()
         .fetchUserDataById(userId: widget.post.userId);
+
     if (mounted) {
       setState(() {
-        userData = fetchedUser;
+        userData = response.data!;
         _isLoading = false;
       });
     }
@@ -62,7 +63,7 @@ class _PostState extends State<Post> {
         .then((value) {
       if (mounted) {
         setState(() {
-          sharedPost = value;
+          sharedPost = value.data!;
         });
       }
     });

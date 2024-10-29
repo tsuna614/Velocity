@@ -4,47 +4,41 @@ import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/user_model.dart';
+import 'package:velocity_app/src/services/api_response.dart';
 
 abstract class UserApi {
-  Future<MyUser> login({required String email, required String password});
+  Future<ApiResponse<MyUser>> login(
+      {required String email, required String password});
 
-  Future<MyUser> signUp({required MyUser user, required String password});
+  Future<ApiResponse<MyUser>> signUp(
+      {required MyUser user, required String password});
 
-  Future<void> signOut();
+  Future<ApiResponse<void>> signOut();
 
-  Future<bool> isUserSignedIn();
+  // Future<ApiResponse<bool>> isUserSignedIn();
 
-  Future<bool> checkIfEmailExists({required String email});
+  Future<ApiResponse<bool>> checkIfEmailExists({required String email});
 
-  Future<void> refreshAccessToken(
+  Future<ApiResponse<void>> refreshAccessToken(
       {required String accessToken, required String refreshToken});
 
-  Future<String> uploadAvatar({required File image});
+  Future<ApiResponse<String>> uploadAvatar({required File image});
 
-  Future<void> updateUserData({required MyUser user});
+  Future<ApiResponse<void>> updateUserData({required MyUser user});
 
-  Future<MyUser> fetchUserDataById({required String userId});
+  Future<ApiResponse<MyUser>> fetchUserDataById({required String userId});
 
-  Future<void> toggleBookmark({required String travelId});
+  Future<ApiResponse<void>> toggleBookmark({required String travelId});
 
-  Future<void> removeFriend({required String friendId});
+  Future<ApiResponse<void>> removeFriend({required String friendId});
 }
 
 class UserApiImpl extends UserApi {
   final dio = Dio();
   final baseUrl = GlobalData.baseUrl;
 
-  void printError(DioException e) {
-    if (e.response != null) {
-      print('Error response: ${e.response?.data}');
-      print('Status code: ${e.response?.statusCode}');
-    } else {
-      print('Error message: ${e.message}');
-    }
-  }
-
   @override
-  Future<MyUser> login(
+  Future<ApiResponse<MyUser>> login(
       {required String email, required String password}) async {
     try {
       final Response response = await dio.post(
@@ -77,19 +71,14 @@ class UserApiImpl extends UserApi {
         refreshToken: response.data['refreshToken'],
       );
 
-      return user;
+      return ApiResponse(data: user);
     } on DioException catch (e) {
-      printError(e);
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<MyUser> signUp(
+  Future<ApiResponse<MyUser>> signUp(
       {required MyUser user, required String password}) async {
     try {
       await dio.post("$baseUrl/auth/register", data: {
@@ -100,47 +89,38 @@ class UserApiImpl extends UserApi {
         "number": user.phone,
       });
 
-      return user;
+      return login(email: user.email, password: password);
     } on DioException catch (e) {
-      printError(e);
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> signOut() async {
+  Future<ApiResponse<void>> signOut() async {
     await HiveService.clearUserToken();
+    return ApiResponse();
   }
 
-  @override
-  Future<bool> isUserSignedIn() async {
-    return true;
-  }
+  // @override
+  // Future<ApiResponse<bool>> isUserSignedIn() async {
+  //   return true;
+  // }
 
   @override
-  Future<bool> checkIfEmailExists({required String email}) async {
+  Future<ApiResponse<bool>> checkIfEmailExists({required String email}) async {
     try {
       final Response response = await dio.get(
         "$baseUrl/auth/getUserByEmail/$email",
       );
 
-      return response.data.length != 0;
+      return ApiResponse(data: response.data.length != 0);
     } on DioException catch (e) {
-      printError(e);
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> refreshAccessToken(
+  Future<ApiResponse<void>> refreshAccessToken(
       {required String accessToken, required String refreshToken}) async {
     try {
       final Response response = await dio.post(
@@ -156,17 +136,14 @@ class UserApiImpl extends UserApi {
       );
       await HiveService.updateAccessToken(
           accessToken: response.data["accessToken"]);
+      return ApiResponse();
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<String> uploadAvatar({required File image}) async {
+  Future<ApiResponse<String>> uploadAvatar({required File image}) async {
     try {
       final Response response = await dio.post(
         "$baseUrl/user/uploadAvatar/${await HiveService.getUserId()}",
@@ -174,19 +151,14 @@ class UserApiImpl extends UserApi {
           "image": await MultipartFile.fromFile(image.path),
         }),
       );
-      return response.data["profileImageUrl"];
+      return ApiResponse(data: response.data["profileImageUrl"]);
     } on DioException catch (e) {
-      printError(e);
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> updateUserData({required MyUser user}) async {
+  Future<ApiResponse<void>> updateUserData({required MyUser user}) async {
     try {
       await dio.put(
         "$baseUrl/user/updateUserById/${user.userId}",
@@ -203,19 +175,16 @@ class UserApiImpl extends UserApi {
           },
         ),
       );
+      return ApiResponse();
     } on DioException catch (e) {
-      printError(e);
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   // User Rest API
   @override
-  Future<MyUser> fetchUserDataById({required String userId}) async {
+  Future<ApiResponse<MyUser>> fetchUserDataById(
+      {required String userId}) async {
     final accessToken = await HiveService.getUserAccessToken();
     final refreshToken = await HiveService.getUserRefreshToken();
 
@@ -241,7 +210,7 @@ class UserApiImpl extends UserApi {
         friends: List<String>.from(response.data[0]["userFriends"]),
       );
 
-      return user;
+      return ApiResponse(data: user);
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         try {
@@ -251,52 +220,36 @@ class UserApiImpl extends UserApi {
           );
           return await fetchUserDataById(userId: userId);
         } on DioException catch (e) {
-          printError(e);
-          throw DioException(
-            requestOptions: e.requestOptions,
-            response: e.response,
-            message: e.message,
-          );
+          return ApiResponse(errorMessage: e.message);
         }
       } else {
-        printError(e);
-        throw DioException(
-          requestOptions: e.requestOptions,
-          response: e.response,
-          message: e.message,
-        );
+        return ApiResponse(errorMessage: e.message);
       }
     }
   }
 
   @override
-  Future<void> toggleBookmark({required String travelId}) async {
+  Future<ApiResponse<void>> toggleBookmark({required String travelId}) async {
     try {
       await dio.put("$baseUrl/user/toggleBookmark", data: {
         "userId": GlobalData.userId,
         "travelId": travelId,
       });
+      return ApiResponse();
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 
   @override
-  Future<void> removeFriend({required String friendId}) async {
+  Future<ApiResponse<void>> removeFriend({required String friendId}) async {
     try {
       await dio.put("$baseUrl/user/removeFriend/${GlobalData.userId}", data: {
         "targetId": friendId,
       });
+      return ApiResponse();
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 }
