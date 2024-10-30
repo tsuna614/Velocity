@@ -110,37 +110,54 @@ class _PostState extends State<Post> {
       return const PostSkeleton();
     }
 
-    return Card(
-      color: Colors.white,
-      clipBehavior: Clip.hardEdge,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildUserAvatarAndName(userData!),
-                if (_isRatingPost) buildRatingRow(),
-                const SizedBox(height: 10),
-                buildPostContent(),
-                const SizedBox(height: 8),
-                if (sharedPost != null)
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Post(
-                      post: sharedPost!,
-                      isShared: true,
-                    ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Container(
+        decoration: widget.isShared
+            ? BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    blurRadius: 5,
+                    spreadRadius: 1,
                   ),
-                buildPostImage(),
-                const SizedBox(height: 8),
-                buildActionsCounter(),
-              ],
+                ],
+              )
+            : const BoxDecoration(
+                color: Colors.white,
+              ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildUserAvatarAndName(userData!),
+                  if (_isRatingPost) buildRatingRow(),
+                  const SizedBox(height: 10),
+                  buildPostContent(),
+                  const SizedBox(height: 8),
+                  // nếu có tồn tại 1 post mà post này share, và bản thân post này không phải là post share
+                  if (sharedPost != null && !widget.isShared)
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Post(
+                        post: sharedPost!,
+                        isShared: true,
+                      ),
+                    ),
+                  buildPostImage(),
+                  const SizedBox(height: 8),
+                  buildActionsCounter(),
+                ],
+              ),
             ),
-          ),
-          if (!widget.isShared) buildPostActionsRow(),
-        ],
+            if (!widget.isShared) buildPostActionsRow(),
+          ],
+        ),
       ),
     );
   }
@@ -187,6 +204,7 @@ class _PostState extends State<Post> {
           return;
         }
         showModalBottomSheet(
+          // isScrollControlled: true,
           context: context,
           builder: (context) {
             return ViewProfileSheet(userData: userData);

@@ -10,11 +10,10 @@ import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/widgets/social-media/post/create_post_sheet.dart';
 import 'package:velocity_app/src/widgets/social-media/post/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/src/widgets/social-media/user/user_top_banner.dart';
 
 class PersonalTab extends StatefulWidget {
-  const PersonalTab({super.key, required this.scrollController});
-
-  final ScrollController scrollController;
+  const PersonalTab({super.key});
 
   @override
   State<PersonalTab> createState() => _PersonalTabState();
@@ -43,12 +42,21 @@ class _PersonalTabState extends State<PersonalTab> {
             if (state is! UserLoaded) {
               return const Center(child: CircularProgressIndicator());
             }
-            return buildPostContainer(state);
+            return Column(
+              children: [
+                UserTopBanner(userData: state.user),
+                const SizedBox(height: 10),
+                buildPostContainer(state.user),
+              ],
+            );
           }),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Divider(),
+          ),
           BlocBuilder<PostBloc, PostState>(builder: (context, state) {
             if (state is! PostLoaded) {
               return ListView(
-                controller: widget.scrollController,
                 shrinkWrap: true,
                 children: const <Widget>[
                   PostSkeleton(),
@@ -65,7 +73,6 @@ class _PersonalTabState extends State<PersonalTab> {
 
             return ListView.builder(
               shrinkWrap: true,
-              controller: widget.scrollController,
               itemCount: userPosts.length,
               itemBuilder: (context, index) {
                 return Post(
@@ -80,7 +87,7 @@ class _PersonalTabState extends State<PersonalTab> {
     );
   }
 
-  Widget buildPostContainer(UserLoaded state) {
+  Widget buildPostContainer(MyUser user) {
     return Card(
       color: Colors.white,
       // padding: const EdgeInsets.all(16),
@@ -99,17 +106,17 @@ class _PersonalTabState extends State<PersonalTab> {
             const SizedBox(height: 10),
             InkWell(
               onTap: () {
-                _showModalSheet(context, state.user);
+                _showModalSheet(context, user);
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: state.user.profileImageUrl.isEmpty
+                      backgroundImage: user.profileImageUrl.isEmpty
                           ? const AssetImage(
                               "assets/images/user-placeholder.png")
-                          : NetworkImage(state.user.profileImageUrl),
+                          : NetworkImage(user.profileImageUrl),
                     ),
                     const SizedBox(width: 10),
                     Text(

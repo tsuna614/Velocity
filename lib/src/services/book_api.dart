@@ -5,7 +5,7 @@ import 'package:velocity_app/src/services/api_response.dart';
 
 abstract class BookApi {
   Future<ApiResponse<List<Book>>> fetchBookData();
-  Future<Book> createBook({required Book book});
+  Future<ApiResponse<Book>> createBook({required Book book});
 }
 
 class BookApiImpl extends BookApi {
@@ -31,7 +31,7 @@ class BookApiImpl extends BookApi {
   }
 
   @override
-  Future<Book> createBook({required Book book}) async {
+  Future<ApiResponse<Book>> createBook({required Book book}) async {
     try {
       final response = await dio.post(
         '$baseUrl/book/createBook',
@@ -43,13 +43,9 @@ class BookApiImpl extends BookApi {
         },
       );
 
-      return Book.fromJson(response.data);
+      return ApiResponse(data: Book.fromJson(response.data));
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: e.message,
-      );
+      return ApiResponse(errorMessage: e.message);
     }
   }
 }

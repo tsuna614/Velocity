@@ -11,14 +11,21 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-  final ScrollController _scrollController = ScrollController();
+  Future<void> animateToTop(int index) async {
+    final primaryController = PrimaryScrollController.of(context);
+    await primaryController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: Colors.grey.shade300,
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -48,11 +55,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     labelColor: Colors.blue,
                     indicatorColor: Colors.blue,
                     onTap: (value) {
-                      _scrollController.animateTo(
-                        0.0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
+                      animateToTop(value);
                     },
                   ),
                   floating: true,
@@ -63,14 +66,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
             ];
           },
           // note to future self: for some reason, without SafeArea, the padding of ONLY PersonalTab doesn't work
-          body: SafeArea(
+          body: const SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(top: 50.0),
+              padding: EdgeInsets.only(top: 50.0),
               child: TabBarView(
                 children: <Widget>[
-                  CommunityTab(scrollController: _scrollController),
-                  FriendsTab(scrollController: _scrollController),
-                  PersonalTab(scrollController: _scrollController),
+                  CommunityTab(),
+                  FriendsTab(),
+                  PersonalTab(),
                 ],
               ),
             ),

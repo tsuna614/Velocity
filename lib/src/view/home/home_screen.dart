@@ -92,7 +92,9 @@ class _TourPageState extends State<TourPage> {
     return BlocBuilder<TravelBloc, TravelState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
-          title: const MySearchBar(),
+          title: const MySearchBar(
+            hintText: "Search for tours, hotels,....",
+          ),
           backgroundColor: Colors.blue,
           scrolledUnderElevation: 0,
         ),

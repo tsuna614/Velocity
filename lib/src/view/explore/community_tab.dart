@@ -6,9 +6,7 @@ import 'package:velocity_app/src/bloc/post/post_states.dart';
 import 'package:velocity_app/src/widgets/social-media/post/post.dart';
 
 class CommunityTab extends StatefulWidget {
-  const CommunityTab({super.key, required this.scrollController});
-
-  final ScrollController scrollController;
+  const CommunityTab({super.key});
 
   @override
   State<CommunityTab> createState() => _CommunityTabState();
@@ -36,7 +34,6 @@ class _CommunityTabState extends State<CommunityTab> {
         },
         child: ListView.builder(
           shrinkWrap: true,
-          controller: widget.scrollController,
           itemCount: state.posts.length,
           itemBuilder: (context, index) {
             return Post(

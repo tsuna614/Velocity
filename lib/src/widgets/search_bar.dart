@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MySearchBar extends StatefulWidget {
-  const MySearchBar({super.key});
+  final String hintText;
+  final bool enableBorder;
+  const MySearchBar(
+      {super.key, required this.hintText, this.enableBorder = false});
 
   @override
   State<MySearchBar> createState() => _MySearchBarState();
@@ -30,16 +33,26 @@ class _MySearchBarState extends State<MySearchBar> {
                 ? MediaQuery.of(context).size.width * 1
                 : 40,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.4),
+              color: Colors.white.withOpacity(0.3),
               borderRadius: BorderRadius.circular(50),
+              border: Border.all(
+                color: widget.enableBorder
+                    ? Colors.black.withOpacity(0.5)
+                    : Colors.transparent,
+              ),
             ),
           ),
           Container(
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.4),
+              color: Colors.white.withOpacity(0.3),
               borderRadius: BorderRadius.circular(50),
+              border: Border.all(
+                color: widget.enableBorder
+                    ? Colors.black.withOpacity(0.5)
+                    : Colors.transparent,
+              ),
             ),
             child: IconButton(
               icon: const Icon(Icons.search),
@@ -60,9 +73,9 @@ class _MySearchBarState extends State<MySearchBar> {
               child: TextField(
                 controller: _searchBarController,
                 decoration: InputDecoration.collapsed(
-                  hintText: 'Search for tours, hotels...',
+                  hintText: widget.hintText,
                   hintStyle: TextStyle(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withOpacity(0.6),
                   ),
                 ),
                 onChanged: (value) {

@@ -9,6 +9,7 @@ import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/services/notification_api.dart';
 import 'package:velocity_app/src/view/explore/messaging/message_screen.dart';
+import 'package:velocity_app/src/widgets/social-media/user/user_top_banner.dart';
 
 class ViewProfileSheet extends StatefulWidget {
   const ViewProfileSheet({super.key, required this.userData});
@@ -39,7 +40,6 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
         ),
       );
     }
-    Navigator.of(context).pop();
   }
 
   Future<void> _removeFriend() async {
@@ -69,8 +69,6 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
         ),
       );
     }
-
-    Navigator.of(context).pop();
   }
 
   Future<void> _pushToMessageScreen(MyUser user) async {
@@ -92,76 +90,20 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
             .friends
             .contains(widget.userData.userId);
 
-    return Container(
-      height: 200,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: widget.userData.profileImageUrl.isEmpty
-                      ? const AssetImage("assets/images/user-placeholder.png")
-                      : NetworkImage(widget.userData.profileImageUrl),
-                  radius: 30,
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${widget.userData.firstName} ${widget.userData.lastName}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(widget.userData.email),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: isUserAlreadyFriend
-                        ? _removeFriend
-                        : _sendFriendRequest,
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor:
-                          isUserAlreadyFriend ? Colors.red : Colors.blue,
-                    ),
-                    child: Text(
-                      isUserAlreadyFriend
-                          ? "Remove Friend"
-                          : "Send Friend Request",
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => _pushToMessageScreen(widget.userData),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.blue,
-                    ),
-                    child: const Text("Message"),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return Scaffold(
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          UserTopBanner(
+            userData: widget.userData,
+            isUserAlreadyFriend: isUserAlreadyFriend,
+            friendButtonCallback:
+                isUserAlreadyFriend ? _removeFriend : _sendFriendRequest,
+            messageButtonCallback: () => _pushToMessageScreen(widget.userData),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

@@ -22,9 +22,16 @@ class BookBloc extends Bloc<BookEvent, BookState> {
 
     on<AddBook>((event, emit) async {
       if (state is BookLoaded) {
-        Book createdBook = await bookApi.createBook(book: event.book);
-        List<Book> updatedBooks = [createdBook, ...(state as BookLoaded).books];
-        emit(BookLoaded(books: updatedBooks));
+        final response = await bookApi.createBook(book: event.book);
+        if (response.errorMessage == null) {
+          List<Book> updatedBooks = [
+            response.data!,
+            ...(state as BookLoaded).books
+          ];
+          emit(BookLoaded(books: updatedBooks));
+        } else {
+          emit(BookFailure(message: response.errorMessage!));
+        }
       }
     });
   }
