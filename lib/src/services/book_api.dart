@@ -4,11 +4,9 @@ import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class BookApi {
   final ApiService apiService;
-
   BookApi(this.apiService);
 
   Future<ApiResponse<List<BookModel>>> fetchBookData();
-
   Future<ApiResponse<BookModel>> createBook({required BookModel book});
 }
 

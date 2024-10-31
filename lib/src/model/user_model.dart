@@ -7,6 +7,8 @@ class UserModel {
   final List<String> bookmarkedTravels;
   final List<String> friends;
   final String profileImageUrl;
+  final String accessToken;
+  final String refreshToken;
 
   UserModel({
     required this.userId,
@@ -17,6 +19,8 @@ class UserModel {
     this.bookmarkedTravels = const [],
     this.friends = const [],
     required this.profileImageUrl,
+    this.accessToken = '',
+    this.refreshToken = '',
   });
 
   UserModel copyWith({
@@ -43,4 +47,36 @@ class UserModel {
   }
 
   // convert fron JSON to UserModel
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      userId: json['_id'],
+      email: json['email'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      phone: json['number'],
+      profileImageUrl: json['profileImageUrl'] ?? "",
+      accessToken: json['accessToken'] ?? '',
+      refreshToken: json['refreshToken'] ?? '',
+      bookmarkedTravels: json["bookmarkedTravels"] != null
+          ? List<String>.from(json["bookmarkedTravels"])
+          : [],
+      friends: json["userFriends"] != null
+          ? List<String>.from(json["userFriends"])
+          : [],
+    );
+  }
+
+  // convert UserModel to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'email': email,
+      'firstName': firstName,
+      'lastName': lastName,
+      'phone': phone,
+      'bookmarkedTravels': bookmarkedTravels,
+      'friends': friends,
+      'profileImageUrl': profileImageUrl,
+    };
+  }
 }

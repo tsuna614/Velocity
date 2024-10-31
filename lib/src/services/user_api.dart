@@ -7,6 +7,9 @@ import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class UserApi {
+  final ApiService apiService;
+  UserApi(this.apiService);
+
   Future<ApiResponse<UserModel>> login(
       {required String email, required String password});
 
@@ -34,64 +37,51 @@ abstract class UserApi {
 }
 
 class UserApiImpl extends UserApi {
-  final dio = Dio();
   final baseUrl = GlobalData.baseUrl;
+  UserApiImpl(super.apiService);
 
   @override
   Future<ApiResponse<UserModel>> login(
       {required String email, required String password}) async {
-    try {
-      final Response response = await dio.post(
-        "$baseUrl/auth/login",
-        data: {
-          "email": email,
-          "password": password,
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json', // Set the content type to JSON
-          },
-        ),
-      );
+    final response = await apiService.post<UserModel>(
+      endpoint: "$baseUrl/auth/login",
+      data: {
+        "email": email,
+        "password": password,
+      },
+      fromJson: (data) => UserModel.fromJson(data['user'][0]),
+    );
 
-      // WARNING: might need to implement something to check if field 'user' is not null
-      final Map<String, dynamic> userData = response.data['user'][0];
-      UserModel user = UserModel(
-        userId: userData['_id'],
-        email: userData['email'],
-        firstName: userData['firstName'],
-        lastName: userData['lastName'],
-        phone: userData['number'],
-        profileImageUrl: userData['profileImageUrl'] ?? "",
-      );
-
+    if (response.data != null) {
       await HiveService.storeUserToken(
-        id: userData['_id'],
-        accessToken: response.data['accessToken'],
-        refreshToken: response.data['refreshToken'],
+        id: response.data!.userId,
+        accessToken: response.data!.accessToken,
+        refreshToken: response.data!.refreshToken,
       );
-
-      return ApiResponse(data: user);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
     }
+
+    return response;
   }
 
   @override
   Future<ApiResponse<UserModel>> signUp(
       {required UserModel user, required String password}) async {
-    try {
-      await dio.post("$baseUrl/auth/register", data: {
+    final response = await apiService.post(
+      endpoint: "$baseUrl/auth/register",
+      data: {
         "email": user.email,
         "password": password,
         "firstName": user.firstName,
         "lastName": user.lastName,
         "number": user.phone,
-      });
+      },
+    );
 
+    // catch error if there is any
+    if (response.errorMessage != null) {
+      return ApiResponse(errorMessage: response.errorMessage);
+    } else {
       return login(email: user.email, password: password);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
     }
   }
 
@@ -101,84 +91,65 @@ class UserApiImpl extends UserApi {
     return ApiResponse();
   }
 
-  // @override
-  // Future<ApiResponse<bool>> isUserSignedIn() async {
-  //   return true;
-  // }
-
   @override
   Future<ApiResponse<bool>> checkIfEmailExists({required String email}) async {
-    try {
-      final Response response = await dio.get(
-        "$baseUrl/auth/getUserByEmail/$email",
-      );
-
-      return ApiResponse(data: response.data.length != 0);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+    return apiService.get<bool>(
+      endpoint: "$baseUrl/auth/getUserByEmail/$email",
+      fromJson: (data) => data.length != 0, // return true or false
+    );
   }
 
   @override
   Future<ApiResponse<void>> refreshAccessToken(
       {required String accessToken, required String refreshToken}) async {
-    try {
-      final Response response = await dio.post(
-        "$baseUrl/auth/refresh",
-        options: Options(
-          headers: {
-            "x_authorization": accessToken,
-          },
-        ),
-        data: {
-          "refreshToken": refreshToken,
+    final response = await apiService.post(
+      endpoint: "$baseUrl/auth/refresh",
+      data: {
+        "refreshToken": refreshToken,
+      },
+      options: Options(
+        headers: {
+          "x_authorization": accessToken,
         },
-      );
+      ),
+      fromJson: (data) => data["accessToken"],
+    );
+    if (response.errorMessage == null) {
       await HiveService.updateAccessToken(
-          accessToken: response.data["accessToken"]);
-      return ApiResponse();
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
+          accessToken: response.data.toString());
     }
+    return response;
   }
 
   @override
   Future<ApiResponse<String>> uploadAvatar({required File image}) async {
-    try {
-      final Response response = await dio.post(
-        "$baseUrl/user/uploadAvatar/${await HiveService.getUserId()}",
-        data: FormData.fromMap({
-          "image": await MultipartFile.fromFile(image.path),
-        }),
-      );
-      return ApiResponse(data: response.data["profileImageUrl"]);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+    return apiService.post<String>(
+      endpoint: "$baseUrl/user/uploadAvatar/${GlobalData.userId}",
+      data: FormData.fromMap({
+        "image": await MultipartFile.fromFile(image.path),
+      }),
+      fromJson: (data) => data["profileImageUrl"],
+    );
   }
 
   @override
   Future<ApiResponse<void>> updateUserData({required UserModel user}) async {
-    try {
-      await dio.put(
-        "$baseUrl/user/updateUserById/${user.userId}",
-        data: {
-          "firstName": user.firstName,
-          "lastName": user.lastName,
-          "email": user.email,
-          "number": user.phone,
-          "profileImageUrl": user.profileImageUrl,
+    return apiService.put<void>(
+      endpoint: "$baseUrl/user/updateUserById/${user.userId}",
+      data: {
+        "firstName": user.firstName,
+        "lastName": user.lastName,
+        "email": user.email,
+        "number": user.phone,
+        "profileImageUrl": user.profileImageUrl,
+      },
+      fromJson: (data) => {},
+      options: Options(
+        headers: {
+          "x_authorization": await HiveService.getUserAccessToken(),
         },
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-      return ApiResponse();
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+      ),
+    );
   }
 
   // User Rest API
@@ -188,68 +159,59 @@ class UserApiImpl extends UserApi {
     final accessToken = await HiveService.getUserAccessToken();
     final refreshToken = await HiveService.getUserRefreshToken();
 
-    try {
-      final Response response = await dio.get(
-        "$baseUrl/user/getUserById/$userId",
-        options: Options(
-          headers: {
-            "x_authorization": accessToken,
-          },
-        ),
-      );
+    final response = await apiService.get<UserModel>(
+      endpoint: "$baseUrl/user/getUserById/$userId",
+      fromJson: (data) => UserModel.fromJson(data[0]),
+      options: Options(
+        headers: {
+          "x_authorization": accessToken,
+        },
+      ),
+    );
 
-      UserModel user = UserModel(
-        userId: userId,
-        email: response.data[0]["email"],
-        firstName: response.data[0]["firstName"],
-        lastName: response.data[0]["lastName"],
-        phone: response.data[0]["number"],
-        profileImageUrl: response.data[0]["profileImageUrl"] ?? "",
-        bookmarkedTravels:
-            List<String>.from(response.data[0]["bookmarkedTravels"]),
-        friends: List<String>.from(response.data[0]["userFriends"]),
+    if (response.errorMessage != null && response.statusCode == 401) {
+      final refreshResponse = await refreshAccessToken(
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       );
-
-      return ApiResponse(data: user);
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        try {
-          await refreshAccessToken(
-            refreshToken: refreshToken,
-            accessToken: accessToken,
-          );
-          return await fetchUserDataById(userId: userId);
-        } on DioException catch (e) {
-          return ApiResponse(errorMessage: e.message);
-        }
-      } else {
-        return ApiResponse(errorMessage: e.message);
+      if (refreshResponse.errorMessage == null) {
+        return fetchUserDataById(userId: userId);
       }
     }
+
+    return response;
   }
 
   @override
   Future<ApiResponse<void>> toggleBookmark({required String travelId}) async {
-    try {
-      await dio.put("$baseUrl/user/toggleBookmark", data: {
+    return apiService.put<void>(
+      endpoint: "$baseUrl/user/toggleBookmark",
+      data: {
         "userId": GlobalData.userId,
         "travelId": travelId,
-      });
-      return ApiResponse();
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+      },
+      fromJson: (data) => {},
+      options: Options(
+        headers: {
+          "x_authorization": await HiveService.getUserAccessToken(),
+        },
+      ),
+    );
   }
 
   @override
   Future<ApiResponse<void>> removeFriend({required String friendId}) async {
-    try {
-      await dio.put("$baseUrl/user/removeFriend/${GlobalData.userId}", data: {
+    return apiService.put<void>(
+      endpoint: "$baseUrl/user/removeFriend/${GlobalData.userId}",
+      data: {
         "targetId": friendId,
-      });
-      return ApiResponse();
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+      },
+      fromJson: (data) => {},
+      options: Options(
+        headers: {
+          "x_authorization": await HiveService.getUserAccessToken(),
+        },
+      ),
+    );
   }
 }

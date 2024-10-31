@@ -69,9 +69,31 @@ class PostModel {
     );
   }
 
-  void printPost() {
-    print(
-      "rating: $rating, travelId: $travelId",
+  factory PostModel.fromJson(Map<String, dynamic> json) {
+    return PostModel(
+      postId: json['_id'],
+      userId: json['userId'],
+      dateCreated: DateTime.parse(json['createdAt']),
+      content: json['content'] ?? "",
+      imageUrl: json['imageUrl'] ?? "",
+      contentType: json['contentType'] == "video"
+          ? ContentType.video
+          : ContentType.image,
+      likes: json['likes'] != null
+          ? json['likes'].map<String>((e) => e.toString()).toList()
+          : [],
+      comments: json['comments'] != null
+          ? json['comments'].map<String>((e) => e.toString()).toList()
+          : [],
+      shares: json['shares'] != null
+          ? json['shares'].map<String>((e) => e.toString()).toList()
+          : [],
+      rating: json["rating"] == null
+          ? null
+          : double.parse(json['rating'].toString()),
+      travelId: json['travelId'],
+      commentTargetId: json['postId'],
+      sharedPostId: json['sharedPostId'],
     );
   }
 }

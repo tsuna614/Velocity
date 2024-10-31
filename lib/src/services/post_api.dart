@@ -8,6 +8,9 @@ import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class PostApi {
+  final ApiService apiService;
+  PostApi(this.apiService);
+
   Future<ApiResponse<List<PostModel>>> fetchPosts({
     required PostType postType,
     String?
@@ -31,210 +34,131 @@ abstract class PostApi {
 
 class PostApiImpl extends PostApi {
   final baseUrl = GlobalData.baseUrl;
-  final dio = Dio();
+
+  PostApiImpl(super.apiService);
 
   @override
   Future<ApiResponse<List<PostModel>>> fetchPosts(
       {required PostType postType, String? targetId}) async {
-    try {
-      final Response response = await dio.post(
-        postType == PostType.reviewPost
-            ? "$baseUrl/post/getReviewPosts"
-            : postType == PostType.commentPost
-                ? "$baseUrl/post/getCommentPosts"
-                : "$baseUrl/post/getAllNormalPosts",
-        data: {
-          "targetId": targetId,
+    return apiService.post(
+      endpoint: postType == PostType.reviewPost
+          ? "$baseUrl/post/getReviewPosts"
+          : postType == PostType.commentPost
+              ? "$baseUrl/post/getCommentPosts"
+              : "$baseUrl/post/getAllNormalPosts",
+      data: {
+        "targetId": targetId,
+      },
+      fromJson: (data) {
+        List<PostModel> posts;
+
+        posts = data.map<PostModel>((e) => PostModel.fromJson(e)).toList();
+        posts.sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
+
+        return posts;
+      },
+      options: Options(
+        headers: {
+          "x_authorization": HiveService.getUserAccessToken(),
         },
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-
-      List<PostModel> posts = [];
-
-      for (int i = 0; i < response.data.length; i++) {
-        final Map<String, dynamic> postData = response.data[i];
-        posts.add(PostModel(
-          postId: postData['_id'],
-          userId: postData['userId'],
-          dateCreated: DateTime.parse(postData['createdAt']),
-          content: postData['content'] ?? "",
-          imageUrl: postData['imageUrl'] ?? "",
-          contentType: postData['contentType'] == "video"
-              ? ContentType.video
-              : ContentType.image,
-          likes: postData['likes'].map<String>((e) => e.toString()).toList(),
-          comments:
-              postData['comments'].map<String>((e) => e.toString()).toList(),
-          shares: postData['shares'].map<String>((e) => e.toString()).toList(),
-          rating: postData["rating"] == null
-              ? null
-              : double.parse(postData['rating'].toString()),
-          travelId: postData['travelId'],
-          commentTargetId: postData['postId'],
-          sharedPostId: postData['sharedPostId'],
-        ));
-      }
-
-      posts.sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
-
-      return ApiResponse(data: posts);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+      ),
+    );
   }
 
   @override
   Future<ApiResponse<PostModel>> fetchPost({required String postId}) async {
-    try {
-      final Response response = await dio.get(
-        "$baseUrl/post/$postId",
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-
-      final postData = response.data;
-
-      final responsePost = PostModel(
-        postId: postData['_id'],
-        userId: postData['userId'],
-        dateCreated: DateTime.parse(postData['createdAt']),
-        content: postData['content'] ?? "",
-        imageUrl: postData['imageUrl'] ?? "",
-        contentType: postData['contentType'] == "video"
-            ? ContentType.video
-            : ContentType.image,
-        likes: postData['likes'].map<String>((e) => e.toString()).toList(),
-        comments:
-            postData['comments'].map<String>((e) => e.toString()).toList(),
-        shares: postData['shares'].map<String>((e) => e.toString()).toList(),
-        rating: postData["rating"] == null
-            ? null
-            : double.parse(postData['rating'].toString()),
-        travelId: postData['travelId'],
-        commentTargetId: postData['postId'],
-        sharedPostId: postData['sharedPostId'],
-      );
-
-      return ApiResponse(data: responsePost);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+    return apiService.get(
+      endpoint: "$baseUrl/post/$postId",
+      fromJson: (data) => PostModel.fromJson(data),
+      options: Options(
+        headers: {
+          "x_authorization": HiveService.getUserAccessToken(),
+        },
+      ),
+    );
   }
 
   @override
   Future<ApiResponse<String>> addPost({required PostModel post}) async {
-    try {
-      Response response = await dio.post(
-        "$baseUrl/post/createPost",
-        data: {
-          "userId": post.userId,
-          "content": post.content,
-          "imageUrl": post.imageUrl,
-          "contentType":
-              post.contentType == ContentType.video ? "video" : "image",
-          if (post.travelId != null) "travelId": post.travelId,
-          if (post.rating != null) "rating": post.rating,
-          if (post.commentTargetId != null) "postId": post.commentTargetId,
-          if (post.sharedPostId != null) "sharedPostId": post.sharedPostId,
+    return apiService.post(
+      endpoint: "$baseUrl/post/createPost",
+      data: {
+        "userId": post.userId,
+        "content": post.content,
+        "imageUrl": post.imageUrl,
+        "contentType":
+            post.contentType == ContentType.video ? "video" : "image",
+        if (post.travelId != null) "travelId": post.travelId,
+        if (post.rating != null) "rating": post.rating,
+        if (post.commentTargetId != null) "postId": post.commentTargetId,
+        if (post.sharedPostId != null) "sharedPostId": post.sharedPostId,
+      },
+      options: Options(
+        headers: {
+          "x_authorization": await HiveService.getUserAccessToken(),
         },
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-
-      return ApiResponse(data: response.data["_id"]);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+      ),
+    );
   }
 
   @override
   Future<ApiResponse<String>> uploadImage({required File image}) async {
-    try {
-      final Response response = await dio.post(
-        "$baseUrl/post/uploadImage",
-        data: FormData.fromMap({
-          "image": await MultipartFile.fromFile(image.path),
-        }),
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-
-      return ApiResponse(data: response.data["imageUrl"]);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+    return apiService.post(
+      endpoint: "$baseUrl/post/uploadImage",
+      data: FormData.fromMap({
+        "image": await MultipartFile.fromFile(image.path),
+      }),
+      fromJson: (data) => data["imageUrl"],
+      options: Options(
+        headers: {
+          "x_authorization": HiveService.getUserAccessToken(),
+        },
+      ),
+    );
   }
 
   @override
   Future<ApiResponse<String>> uploadVideo({required File video}) async {
-    try {
-      final Response response = await dio.post(
-        "$baseUrl/post/uploadVideo",
-        data: FormData.fromMap({
-          "video": await MultipartFile.fromFile(video.path),
-        }),
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-
-      return ApiResponse(data: response.data["videoUrl"]);
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+    return apiService.post(
+      endpoint: "$baseUrl/post/uploadVideo",
+      data: FormData.fromMap({
+        "video": await MultipartFile.fromFile(video.path),
+      }),
+      fromJson: (data) => data["videoUrl"],
+      options: Options(
+        headers: {
+          "x_authorization": HiveService.getUserAccessToken(),
+        },
+      ),
+    );
   }
 
   @override
   Future<ApiResponse<void>> likePost(
       {required String postId, required String userId}) async {
-    try {
-      await dio.post(
-        "$baseUrl/post/likePost",
-        data: {
-          "postId": postId,
-          "userId": userId,
+    return apiService.post(
+      endpoint: "$baseUrl/post/likePost",
+      data: {
+        "postId": postId,
+        "userId": userId,
+      },
+      options: Options(
+        headers: {
+          "x_authorization": await HiveService.getUserAccessToken(),
         },
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-      return ApiResponse();
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+      ),
+    );
   }
 
   @override
   Future<ApiResponse<void>> deletePost({required String postId}) async {
-    try {
-      await dio.delete(
-        "$baseUrl/post/$postId",
-        options: Options(
-          headers: {
-            "x_authorization": await HiveService.getUserAccessToken(),
-          },
-        ),
-      );
-      return ApiResponse();
-    } on DioException catch (e) {
-      return ApiResponse(errorMessage: e.message);
-    }
+    return apiService.delete(
+      endpoint: "$baseUrl/post/$postId",
+      options: Options(
+        headers: {
+          "x_authorization": await HiveService.getUserAccessToken(),
+        },
+      ),
+    );
   }
 }

@@ -43,11 +43,11 @@ void setupLocator() {
   // getIt.registerLazySingleton(() => TravelBloc());
   final dio = Dio();
   final apiService = ApiService(dio);
-  getIt.registerLazySingleton(() => UserApiImpl());
-  getIt.registerLazySingleton(() => PostApiImpl());
-  getIt.registerLazySingleton(() => TravelApiImpl());
+  getIt.registerLazySingleton(() => UserApiImpl(apiService));
+  getIt.registerLazySingleton(() => PostApiImpl(apiService));
+  getIt.registerLazySingleton(() => TravelApiImpl(apiService));
   getIt.registerLazySingleton(() => BookApiImpl(apiService));
-  getIt.registerLazySingleton(() => NotificationApiImpl());
+  getIt.registerLazySingleton(() => NotificationApiImpl(apiService));
 }
 
 void main() async {
