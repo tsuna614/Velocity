@@ -20,7 +20,7 @@ class PersonalTab extends StatefulWidget {
 }
 
 class _PersonalTabState extends State<PersonalTab> {
-  void _showModalSheet(BuildContext context, MyUser user) {
+  void _showModalSheet(BuildContext context, UserModel user) {
     showModalBottomSheet(
       isScrollControlled: true,
       useSafeArea: true,
@@ -67,7 +67,7 @@ class _PersonalTabState extends State<PersonalTab> {
               );
             }
 
-            List<MyPost> userPosts = state.posts
+            List<PostModel> userPosts = state.posts
                 .where((post) => post.userId == GlobalData.userId)
                 .toList();
 
@@ -87,7 +87,7 @@ class _PersonalTabState extends State<PersonalTab> {
     );
   }
 
-  Widget buildPostContainer(MyUser user) {
+  Widget buildPostContainer(UserModel user) {
     return Card(
       color: Colors.white,
       // padding: const EdgeInsets.all(16),

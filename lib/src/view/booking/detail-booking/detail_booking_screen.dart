@@ -16,7 +16,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class DetailBooking extends StatefulWidget {
   const DetailBooking({super.key, required this.travelData});
 
-  final Travel travelData;
+  final TravelModel travelData;
 
   @override
   State<DetailBooking> createState() => _DetailBookingState();

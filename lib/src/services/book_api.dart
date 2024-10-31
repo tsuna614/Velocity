@@ -7,8 +7,9 @@ abstract class BookApi {
 
   BookApi(this.apiService);
 
-  Future<ApiResponse<List<Book>>> fetchBookData();
-  Future<ApiResponse> createBook({required Book book});
+  Future<ApiResponse<List<BookModel>>> fetchBookData();
+
+  Future<ApiResponse<BookModel>> createBook({required BookModel book});
 }
 
 class BookApiImpl extends BookApi {
@@ -17,32 +18,20 @@ class BookApiImpl extends BookApi {
   BookApiImpl(super.apiService);
 
   @override
-  Future<ApiResponse<List<Book>>> fetchBookData() async {
-    // try {
-    //   final response = await dio
-    //       .get('$baseUrl/book/getAllBooksByUserId/${GlobalData.userId}');
-
-    //   List<Book> books = [];
-
-    //   response.data.forEach((book) {
-    //     books.add(Book.fromJson(book));
-    //   });
-
-    //   return ApiResponse(data: books);
-    // } on DioException catch (e) {
-    //   return ApiResponse(errorMessage: e.message);
-    // }
-
-    return apiService.fetchData(
+  Future<ApiResponse<List<BookModel>>> fetchBookData() async {
+    // call to the get method of api service to fetch all books
+    // we do this to minimize the code needed for duplicating try-catch blocks
+    return apiService.get(
       endpoint: '$baseUrl/book/getAllBooksByUserId/${GlobalData.userId}',
       fromJson: (data) =>
-          data.map<Book>((book) => Book.fromJson(book)).toList(),
+          data.map<BookModel>((book) => BookModel.fromJson(book)).toList(),
     );
   }
 
   @override
-  Future<ApiResponse<Book>> createBook({required Book book}) async {
-    return apiService.postData(
+  Future<ApiResponse<BookModel>> createBook({required BookModel book}) async {
+    // call to the post method of ApiService to create a book
+    return apiService.post(
       endpoint: '$baseUrl/book/createBook',
       data: {
         "userId": GlobalData.userId,
@@ -50,7 +39,7 @@ class BookApiImpl extends BookApi {
         "bookedDate": book.dateOfTravel.toString(),
         "amount": book.amount,
       },
-      fromJson: (data) => Book.fromJson(data),
+      fromJson: (data) => BookModel.fromJson(data),
     );
   }
 }

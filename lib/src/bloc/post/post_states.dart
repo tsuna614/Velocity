@@ -13,12 +13,12 @@ class PostFailure extends PostState {
 }
 
 class PostLoaded extends PostState {
-  final List<MyPost> posts;
+  final List<PostModel> posts;
 
   PostLoaded({required this.posts});
 
   PostLoaded copyWith({
-    List<MyPost>? posts,
+    List<PostModel>? posts,
   }) {
     return PostLoaded(
       posts: posts ?? this.posts,

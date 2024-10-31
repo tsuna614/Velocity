@@ -12,7 +12,7 @@ import 'package:velocity_app/src/model/user_model.dart';
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key, required this.originalUserData});
 
-  final MyUser originalUserData;
+  final UserModel originalUserData;
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -136,7 +136,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         : ApiResponse(data: "");
 
     // update the user data where changed
-    MyUser newUser = widget.originalUserData;
+    UserModel newUser = widget.originalUserData;
     newUser = newUser.copyWith(
       firstName: _firstNameController.text,
       lastName: _lastNameController.text,

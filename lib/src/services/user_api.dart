@@ -7,11 +7,11 @@ import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class UserApi {
-  Future<ApiResponse<MyUser>> login(
+  Future<ApiResponse<UserModel>> login(
       {required String email, required String password});
 
-  Future<ApiResponse<MyUser>> signUp(
-      {required MyUser user, required String password});
+  Future<ApiResponse<UserModel>> signUp(
+      {required UserModel user, required String password});
 
   Future<ApiResponse<void>> signOut();
 
@@ -24,9 +24,9 @@ abstract class UserApi {
 
   Future<ApiResponse<String>> uploadAvatar({required File image});
 
-  Future<ApiResponse<void>> updateUserData({required MyUser user});
+  Future<ApiResponse<void>> updateUserData({required UserModel user});
 
-  Future<ApiResponse<MyUser>> fetchUserDataById({required String userId});
+  Future<ApiResponse<UserModel>> fetchUserDataById({required String userId});
 
   Future<ApiResponse<void>> toggleBookmark({required String travelId});
 
@@ -38,7 +38,7 @@ class UserApiImpl extends UserApi {
   final baseUrl = GlobalData.baseUrl;
 
   @override
-  Future<ApiResponse<MyUser>> login(
+  Future<ApiResponse<UserModel>> login(
       {required String email, required String password}) async {
     try {
       final Response response = await dio.post(
@@ -56,7 +56,7 @@ class UserApiImpl extends UserApi {
 
       // WARNING: might need to implement something to check if field 'user' is not null
       final Map<String, dynamic> userData = response.data['user'][0];
-      MyUser user = MyUser(
+      UserModel user = UserModel(
         userId: userData['_id'],
         email: userData['email'],
         firstName: userData['firstName'],
@@ -78,8 +78,8 @@ class UserApiImpl extends UserApi {
   }
 
   @override
-  Future<ApiResponse<MyUser>> signUp(
-      {required MyUser user, required String password}) async {
+  Future<ApiResponse<UserModel>> signUp(
+      {required UserModel user, required String password}) async {
     try {
       await dio.post("$baseUrl/auth/register", data: {
         "email": user.email,
@@ -158,7 +158,7 @@ class UserApiImpl extends UserApi {
   }
 
   @override
-  Future<ApiResponse<void>> updateUserData({required MyUser user}) async {
+  Future<ApiResponse<void>> updateUserData({required UserModel user}) async {
     try {
       await dio.put(
         "$baseUrl/user/updateUserById/${user.userId}",
@@ -183,7 +183,7 @@ class UserApiImpl extends UserApi {
 
   // User Rest API
   @override
-  Future<ApiResponse<MyUser>> fetchUserDataById(
+  Future<ApiResponse<UserModel>> fetchUserDataById(
       {required String userId}) async {
     final accessToken = await HiveService.getUserAccessToken();
     final refreshToken = await HiveService.getUserRefreshToken();
@@ -198,7 +198,7 @@ class UserApiImpl extends UserApi {
         ),
       );
 
-      MyUser user = MyUser(
+      UserModel user = UserModel(
         userId: userId,
         email: response.data[0]["email"],
         firstName: response.data[0]["firstName"],

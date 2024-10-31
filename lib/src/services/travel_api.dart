@@ -4,7 +4,7 @@ import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class TravelApi {
-  Future<ApiResponse<List<Travel>>> fetchTravelData();
+  Future<ApiResponse<List<TravelModel>>> fetchTravelData();
 }
 
 class TravelApiImpl extends TravelApi {
@@ -12,11 +12,11 @@ class TravelApiImpl extends TravelApi {
   final dio = Dio();
 
   @override
-  Future<ApiResponse<List<Travel>>> fetchTravelData() async {
+  Future<ApiResponse<List<TravelModel>>> fetchTravelData() async {
     try {
       final response = await dio.get('$baseUrl/travel/getAllTravels');
 
-      List<Travel> travels = [];
+      List<TravelModel> travels = [];
 
       response.data.forEach((travel) {
         switch (travel['travelType']) {

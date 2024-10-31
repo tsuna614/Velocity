@@ -11,7 +11,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key, required this.receiverData});
 
-  final MyUser receiverData;
+  final UserModel receiverData;
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();

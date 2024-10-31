@@ -1,4 +1,4 @@
-class Book {
+class BookModel {
   final String id;
   final String travelId;
   final String userId;
@@ -6,7 +6,7 @@ class Book {
   final DateTime dateOfBooking; // this is the date when the booking was made
   final int amount;
 
-  Book({
+  BookModel({
     required this.id,
     required this.travelId,
     required this.userId,
@@ -15,7 +15,7 @@ class Book {
     required this.amount,
   });
 
-  Book copyWith({
+  BookModel copyWith({
     String? id,
     String? travelId,
     String? userId,
@@ -23,7 +23,7 @@ class Book {
     DateTime? dateOfBooking,
     int? amount,
   }) {
-    return Book(
+    return BookModel(
       id: id ?? this.id,
       travelId: travelId ?? this.travelId,
       userId: userId ?? this.userId,
@@ -34,8 +34,8 @@ class Book {
   }
 
   // convert from json to book
-  factory Book.fromJson(Map<String, dynamic> json) {
-    return Book(
+  factory BookModel.fromJson(Map<String, dynamic> json) {
+    return BookModel(
       id: json['_id'],
       travelId: json['travelId'],
       userId: json['userId'],

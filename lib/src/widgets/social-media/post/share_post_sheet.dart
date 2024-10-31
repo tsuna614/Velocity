@@ -9,7 +9,7 @@ import 'package:velocity_app/src/widgets/social-media/user/avatar_and_name.dart'
 class SharePostSheet extends StatefulWidget {
   const SharePostSheet({super.key, required this.postData});
 
-  final MyPost postData;
+  final PostModel postData;
 
   @override
   State<SharePostSheet> createState() => _SharePostSheetState();
@@ -23,7 +23,7 @@ class _SharePostSheetState extends State<SharePostSheet> {
       return;
     }
 
-    MyPost newPost = MyPost(
+    PostModel newPost = PostModel(
       postId: "",
       userId: GlobalData.userId,
       dateCreated: DateTime.now(),

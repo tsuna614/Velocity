@@ -21,7 +21,7 @@ class TravelCard extends StatefulWidget {
       {super.key, required this.sortOptions, required this.travelData});
 
   final List<String> sortOptions;
-  final List<Travel> travelData;
+  final List<TravelModel> travelData;
 
   @override
   State<TravelCard> createState() => _TravelCardState();
@@ -47,7 +47,7 @@ class _TravelCardState extends State<TravelCard> {
     // List<Travel> travelData = List.from(GeneralApi()
     //     .getTravelDataOfType(context: context, dataType: widget.dataType));
     // List<Travel> originalTravelData = List.from(travelData);
-    List<Travel> travelData = List.from(widget.travelData);
+    List<TravelModel> travelData = List.from(widget.travelData);
 
     switch (selectedSortOption) {
       case 'Price':
@@ -161,7 +161,7 @@ class _TravelCardState extends State<TravelCard> {
   }
 
   Widget buildTourDetails(
-      BuildContext context, List<Travel> travelData, int index) {
+      BuildContext context, List<TravelModel> travelData, int index) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -227,7 +227,7 @@ class _TravelCardState extends State<TravelCard> {
     );
   }
 
-  Widget buildBookmarkButton(BuildContext context, List<Travel> travelData,
+  Widget buildBookmarkButton(BuildContext context, List<TravelModel> travelData,
       UserLoaded userData, int index) {
     return Positioned(
       top: 0,

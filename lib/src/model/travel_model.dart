@@ -1,4 +1,4 @@
-abstract class Travel {
+abstract class TravelModel {
   final String id;
   final String title;
   final String description;
@@ -6,7 +6,7 @@ abstract class Travel {
   final double price;
   final double rating;
 
-  Travel({
+  TravelModel({
     required this.id,
     required this.title,
     required this.description,
@@ -15,14 +15,14 @@ abstract class Travel {
     required this.rating,
   });
 
-  // Travel copyWith({
+  // TravelModel copyWith({
   //   String? title,
   //   String? description,
   //   List<String>? imageUrl,
   //   double? price,
   //   double? ratingPostsIds,
   // }) {
-  //   return Travel(
+  //   return TravelModel(
   //     title: title ?? this.title,
   //     description: description ?? this.description,
   //     imageUrl: imageUrl ?? this.imageUrl,
@@ -32,7 +32,7 @@ abstract class Travel {
   // }
 }
 
-class Tour extends Travel {
+class Tour extends TravelModel {
   final String destination;
   final String duration;
   final String city;
@@ -92,7 +92,7 @@ class Tour extends Travel {
   }
 }
 
-class Hotel extends Travel {
+class Hotel extends TravelModel {
   final String address;
   final String contact;
   final String city;
@@ -148,7 +148,7 @@ class Hotel extends Travel {
   }
 }
 
-class Flight extends Travel {
+class Flight extends TravelModel {
   final String origin;
   final String destination;
   final String departureTime;
@@ -214,7 +214,7 @@ class Flight extends Travel {
   }
 }
 
-class CarRental extends Travel {
+class CarRental extends TravelModel {
   final String location;
   final String contact;
   final String carType;

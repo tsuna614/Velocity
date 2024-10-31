@@ -8,7 +8,7 @@ import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/post_model.dart';
 
 class PostAdvancedOptions extends StatelessWidget {
-  final MyPost post;
+  final PostModel post;
   const PostAdvancedOptions({super.key, required this.post});
 
   @override

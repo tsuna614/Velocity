@@ -14,7 +14,7 @@ import 'package:velocity_app/src/widgets/social-media/post/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RatingPage extends StatefulWidget {
-  final Travel travelData;
+  final TravelModel travelData;
   const RatingPage({
     super.key,
     required this.travelData,
@@ -25,7 +25,7 @@ class RatingPage extends StatefulWidget {
 }
 
 class _RatingPageState extends State<RatingPage> {
-  void _showModalSheet(BuildContext context, MyUser user) {
+  void _showModalSheet(BuildContext context, UserModel user) {
     showModalBottomSheet(
       isScrollControlled: true,
       useSafeArea: true,

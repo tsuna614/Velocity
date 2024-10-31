@@ -1,4 +1,4 @@
-class MyUser {
+class UserModel {
   final String userId;
   final String email;
   final String firstName;
@@ -8,7 +8,7 @@ class MyUser {
   final List<String> friends;
   final String profileImageUrl;
 
-  MyUser({
+  UserModel({
     required this.userId,
     required this.email,
     required this.firstName,
@@ -19,7 +19,7 @@ class MyUser {
     required this.profileImageUrl,
   });
 
-  MyUser copyWith({
+  UserModel copyWith({
     String? userId,
     String? email,
     String? firstName,
@@ -29,7 +29,7 @@ class MyUser {
     List<String>? friends,
     String? profileImageUrl,
   }) {
-    return MyUser(
+    return UserModel(
       // double question mark means if the first is null, use the second instead
       userId: userId ?? this.userId,
       email: email ?? this.email,
@@ -41,4 +41,6 @@ class MyUser {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     );
   }
+
+  // convert fron JSON to UserModel
 }

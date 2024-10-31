@@ -13,7 +13,7 @@ class BookFailure extends BookState {
 }
 
 class BookLoaded extends BookState {
-  List<Book> books;
+  List<BookModel> books;
 
   BookLoaded({required this.books});
 }

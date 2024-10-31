@@ -13,8 +13,8 @@ class DetailFillingScreen extends StatefulWidget {
       required this.amount,
       required this.navigateToPayment});
 
-  final Travel travelData;
-  final MyUser userData;
+  final TravelModel travelData;
+  final UserModel userData;
   final int amount;
   final void Function() navigateToPayment;
 

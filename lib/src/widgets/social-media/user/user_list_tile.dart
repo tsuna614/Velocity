@@ -15,7 +15,7 @@ class UserListTile extends StatefulWidget {
 }
 
 class _UserListTileState extends State<UserListTile> {
-  late final MyUser userData;
+  late final UserModel userData;
   bool _isLoading = true;
 
   @override

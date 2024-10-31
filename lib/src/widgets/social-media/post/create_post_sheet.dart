@@ -15,7 +15,7 @@ import 'package:velocity_app/src/widgets/social-media/post/create_post_options.d
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatePostSheet extends StatefulWidget {
-  final MyUser userData;
+  final UserModel userData;
   final PostBloc? postBloc;
   final String? travelId;
 
@@ -110,7 +110,7 @@ class _CreatePostSheetState extends State<CreatePostSheet> {
       return;
     }
 
-    final post = MyPost(
+    final post = PostModel(
       userId: widget.userData.userId,
       postId: "",
       dateCreated: DateTime.now(),

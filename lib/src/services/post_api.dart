@@ -8,16 +8,16 @@ import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class PostApi {
-  Future<ApiResponse<List<MyPost>>> fetchPosts({
+  Future<ApiResponse<List<PostModel>>> fetchPosts({
     required PostType postType,
     String?
         targetId, // target id is the id of the object that the post is related to
     // for example it could be the id of a travel (review post) or the id of another post (comment post)
   });
 
-  Future<ApiResponse<MyPost>> fetchPost({required String postId});
+  Future<ApiResponse<PostModel>> fetchPost({required String postId});
 
-  Future<ApiResponse<String>> addPost({required MyPost post});
+  Future<ApiResponse<String>> addPost({required PostModel post});
 
   Future<ApiResponse<String>> uploadImage({required File image});
 
@@ -34,7 +34,7 @@ class PostApiImpl extends PostApi {
   final dio = Dio();
 
   @override
-  Future<ApiResponse<List<MyPost>>> fetchPosts(
+  Future<ApiResponse<List<PostModel>>> fetchPosts(
       {required PostType postType, String? targetId}) async {
     try {
       final Response response = await dio.post(
@@ -53,11 +53,11 @@ class PostApiImpl extends PostApi {
         ),
       );
 
-      List<MyPost> posts = [];
+      List<PostModel> posts = [];
 
       for (int i = 0; i < response.data.length; i++) {
         final Map<String, dynamic> postData = response.data[i];
-        posts.add(MyPost(
+        posts.add(PostModel(
           postId: postData['_id'],
           userId: postData['userId'],
           dateCreated: DateTime.parse(postData['createdAt']),
@@ -88,7 +88,7 @@ class PostApiImpl extends PostApi {
   }
 
   @override
-  Future<ApiResponse<MyPost>> fetchPost({required String postId}) async {
+  Future<ApiResponse<PostModel>> fetchPost({required String postId}) async {
     try {
       final Response response = await dio.get(
         "$baseUrl/post/$postId",
@@ -101,7 +101,7 @@ class PostApiImpl extends PostApi {
 
       final postData = response.data;
 
-      final responsePost = MyPost(
+      final responsePost = PostModel(
         postId: postData['_id'],
         userId: postData['userId'],
         dateCreated: DateTime.parse(postData['createdAt']),
@@ -129,7 +129,7 @@ class PostApiImpl extends PostApi {
   }
 
   @override
-  Future<ApiResponse<String>> addPost({required MyPost post}) async {
+  Future<ApiResponse<String>> addPost({required PostModel post}) async {
     try {
       Response response = await dio.post(
         "$baseUrl/post/createPost",

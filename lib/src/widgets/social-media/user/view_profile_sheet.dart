@@ -14,7 +14,7 @@ import 'package:velocity_app/src/widgets/social-media/user/user_top_banner.dart'
 class ViewProfileSheet extends StatefulWidget {
   const ViewProfileSheet({super.key, required this.userData});
 
-  final MyUser userData;
+  final UserModel userData;
 
   @override
   State<ViewProfileSheet> createState() => _ViewProfileSheetState();
@@ -71,7 +71,7 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
     }
   }
 
-  Future<void> _pushToMessageScreen(MyUser user) async {
+  Future<void> _pushToMessageScreen(UserModel user) async {
     if (user.userId == GlobalData.userId) {
       return;
     }

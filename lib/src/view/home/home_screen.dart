@@ -112,7 +112,7 @@ class _TourPageState extends State<TourPage> {
                       top: bannerHeight + bannerSelectionCardHeight / 2 + 10),
                   child: Column(
                     children: List.generate(titleList.length, (index) {
-                      List<Travel> travelData = [];
+                      List<TravelModel> travelData = [];
 
                       if (state is TravelLoaded) {
                         switch (index) {

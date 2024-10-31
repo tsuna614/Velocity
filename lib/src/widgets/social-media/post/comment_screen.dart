@@ -28,7 +28,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
     BlocProvider.of<PostBloc>(context).add(
       AddPost(
-        post: MyPost(
+        post: PostModel(
           postId: "placeholder",
           userId: GlobalData.userId,
           content: _commentController.text,

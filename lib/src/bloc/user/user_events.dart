@@ -6,7 +6,7 @@ abstract class UserEvent {}
 class FetchUser extends UserEvent {}
 
 class SignUp extends UserEvent {
-  final MyUser user;
+  final UserModel user;
   final String password;
 
   SignUp({
@@ -28,7 +28,7 @@ class SignIn extends UserEvent {
 class SignOut extends UserEvent {}
 
 class UpdateUser extends UserEvent {
-  final MyUser user;
+  final UserModel user;
 
   UpdateUser({
     required this.user,

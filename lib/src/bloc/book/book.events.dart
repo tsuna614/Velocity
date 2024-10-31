@@ -5,7 +5,7 @@ abstract class BookEvent {}
 class FetchBooks extends BookEvent {}
 
 class AddBook extends BookEvent {
-  final Book book;
+  final BookModel book;
 
   AddBook(this.book);
 }

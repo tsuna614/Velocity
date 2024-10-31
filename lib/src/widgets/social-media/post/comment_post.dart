@@ -14,14 +14,14 @@ import 'package:velocity_app/src/widgets/expandable_text.dart';
 class CommentPost extends StatefulWidget {
   const CommentPost({super.key, required this.post});
 
-  final MyPost post;
+  final PostModel post;
 
   @override
   State<CommentPost> createState() => _CommentPostState();
 }
 
 class _CommentPostState extends State<CommentPost> {
-  MyUser? userData;
+  UserModel? userData;
   bool _isLoading = true;
 
   Future<void> _fetchUserData() async {

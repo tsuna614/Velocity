@@ -16,7 +16,7 @@ class FetchPosts extends PostEvent {
 }
 
 class AddPost extends PostEvent {
-  final MyPost post;
+  final PostModel post;
 
   AddPost({required this.post});
 }

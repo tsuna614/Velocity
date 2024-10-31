@@ -9,10 +9,10 @@ String formattedDate(DateTime date) {
 }
 
 class ReceiptDetails extends StatefulWidget {
-  final Travel travelData;
-  final MyUser userData;
+  final TravelModel travelData;
+  final UserModel userData;
   final int amount;
-  final Book? bookData;
+  final BookModel? bookData;
   const ReceiptDetails({
     super.key,
     required this.travelData,
@@ -152,7 +152,7 @@ class _ReceiptDetailsState extends State<ReceiptDetails> {
     );
   }
 
-  Widget buildBookingDates({required Book bookData}) {
+  Widget buildBookingDates({required BookModel bookData}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
       child: Column(

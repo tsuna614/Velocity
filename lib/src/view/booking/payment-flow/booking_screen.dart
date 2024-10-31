@@ -16,7 +16,7 @@ class BookingScreen extends StatefulWidget {
       required this.dateOfTravel,
       required this.amount});
 
-  final Travel travelData;
+  final TravelModel travelData;
   final DateTime dateOfTravel;
   final int amount;
 
@@ -27,7 +27,7 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPageIndex = 0;
-  late final MyUser user;
+  late final UserModel user;
 
   void pushToPaymentScreen() {
     setState(() {
@@ -88,7 +88,7 @@ class _BookingScreenState extends State<BookingScreen> {
             navigateToPayment: pushToPaymentScreen,
           ),
           PaymentScreen(
-            bookData: Book(
+            bookData: BookModel(
               id: "id",
               travelId: widget.travelData.id,
               userId: "userId",

@@ -20,7 +20,7 @@ import 'package:velocity_app/src/widgets/social-media/user/view_profile_sheet.da
 class Post extends StatefulWidget {
   const Post({super.key, required this.post, this.isShared = false});
 
-  final MyPost post;
+  final PostModel post;
   final bool isShared;
 
   @override
@@ -28,8 +28,8 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
-  MyUser? userData;
-  MyPost? sharedPost;
+  UserModel? userData;
+  PostModel? sharedPost;
   bool _isLoading = true;
   late bool _isRatingPost;
 
@@ -197,7 +197,7 @@ class _PostState extends State<Post> {
     );
   }
 
-  Widget buildUserAvatarAndName(MyUser userData) {
+  Widget buildUserAvatarAndName(UserModel userData) {
     return GestureDetector(
       onTap: () {
         if (userData.userId == GlobalData.userId) {

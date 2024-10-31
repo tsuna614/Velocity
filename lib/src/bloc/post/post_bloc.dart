@@ -13,7 +13,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<FetchPosts>((event, emit) async {
       emit(PostLoading());
       // Call the API to fetch the posts
-      final ApiResponse<List<MyPost>> response = await postApi.fetchPosts(
+      final ApiResponse<List<PostModel>> response = await postApi.fetchPosts(
         postType: event.postType,
         targetId: event.targetId,
       );
@@ -27,7 +27,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<AddPost>((event, emit) async {
       // Call the API to add a post
       if (state is PostLoaded) {
-        MyPost newPost = event.post;
+        PostModel newPost = event.post;
 
         // send post request to server and get back the _id
         ApiResponse<String> response = await postApi.addPost(post: newPost);
@@ -35,7 +35,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         if (response.errorMessage == null) {
           newPost = newPost.copyWith(postId: response.data);
           // add new post to the top of the list (newest -> oldest)
-          List<MyPost> updatedPosts = [newPost, ...(state as PostLoaded).posts];
+          List<PostModel> updatedPosts = [
+            newPost,
+            ...(state as PostLoaded).posts
+          ];
           emit(PostLoaded(posts: updatedPosts));
         } else {
           emit(PostFailure(message: response.errorMessage!));
@@ -51,7 +54,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
         if (response.errorMessage == null) {
           // filter out the post that need deleting by postId
-          List<MyPost> updatedPosts = (state as PostLoaded)
+          List<PostModel> updatedPosts = (state as PostLoaded)
               .posts
               .where((post) => post.postId != event.postId)
               .toList();
@@ -72,7 +75,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
         if (response.errorMessage == null) {
           // find the post that need changing by postId
-          MyPost targetPost = (state as PostLoaded)
+          PostModel targetPost = (state as PostLoaded)
               .posts
               .where((post) => post.postId == event.postId)
               .first;
@@ -92,7 +95,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           );
 
           // make a copy of the posts list with the changes we made
-          List<MyPost> updatedPosts = (state as PostLoaded).posts.map((post) {
+          List<PostModel> updatedPosts =
+              (state as PostLoaded).posts.map((post) {
             return post.postId == event.postId ? targetPost : post;
           }).toList();
 

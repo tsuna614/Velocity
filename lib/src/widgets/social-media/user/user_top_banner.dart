@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 
 class UserTopBanner extends StatelessWidget {
-  final MyUser userData;
+  final UserModel userData;
   final bool? isUserAlreadyFriend;
   final void Function()? friendButtonCallback;
   final void Function()? messageButtonCallback;

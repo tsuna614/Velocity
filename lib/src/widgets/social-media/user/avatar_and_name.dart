@@ -14,7 +14,7 @@ class AvatarAndName extends StatefulWidget {
 }
 
 class _AvatarAndNameState extends State<AvatarAndName> {
-  late final MyUser userData;
+  late final UserModel userData;
   bool _isLoading = true;
 
   Future<void> fetchUserData() async {

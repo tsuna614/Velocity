@@ -11,7 +11,8 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   BookBloc(this.bookApi) : super(BookInitial()) {
     on<FetchBooks>((event, emit) async {
       emit(BookLoading());
-      final ApiResponse<List<Book>> response = await bookApi.fetchBookData();
+      final ApiResponse<List<BookModel>> response =
+          await bookApi.fetchBookData();
       // If there is an error message, emit BookFailure, otherwise emit BookLoaded
       if (response.errorMessage != null) {
         emit(BookFailure(message: response.errorMessage!));
@@ -24,7 +25,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       if (state is BookLoaded) {
         final response = await bookApi.createBook(book: event.book);
         if (response.errorMessage == null) {
-          List<Book> updatedBooks = [
+          List<BookModel> updatedBooks = [
             response.data!,
             ...(state as BookLoaded).books
           ];

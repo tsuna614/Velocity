@@ -13,8 +13,8 @@ String formattedDate(DateTime date) {
 }
 
 class TravelBookingReceipt extends StatelessWidget {
-  final Travel travelData;
-  final Book bookData;
+  final TravelModel travelData;
+  final BookModel bookData;
   final ReceiptStatus status;
   const TravelBookingReceipt({
     super.key,

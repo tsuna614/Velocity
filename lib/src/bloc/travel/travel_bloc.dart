@@ -13,7 +13,7 @@ class TravelBloc extends Bloc<TravelEvent, TravelState> {
   TravelBloc(this.travelApi) : super(TravelInitial()) {
     on<LoadData>((event, emit) async {
       emit(TravelLoading());
-      final ApiResponse<List<Travel>> response =
+      final ApiResponse<List<TravelModel>> response =
           await travelApi.fetchTravelData();
 
       if (response.errorMessage != null) {

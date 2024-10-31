@@ -6,7 +6,7 @@ import 'package:velocity_app/src/model/book_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final Book bookData;
+  final BookModel bookData;
   const PaymentScreen({super.key, required this.bookData});
 
   @override

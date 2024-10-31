@@ -19,12 +19,12 @@ class UserFailure extends UserState {
 class UserLoading extends UserState {}
 
 class UserLoaded extends UserState {
-  final MyUser user;
+  final UserModel user;
 
   UserLoaded({required this.user});
 
   UserLoaded copyWith({
-    MyUser? user,
+    UserModel? user,
   }) {
     return UserLoaded(
       user: user ?? this.user,

@@ -20,7 +20,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       if (userId.isEmpty) {
         emit(UserInitial());
       } else {
-        final ApiResponse<MyUser> response =
+        final ApiResponse<UserModel> response =
             await userApi.fetchUserDataById(userId: userId);
         GlobalData.userId = userId; // set the global user id for easy access
 
@@ -65,7 +65,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<UpdateUser>((event, emit) async {
       // Call the API to update the user
-      MyUser updatedUser = event.user;
+      UserModel updatedUser = event.user;
       final ApiResponse<void> response =
           await userApi.updateUserData(user: updatedUser);
       if (response.errorMessage != null) {
@@ -82,7 +82,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         userApi.toggleBookmark(
           travelId: event.travelId,
         );
-        MyUser user;
+        UserModel user;
         if (!(state as UserLoaded)
             .user
             .bookmarkedTravels
@@ -122,7 +122,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
 
     on<AddFriend>((event, emit) async {
-      MyUser user = (state as UserLoaded).user.copyWith(
+      UserModel user = (state as UserLoaded).user.copyWith(
             friends: (state as UserLoaded).user.friends..add(event.friendId),
           );
       emit(UserLoaded(user: user));
@@ -132,7 +132,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       await userApi.removeFriend(friendId: event.friendId);
 
       if (state is UserLoaded) {
-        MyUser user = (state as UserLoaded).user.copyWith(
+        UserModel user = (state as UserLoaded).user.copyWith(
               friends: (state as UserLoaded).user.friends
                 ..removeWhere((friend) => friend == event.friendId),
             );

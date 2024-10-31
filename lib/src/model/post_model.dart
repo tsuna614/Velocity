@@ -3,7 +3,7 @@ enum ContentType {
   video,
 }
 
-class MyPost {
+class PostModel {
   final String postId;
   final String userId;
   final DateTime dateCreated;
@@ -21,7 +21,7 @@ class MyPost {
   // these fields are for the shared posts
   final String? sharedPostId; // the id of the post that this post shared
 
-  MyPost({
+  PostModel({
     required this.postId,
     required this.userId,
     required this.dateCreated,
@@ -37,7 +37,7 @@ class MyPost {
     this.sharedPostId,
   });
 
-  MyPost copyWith({
+  PostModel copyWith({
     String? postId,
     String? userId,
     String? content,
@@ -52,7 +52,7 @@ class MyPost {
     String? commentTargetId,
     String? sharedPostId,
   }) {
-    return MyPost(
+    return PostModel(
       postId: postId ?? this.postId,
       userId: userId ?? this.userId,
       content: content ?? this.content,

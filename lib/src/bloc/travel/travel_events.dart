@@ -5,7 +5,7 @@ abstract class TravelEvent {}
 class LoadData extends TravelEvent {}
 
 class AddTravel extends TravelEvent {
-  final Travel travel;
+  final TravelModel travel;
 
   AddTravel(this.travel);
 }

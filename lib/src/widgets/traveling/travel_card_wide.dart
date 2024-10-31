@@ -10,7 +10,7 @@ import 'package:velocity_app/src/view/booking/detail-booking/detail_booking_scre
 class TravelCardWide extends StatefulWidget {
   const TravelCardWide({super.key, required this.data});
 
-  final Travel data;
+  final TravelModel data;
 
   @override
   State<TravelCardWide> createState() => _TravelCardWideState();
@@ -20,7 +20,7 @@ class _TravelCardWideState extends State<TravelCardWide> {
   final imageCardHeight = 200.0;
   late double travelCardHeight;
 
-  void onTravelCardPressed(BuildContext context, Travel travelData) {
+  void onTravelCardPressed(BuildContext context, TravelModel travelData) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
@@ -68,7 +68,7 @@ class _TravelCardWideState extends State<TravelCardWide> {
     });
   }
 
-  Widget buildImageCard(BuildContext context, Travel travelData) {
+  Widget buildImageCard(BuildContext context, TravelModel travelData) {
     return Stack(
       children: [
         GestureDetector(

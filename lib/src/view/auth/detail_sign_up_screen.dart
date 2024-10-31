@@ -34,7 +34,7 @@ class _DetailSignUpScreenState extends State<DetailSignUpScreen> {
       _isLoading = true;
     });
 
-    final MyUser user = MyUser(
+    final UserModel user = UserModel(
       userId:
           "", // set a temporary userId, when post to backend mongodb will automatically generate an _id
       email: widget.enteredEmail,

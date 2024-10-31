@@ -13,12 +13,12 @@ class TravelFailure extends TravelState {
 }
 
 class TravelLoaded extends TravelState {
-  final List<Travel> travels;
+  final List<TravelModel> travels;
 
   TravelLoaded({required this.travels});
 
   TravelLoaded copyWith({
-    List<Travel>? travels,
+    List<TravelModel>? travels,
   }) {
     return TravelLoaded(
       travels: travels ?? this.travels,

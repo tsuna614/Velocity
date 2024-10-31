@@ -20,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          return NotificationScreen();
+          return const NotificationScreen();
         },
       ),
     );
@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  Widget buildUserProfileCard(MyUser userData) {
+  Widget buildUserProfileCard(UserModel userData) {
     return SizedBox(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
