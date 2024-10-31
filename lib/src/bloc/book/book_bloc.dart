@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/book/book.events.dart';
 import 'package:velocity_app/src/bloc/book/book.states.dart';
 import 'package:velocity_app/src/model/book_model.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 import 'package:velocity_app/src/services/book_api.dart';
 
 class BookBloc extends Bloc<BookEvent, BookState> {

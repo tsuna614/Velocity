@@ -2,7 +2,7 @@ class Book {
   final String id;
   final String travelId;
   final String userId;
-  final DateTime dateOfTravel; // this is the datet the user chose to travel
+  final DateTime dateOfTravel; // this is the date the user chose to travel
   final DateTime dateOfBooking; // this is the date when the booking was made
   final int amount;
 

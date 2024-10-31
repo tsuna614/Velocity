@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:velocity_app/src/bloc/book/book.events.dart';
 import 'package:velocity_app/src/bloc/book/book_bloc.dart';
 import 'package:velocity_app/src/bloc/locale/locale_bloc.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 import 'package:velocity_app/src/services/book_api.dart';
 import 'package:velocity_app/src/services/notification_api.dart';
 import 'package:velocity_app/src/services/post_api.dart';
@@ -39,10 +41,12 @@ void setupLocator() {
   // getIt.registerLazySingleton(() => UserBloc());
   // getIt.registerLazySingleton(() => PostBloc());
   // getIt.registerLazySingleton(() => TravelBloc());
+  final dio = Dio();
+  final apiService = ApiService(dio);
   getIt.registerLazySingleton(() => UserApiImpl());
   getIt.registerLazySingleton(() => PostApiImpl());
   getIt.registerLazySingleton(() => TravelApiImpl());
-  getIt.registerLazySingleton(() => BookApiImpl());
+  getIt.registerLazySingleton(() => BookApiImpl(apiService));
   getIt.registerLazySingleton(() => NotificationApiImpl());
 }
 

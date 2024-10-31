@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/notification_model.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 
 enum FriendRequestResponse {
   accept,

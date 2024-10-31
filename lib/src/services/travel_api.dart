@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class TravelApi {
   Future<ApiResponse<List<Travel>>> fetchTravelData();

@@ -1,30 +1,60 @@
 import 'package:dio/dio.dart';
 
-enum HttpMethod { get, post, put, delete }
-
 class ApiService {
-  final HttpMethod method;
-  final String path;
-  final Map<String, dynamic>? body;
+  final Dio dio;
 
-  ApiService({
-    required this.method,
-    required this.path,
-    this.body,
-  });
+  ApiService(this.dio);
 
-  final dio = Dio();
+  Future<ApiResponse<T>> fetchData<T>({
+    required String endpoint,
+    required T Function(dynamic data) fromJson,
+  }) async {
+    try {
+      final response = await dio.get(endpoint);
 
-  Future<Response> call() async {
-    switch (method) {
-      case HttpMethod.get:
-        return await dio.get(path);
-      case HttpMethod.post:
-        return await dio.post(path, data: body);
-      case HttpMethod.put:
-        return await dio.put(path, data: body);
-      case HttpMethod.delete:
-        return await dio.delete(path);
+      return ApiResponse(data: fromJson(response.data));
+    } on DioException catch (e) {
+      return ApiResponse(errorMessage: e.message);
     }
   }
+
+  // Future<ApiResponse<T>> postData<T>({
+  //   required String endpoint,
+  //   required dynamic data,
+  //   required T Function(dynamic data) fromJson,
+  // }) async {
+  //   try {
+  //     final response = await dio.post(
+  //       endpoint,
+  //       data: data,
+  //     );
+
+  //     return ApiResponse(data: fromJson(response.data));
+  //   } on DioException catch (e) {
+  //     return ApiResponse(errorMessage: e.message);
+  //   }
+  // }
+
+  Future<ApiResponse<T>> postData<T>({
+    required String endpoint,
+    required dynamic data,
+    required T Function(dynamic data) fromJson,
+  }) async {
+    try {
+      final response = await dio.post(endpoint, data: data);
+      return ApiResponse(data: fromJson(response.data));
+    } on DioException catch (e) {
+      return ApiResponse(errorMessage: e.message);
+    }
+  }
+}
+
+class ApiResponse<T> {
+  final T? data;
+  final String? errorMessage;
+
+  ApiResponse({
+    this.data,
+    this.errorMessage,
+  });
 }

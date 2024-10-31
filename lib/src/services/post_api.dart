@@ -5,7 +5,7 @@ import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/post_model.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class PostApi {
   Future<ApiResponse<List<MyPost>>> fetchPosts({

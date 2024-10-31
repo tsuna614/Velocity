@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/bloc/post/post_events.dart';
 import 'package:velocity_app/src/bloc/post/post_states.dart';

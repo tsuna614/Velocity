@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/view/auth/detail_sign_up_screen.dart';
 

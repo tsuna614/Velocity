@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 import 'package:velocity_app/src/services/user_api.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';

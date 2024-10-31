@@ -3,7 +3,7 @@ import 'package:velocity_app/src/bloc/notification/notification_events.dart';
 import 'package:velocity_app/src/bloc/notification/notification_states.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/model/notification_model.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 import 'package:velocity_app/src/services/notification_api.dart';
 
 class NotificationBloc extends Bloc<NotificationEvents, NotificationState> {

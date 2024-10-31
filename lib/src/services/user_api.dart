@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/hive/hive_service.dart';
 import 'package:velocity_app/src/model/user_model.dart';
-import 'package:velocity_app/src/services/api_response.dart';
+import 'package:velocity_app/src/services/api_service.dart';
 
 abstract class UserApi {
   Future<ApiResponse<MyUser>> login(
