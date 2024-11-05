@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 import 'package:velocity_app/src/bloc/user/user_bloc.dart';
 import 'package:velocity_app/src/bloc/user/user_states.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/view/profile/edit_profile_screen.dart';
 import 'package:velocity_app/src/view/profile/notification_screen.dart';
 import 'package:velocity_app/src/widgets/settings/profile_screen_options.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

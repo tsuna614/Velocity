@@ -9,7 +9,7 @@ import 'package:velocity_app/src/model/post_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/widgets/social-media/post/create_post_sheet.dart';
 import 'package:velocity_app/src/widgets/social-media/post/post.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 import 'package:velocity_app/src/widgets/social-media/user/user_top_banner.dart';
 
 class PersonalTab extends StatefulWidget {
@@ -56,15 +56,7 @@ class _PersonalTabState extends State<PersonalTab> {
           ),
           BlocBuilder<PostBloc, PostState>(builder: (context, state) {
             if (state is! PostLoaded) {
-              return ListView(
-                shrinkWrap: true,
-                children: const <Widget>[
-                  PostSkeleton(),
-                  PostSkeleton(),
-                  PostSkeleton(),
-                  PostSkeleton(),
-                ],
-              );
+              return const Center(child: CircularProgressIndicator());
             }
 
             List<PostModel> userPosts = state.posts

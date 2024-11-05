@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_app/src/model/book_model.dart';
 import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 
 String formattedDate(DateTime date) {
   return "${date.day}/${date.month}/${date.year} ${date.hour < 10 ? '0${date.hour}' : date.hour}:${date.minute < 10 ? '0${date.minute}' : date.minute}";

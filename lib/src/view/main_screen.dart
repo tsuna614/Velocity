@@ -7,7 +7,7 @@ import 'package:velocity_app/src/view/booking/my-booking/my_booking_screen.dart'
 import 'package:velocity_app/src/view/home/home_screen.dart';
 import 'package:velocity_app/src/view/profile/profile_screen.dart';
 import 'package:velocity_app/src/view/explore/explore_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

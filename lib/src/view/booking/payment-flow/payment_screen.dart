@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:velocity_app/src/bloc/book/book.events.dart';
 import 'package:velocity_app/src/bloc/book/book_bloc.dart';
 import 'package:velocity_app/src/model/book_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 
 class PaymentScreen extends StatefulWidget {
   final BookModel bookData;

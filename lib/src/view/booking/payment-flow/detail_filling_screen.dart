@@ -3,7 +3,7 @@ import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/widgets/animated_button_1.dart';
 import 'package:velocity_app/src/widgets/booking/receipt_details.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 
 class DetailFillingScreen extends StatefulWidget {
   const DetailFillingScreen(

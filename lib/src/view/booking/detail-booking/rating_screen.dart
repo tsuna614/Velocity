@@ -11,7 +11,7 @@ import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/services/post_api.dart';
 import 'package:velocity_app/src/widgets/social-media/post/create_post_sheet.dart';
 import 'package:velocity_app/src/widgets/social-media/post/post.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 
 class RatingPage extends StatefulWidget {
   final TravelModel travelData;

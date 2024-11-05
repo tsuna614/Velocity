@@ -7,7 +7,7 @@ import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/model/user_model.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/detail_filling_screen.dart';
 import 'package:velocity_app/src/view/booking/payment-flow/payment_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen(

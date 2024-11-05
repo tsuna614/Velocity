@@ -13,7 +13,7 @@ import 'package:velocity_app/src/data/global_data.dart';
 import 'package:velocity_app/src/widgets/social-media/post/comment_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/post/post_advanced_options.dart';
 import 'package:velocity_app/src/widgets/social-media/post/post_video_player.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 import 'package:velocity_app/src/widgets/social-media/post/share_post_sheet.dart';
 import 'package:velocity_app/src/widgets/social-media/user/view_profile_sheet.dart';
 

@@ -9,7 +9,7 @@ import 'package:velocity_app/src/model/travel_model.dart';
 import 'package:velocity_app/src/widgets/traveling/home_travel_banner_buttons.dart';
 import 'package:velocity_app/src/widgets/search_bar.dart';
 import 'package:velocity_app/src/widgets/traveling/travel_card.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

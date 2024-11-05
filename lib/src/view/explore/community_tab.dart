@@ -17,14 +17,7 @@ class _CommunityTabState extends State<CommunityTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<PostBloc, PostState>(builder: (context, state) {
       if (state is! PostLoaded) {
-        return ListView(
-          children: const <Widget>[
-            PostSkeleton(),
-            PostSkeleton(),
-            PostSkeleton(),
-            PostSkeleton(),
-          ],
-        );
+        return const Center(child: CircularProgressIndicator());
       }
 
       return RefreshIndicator(
