@@ -194,7 +194,7 @@ class _TourPageState extends State<TourPage> {
 
   Widget buildBanner() {
     return SizedBox(
-      height: bannerHeight + bannerSelectionCardHeight / 2,
+      // height: bannerHeight + bannerSelectionCardHeight / 2,
       child: Stack(
         children: [
           Container(
@@ -208,24 +208,12 @@ class _TourPageState extends State<TourPage> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              clipBehavior: Clip.hardEdge,
-              elevation: 2,
-              child: Container(
-                height: bannerSelectionCardHeight,
-                width: MediaQuery.of(context).size.width * 0.9,
-                color: Colors.white,
-                child: HomeTravelBannerButtons(
-                  onPressed: (index) {
-                    _scrollToPosition(index);
-                  },
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: HomeTravelBannerButtons(
+              onPressed: (index) {
+                _scrollToPosition(index);
+              },
             ),
           ),
         ],

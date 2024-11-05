@@ -37,42 +37,59 @@ class _HomeTravelBannerButtonsState extends State<HomeTravelBannerButtons> {
       AppLocalizations.of(context)!.bookACar,
     ];
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(
-        bannerDescriptions.length,
-        (index) => Flexible(
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                selectedIndex = index;
-              });
-              widget.onPressed(index);
-            },
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 10,
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      clipBehavior: Clip.hardEdge,
+      elevation: 2,
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.generate(
+            bannerDescriptions.length,
+            (index) => Expanded(
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                  widget.onPressed(index);
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: _bannerColors[index],
+                      ),
+                      child: Icon(
+                        _bannerIcons[index],
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Flexible(
+                      child: Text(
+                        bannerDescriptions[index],
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 12),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                  ],
                 ),
-                // Icon(_bannerIcons[index]),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      // border: Border.all(width: 2, color: Colors.blue),
-                      color: _bannerColors[index]),
-                  child: Icon(
-                    _bannerIcons[index],
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                Text(
-                  bannerDescriptions[index],
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ],
+              ),
             ),
           ),
         ),
