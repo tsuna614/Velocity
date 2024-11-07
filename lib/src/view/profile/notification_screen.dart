@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:velocity_app/l10n/app_localizations.dart';
 import 'package:velocity_app/main.dart';
 import 'package:velocity_app/src/bloc/notification/notification_bloc.dart';
 import 'package:velocity_app/src/bloc/notification/notification_events.dart';
@@ -42,16 +43,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (result is NotificationLoaded) {
       if (response == FriendRequestResponse.accept) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Friend added successfully'),
+          SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.friendAddedSuccessfully),
           ),
         );
         BlocProvider.of<UserBloc>(context)
             .add(AddFriend(friendId: notification.sender));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Friend request declined'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.friendRequestDeclined),
           ),
         );
       }
@@ -71,7 +73,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ..add(FetchNotifications()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Notifications'),
+          title: Text(AppLocalizations.of(context)!.notifications),
         ),
         body: BlocBuilder<NotificationBloc, NotificationState>(
             builder: (context, state) {
@@ -80,8 +82,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
           }
 
           if (state.notifications.isEmpty) {
-            return const Center(
-              child: EmptyIndicator(message: "No notifications found."),
+            return Center(
+              child: EmptyIndicator(
+                  message: AppLocalizations.of(context)!.noNotificationsFound),
             );
           }
 
@@ -97,7 +100,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       ListTile(
                         title: AvatarAndName(
                           userId: state.notifications[index].sender,
-                          message: "has sent you a friend request.",
+                          message: AppLocalizations.of(context)!
+                              .hasSentYouAFriendRequest,
                         ),
                         trailing: Text(
                           GeneralApi.getTime(
@@ -109,7 +113,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         children: [
                           const Spacer(),
                           buildStyledButton(
-                            text: "Accept",
+                            text: AppLocalizations.of(context)!.accept,
                             color: Colors.blue,
                             onPressed: () {
                               handleFriendRequestResponse(
@@ -120,7 +124,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             },
                           ),
                           buildStyledButton(
-                            text: "Decline",
+                            text: AppLocalizations.of(context)!.decline,
                             color: Colors.red,
                             onPressed: () {
                               handleFriendRequestResponse(

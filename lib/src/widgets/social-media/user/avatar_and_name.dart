@@ -48,8 +48,25 @@ class _AvatarAndNameState extends State<AvatarAndName> {
         ),
         const SizedBox(width: 10),
         Flexible(
-          child: Text(
-              "${userData.firstName} ${userData.lastName} ${widget.message ?? ''}"),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "${userData.firstName} ${userData.lastName}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: " ${widget.message ?? ''}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );

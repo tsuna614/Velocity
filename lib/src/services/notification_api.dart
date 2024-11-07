@@ -11,17 +11,24 @@ abstract class NotificationApi {
   final ApiService apiService;
   NotificationApi(this.apiService);
 
-  Future<ApiResponse<List<NotificationModel>>> fetchNotifications({
+  Future<ApiResponse<List<NotificationModel>>> fetchNotificationsOfUser({
     required String userId,
   });
+
   Future<ApiResponse<void>> sendFriendRequest({
     required String receiverId,
     required String senderId,
   });
+
   Future<ApiResponse<void>> respondToFriendRequest({
     required String notificationId,
     required FriendRequestResponse receiverResponse,
   });
+
+  // Future<ApiResponse<bool>> checkIf({
+  //   required String receiverId,
+  //   required String senderId,
+  // });
 }
 
 class NotificationApiImpl extends NotificationApi {
@@ -30,7 +37,7 @@ class NotificationApiImpl extends NotificationApi {
   NotificationApiImpl(super.apiService);
 
   @override
-  Future<ApiResponse<List<NotificationModel>>> fetchNotifications(
+  Future<ApiResponse<List<NotificationModel>>> fetchNotificationsOfUser(
       {required String userId}) async {
     return apiService.get(
       endpoint: '$baseUrl/notification/getNotificationByReceiverId/$userId',

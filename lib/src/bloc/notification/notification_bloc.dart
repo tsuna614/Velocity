@@ -13,7 +13,8 @@ class NotificationBloc extends Bloc<NotificationEvents, NotificationState> {
     on<FetchNotifications>((event, emit) async {
       emit(NotificationLoading());
       final ApiResponse<List<NotificationModel>> response =
-          await notificationApi.fetchNotifications(userId: GlobalData.userId);
+          await notificationApi.fetchNotificationsOfUser(
+              userId: GlobalData.userId);
       if (response.errorMessage != null) {
         emit(NotificationFailure(error: response.errorMessage!));
       } else {

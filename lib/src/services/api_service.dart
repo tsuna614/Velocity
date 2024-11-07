@@ -46,8 +46,10 @@ class ApiService {
         data: fromJson != null ? fromJson(response.data) : response.data,
       );
     } on DioException catch (e) {
+      print("Exception");
+      final errorMessage = e.response?.data['message'] ?? e.message;
       return ApiResponse(
-        errorMessage: e.message,
+        errorMessage: errorMessage,
         statusCode: e.response?.statusCode,
       );
     }

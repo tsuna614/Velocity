@@ -25,16 +25,42 @@ class _CommunityTabState extends State<CommunityTab> {
           BlocProvider.of<PostBloc>(context)
               .add(FetchPosts(postType: PostType.normalPost));
         },
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: state.posts.length,
-          itemBuilder: (context, index) {
-            return Post(
-              key: ValueKey(state.posts[index].postId),
-              post: state.posts[index],
-            );
-          },
+        // child: ListView.builder(
+        //   shrinkWrap: true,
+        //   itemCount: state.posts.length,
+        //   itemBuilder: (context, index) {
+        //     return Post(
+        //       key: ValueKey(state.posts[index].postId),
+        //       post: state.posts[index],
+        //     );
+        //   },
+        // ),
+        child: CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return Post(
+                    key: ValueKey(state.posts[index].postId),
+                    post: state.posts[index],
+                  );
+                },
+                childCount: state.posts.length,
+              ),
+            ),
+          ],
         ),
+        // child: SingleChildScrollView(
+        //   child: Column(
+        //     children: [
+        //       for (var post in state.posts)
+        //         Post(
+        //           key: ValueKey(post.postId),
+        //           post: post,
+        //         ),
+        //     ],
+        //   ),
+        // ),
       );
     });
   }

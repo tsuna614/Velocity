@@ -375,4 +375,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareYourThoughts => "Share your thoughts";
+
+  @override
+  String get friendAddedSuccessfully => "Friend added successfully";
+
+  @override
+  String get friendRequestDeclined => "Friend request declined";
+
+  @override
+  String get notifications => "Notifications";
+
+  @override
+  String get noNotificationsFound => "No notifications found";
+
+  @override
+  String get hasSentYouAFriendRequest => "has sent you a friend request";
+
+  @override
+  String get accept => "Accept";
+
+  @override
+  String get decline => "Decline";
 }

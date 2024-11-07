@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:velocity_app/main.dart';
 import 'package:velocity_app/src/model/user_model.dart';
+import 'package:velocity_app/src/services/post_api.dart';
 
-class UserTopBanner extends StatelessWidget {
+class UserTopBanner extends StatefulWidget {
   final UserModel userData;
   final bool? isUserAlreadyFriend;
   final void Function()? friendButtonCallback;
@@ -14,15 +16,38 @@ class UserTopBanner extends StatelessWidget {
     this.messageButtonCallback,
   });
 
-  final double avatarRadius = 50;
-  final double topSpacing = 30;
+  @override
+  State<UserTopBanner> createState() => _UserTopBannerState();
+}
+
+class _UserTopBannerState extends State<UserTopBanner> {
+  final double _avatarRadius = 50;
+  final double _topSpacing = 30;
+  int _postCount = 0;
+  int _likeCount = 0;
+
+  @override
+  void initState() {
+    fetchPostAmount();
+    super.initState();
+  }
+
+  Future<void> fetchPostAmount() async {
+    final response = await getIt<PostApiImpl>()
+        .fetchPostsAmount(userId: widget.userData.userId);
+    if (response.data == null) return;
+    setState(() {
+      _postCount = response.data!["totalPosts"];
+      _likeCount = response.data!["totalLikes"];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          height: avatarRadius * 4 + topSpacing,
+          height: _avatarRadius * 4 + _topSpacing,
           width: double.infinity,
           decoration: const BoxDecoration(
             color: Colors.blue,
@@ -30,14 +55,14 @@ class UserTopBanner extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(
-            top: avatarRadius + topSpacing,
+            top: _avatarRadius + _topSpacing,
             left: 20,
             right: 20,
           ),
           child: buildUserInfoCard(),
         ),
         Padding(
-          padding: EdgeInsets.only(top: topSpacing),
+          padding: EdgeInsets.only(top: _topSpacing),
           child: Center(
             child: buildAvatar(),
           ),
@@ -50,8 +75,8 @@ class UserTopBanner extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: avatarRadius * 2,
-          height: avatarRadius * 2,
+          width: _avatarRadius * 2,
+          height: _avatarRadius * 2,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
@@ -61,9 +86,9 @@ class UserTopBanner extends StatelessWidget {
           ),
           child: CircleAvatar(
             radius: 20,
-            backgroundImage: userData.profileImageUrl.isEmpty
+            backgroundImage: widget.userData.profileImageUrl.isEmpty
                 ? const AssetImage("assets/images/user-placeholder.png")
-                : NetworkImage(userData.profileImageUrl),
+                : NetworkImage(widget.userData.profileImageUrl),
           ),
         ),
       ],
@@ -85,12 +110,12 @@ class UserTopBanner extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: avatarRadius + 10),
+        padding: EdgeInsets.only(top: _avatarRadius + 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "${userData.firstName} ${userData.lastName}",
+              "${widget.userData.firstName} ${widget.userData.lastName}",
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 20,
@@ -98,14 +123,14 @@ class UserTopBanner extends StatelessWidget {
               ),
             ),
             Text(
-              userData.email,
+              widget.userData.email,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 16,
               ),
             ),
             buildUserStats(),
-            if (isUserAlreadyFriend != null) buildActionButtons(),
+            if (widget.isUserAlreadyFriend != null) buildActionButtons(),
           ],
         ),
       ),
@@ -118,11 +143,13 @@ class UserTopBanner extends StatelessWidget {
       child: Row(
         children: [
           buildButton(
-            label: isUserAlreadyFriend! ? "Remove Friend" : "Add Friend",
-            icon: isUserAlreadyFriend! ? Icons.person_remove : Icons.person_add,
+            label: widget.isUserAlreadyFriend! ? "Remove Friend" : "Add Friend",
+            icon: widget.isUserAlreadyFriend!
+                ? Icons.person_remove
+                : Icons.person_add,
             backgroundColor: Colors.grey[300]!,
             foregroundColor: Colors.black,
-            onTap: friendButtonCallback!,
+            onTap: widget.friendButtonCallback!,
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -131,7 +158,7 @@ class UserTopBanner extends StatelessWidget {
               icon: Icons.message,
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
-              onTap: messageButtonCallback!,
+              onTap: widget.messageButtonCallback!,
             ),
           ),
         ],
@@ -193,11 +220,13 @@ class UserTopBanner extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildUserStatColumn(value: "2.5K", label: "Friends"),
+          buildUserStatColumn(
+              value: widget.userData.friends.length.toString(),
+              label: "Friends"),
           customVerticalDivider(),
-          buildUserStatColumn(value: "398", label: "Posts"),
+          buildUserStatColumn(value: _postCount.toString(), label: "Posts"),
           customVerticalDivider(),
-          buildUserStatColumn(value: "93K", label: "Likes"),
+          buildUserStatColumn(value: _likeCount.toString(), label: "Likes"),
         ],
       ),
     );

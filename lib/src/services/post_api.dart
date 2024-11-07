@@ -30,6 +30,10 @@ abstract class PostApi {
       {required String postId, required String userId});
 
   Future<ApiResponse<void>> deletePost({required String postId});
+
+  Future<ApiResponse<Map<String, dynamic>>> fetchPostsAmount({
+    required String userId,
+  });
 }
 
 class PostApiImpl extends PostApi {
@@ -93,6 +97,7 @@ class PostApiImpl extends PostApi {
         if (post.commentTargetId != null) "postId": post.commentTargetId,
         if (post.sharedPostId != null) "sharedPostId": post.sharedPostId,
       },
+      fromJson: (data) => data["_id"],
       options: Options(
         headers: {
           "x_authorization": await HiveService.getUserAccessToken(),
@@ -157,6 +162,23 @@ class PostApiImpl extends PostApi {
       options: Options(
         headers: {
           "x_authorization": await HiveService.getUserAccessToken(),
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<ApiResponse<Map<String, dynamic>>> fetchPostsAmount(
+      {required String userId}) async {
+    return apiService.get(
+      endpoint: "$baseUrl/post/getTotalPosts/$userId",
+      fromJson: (data) => {
+        "totalPosts": data["totalPosts"],
+        "totalLikes": data["totalLikes"],
+      },
+      options: Options(
+        headers: {
+          "x_authorization": HiveService.getUserAccessToken(),
         },
       ),
     );

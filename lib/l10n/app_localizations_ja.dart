@@ -369,4 +369,25 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get shareYourThoughts => "あなたの考えを共有してください。";
+
+  @override
+  String get friendAddedSuccessfully => "友達が正常に追加されました";
+
+  @override
+  String get friendRequestDeclined => "友達リクエストが拒否されました";
+
+  @override
+  String get notifications => "通知";
+
+  @override
+  String get noNotificationsFound => "通知が見つかりません";
+
+  @override
+  String get hasSentYouAFriendRequest => "が友達リクエストを送信しました";
+
+  @override
+  String get accept => "承認";
+
+  @override
+  String get decline => "拒否";
 }

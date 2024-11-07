@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -11,6 +10,12 @@ import 'package:velocity_app/src/services/notification_api.dart';
 import 'package:velocity_app/src/view/explore/messaging/message_screen.dart';
 import 'package:velocity_app/src/widgets/social-media/user/user_top_banner.dart';
 
+enum FriendState {
+  isFriend,
+  isNotFriend,
+  isPending,
+}
+
 class ViewProfileSheet extends StatefulWidget {
   const ViewProfileSheet({super.key, required this.userData});
 
@@ -22,24 +27,24 @@ class ViewProfileSheet extends StatefulWidget {
 
 class _ViewProfileSheetState extends State<ViewProfileSheet> {
   Future<void> _sendFriendRequest() async {
-    try {
-      await GetIt.I<NotificationApiImpl>().sendFriendRequest(
-        receiverId: widget.userData.userId,
-        senderId: GlobalData.userId,
-      );
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Friend request sent"),
-        ),
-      );
-    } on DioException catch (e) {
+    final response = await GetIt.I<NotificationApiImpl>().sendFriendRequest(
+      receiverId: widget.userData.userId,
+      senderId: GlobalData.userId,
+    );
+    if (!mounted) return;
+    if (response.errorMessage != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(e.message!),
+          content: Text(response.errorMessage!),
         ),
       );
+      return;
     }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Friend request sent"),
+      ),
+    );
   }
 
   Future<void> _removeFriend() async {
@@ -84,11 +89,13 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
 
   @override
   Widget build(BuildContext context) {
-    bool isUserAlreadyFriend =
+    FriendState friendState =
         (BlocProvider.of<UserBloc>(context).state as UserLoaded)
-            .user
-            .friends
-            .contains(widget.userData.userId);
+                .user
+                .friends
+                .contains(widget.userData.userId)
+            ? FriendState.isFriend
+            : FriendState.isNotFriend;
 
     return Scaffold(
       body: Column(
@@ -97,9 +104,10 @@ class _ViewProfileSheetState extends State<ViewProfileSheet> {
         children: [
           UserTopBanner(
             userData: widget.userData,
-            isUserAlreadyFriend: isUserAlreadyFriend,
-            friendButtonCallback:
-                isUserAlreadyFriend ? _removeFriend : _sendFriendRequest,
+            isUserAlreadyFriend: friendState == FriendState.isFriend,
+            friendButtonCallback: friendState == FriendState.isFriend
+                ? _removeFriend
+                : _sendFriendRequest,
             messageButtonCallback: () => _pushToMessageScreen(widget.userData),
           ),
           const SizedBox(height: 20),

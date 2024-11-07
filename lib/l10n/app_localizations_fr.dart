@@ -384,4 +384,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get shareYourThoughts => "Partagez vos pensées";
+
+  @override
+  String get friendAddedSuccessfully => "Ami ajouté avec succès";
+
+  @override
+  String get friendRequestDeclined => "Demande d'ami refusée";
+
+  @override
+  String get notifications => "Notifications";
+
+  @override
+  String get noNotificationsFound => "Aucune notification trouvée";
+
+  @override
+  String get hasSentYouAFriendRequest => "vous a envoyé une demande d'ami";
+
+  @override
+  String get accept => "Accepter";
+
+  @override
+  String get decline => "Refuser";
 }

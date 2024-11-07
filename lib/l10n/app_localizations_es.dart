@@ -373,4 +373,26 @@ class AppLocalizationsEs extends AppLocalizations {
       "La publicación ha sido eliminada exitosamente";
   @override
   String get shareYourThoughts => "Comparte tus pensamientos";
+
+  @override
+  String get friendAddedSuccessfully => "Amigo añadido con éxito";
+
+  @override
+  String get friendRequestDeclined => "Solicitud de amistad rechazada";
+
+  @override
+  String get notifications => "Notificaciones";
+
+  @override
+  String get noNotificationsFound => "No se encontraron notificaciones";
+
+  @override
+  String get hasSentYouAFriendRequest =>
+      "te ha enviado una solicitud de amistad";
+
+  @override
+  String get accept => "Aceptar";
+
+  @override
+  String get decline => "Rechazar";
 }

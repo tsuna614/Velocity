@@ -380,4 +380,25 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get shareYourThoughts => "Chia sẻ suy nghĩ của bạn";
+
+  @override
+  String get friendAddedSuccessfully => "Thêm bạn thành công";
+
+  @override
+  String get friendRequestDeclined => "Lời mời kết bạn đã bị từ chối";
+
+  @override
+  String get notifications => "Thông báo";
+
+  @override
+  String get noNotificationsFound => "Không tìm thấy thông báo nào";
+
+  @override
+  String get hasSentYouAFriendRequest => "đã gửi cho bạn một lời mời kết bạn";
+
+  @override
+  String get accept => "Chấp nhận";
+
+  @override
+  String get decline => "Từ chối";
 }

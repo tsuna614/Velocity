@@ -35,47 +35,46 @@ class _PersonalTabState extends State<PersonalTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-            if (state is! UserLoaded) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            return Column(
-              children: [
-                UserTopBanner(userData: state.user),
-                const SizedBox(height: 10),
-                buildPostContainer(state.user),
-              ],
-            );
-          }),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Divider(),
-          ),
-          BlocBuilder<PostBloc, PostState>(builder: (context, state) {
-            if (state is! PostLoaded) {
-              return const Center(child: CircularProgressIndicator());
-            }
+    return ListView(
+      children: [
+        BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+          if (state is! UserLoaded) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Column(
+            children: [
+              UserTopBanner(userData: state.user),
+              const SizedBox(height: 10),
+              buildPostContainer(state.user),
+            ],
+          );
+        }),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Divider(),
+        ),
+        BlocBuilder<PostBloc, PostState>(builder: (context, state) {
+          if (state is! PostLoaded) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            List<PostModel> userPosts = state.posts
-                .where((post) => post.userId == GlobalData.userId)
-                .toList();
+          List<PostModel> userPosts = state.posts
+              .where((post) => post.userId == GlobalData.userId)
+              .toList();
 
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: userPosts.length,
-              itemBuilder: (context, index) {
-                return Post(
-                  key: ValueKey(state.posts[index].postId),
-                  post: userPosts[index],
-                );
-              },
-            );
-          }),
-        ],
-      ),
+          return ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: userPosts.length,
+            itemBuilder: (context, index) {
+              return Post(
+                key: ValueKey(state.posts[index].postId),
+                post: userPosts[index],
+              );
+            },
+          );
+        }),
+      ],
     );
   }
 

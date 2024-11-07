@@ -132,6 +132,13 @@ abstract class AppLocalizations {
   String get delete;
   String get postHasBeenDeletedSuccessfully;
   String get shareYourThoughts;
+  String get friendAddedSuccessfully;
+  String get friendRequestDeclined;
+  String get notifications;
+  String get noNotificationsFound;
+  String get hasSentYouAFriendRequest;
+  String get accept;
+  String get decline;
 
   static AppLocalizations? of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);

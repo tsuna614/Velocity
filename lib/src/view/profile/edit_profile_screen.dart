@@ -132,7 +132,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     // check if user have uploaded a new image first, then upload it, returning the url from the server
     final response = _image != null
-        ? await GetIt.I<UserApi>().uploadAvatar(image: _image!)
+        ? await GetIt.I<UserApiImpl>().uploadAvatar(image: _image!)
         : ApiResponse(data: "");
 
     // update the user data where changed

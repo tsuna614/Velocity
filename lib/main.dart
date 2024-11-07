@@ -38,9 +38,6 @@ class MyHttpOverrides extends HttpOverrides {
 final getIt = GetIt.instance;
 
 void setupLocator() {
-  // getIt.registerLazySingleton(() => UserBloc());
-  // getIt.registerLazySingleton(() => PostBloc());
-  // getIt.registerLazySingleton(() => TravelBloc());
   final dio = Dio();
   final apiService = ApiService(dio);
   getIt.registerLazySingleton(() => UserApiImpl(apiService));
